@@ -191,10 +191,10 @@
 
 <script>
 /* Lista de espera — cada cadastro chega por e-mail via FormSubmit (sem backend).
-   1º envio dispara um e-mail de ativação para o endereço abaixo; depois de ativado,
-   trocar pelo endpoint com hash aleatório que o FormSubmit fornece (esconde o e-mail
-   do código-fonte e evita spam). O localStorage guarda cópia local como backup. */
-const ENDPOINT='https://formsubmit.co/ajax/jsmabreu@hotmail.com';
+   Endpoint ativado em 18/07/2026 usando o hash aleatório do FormSubmit (o e-mail
+   de destino não aparece no código-fonte). O localStorage guarda cópia local
+   como backup do lado do visitante. */
+const ENDPOINT='https://formsubmit.co/ajax/e0c12dfab4dfad247a6c41fc7f23b989';
 function joinList(ev){
   ev.preventDefault();
   const data={nome:document.getElementById('f-nome').value.trim(),
