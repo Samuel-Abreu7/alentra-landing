@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caderno de Plantão — Protótipo</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#ffffff; --ink:#26221c; --muted:#7a7263;
+    --brand:#2f6f5e; --brand-ink:#ffffff; --line:#e6e1d6;
+    --ok:#2f6f5e; --warn:#b7791f; --warn-bg:#fdf3e2; --late:#b3402e; --late-bg:#fdecea;
+    --info-bg:#eef4f2; --radius:14px;
+    font-size:17px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+
+  header.top{background:var(--brand);color:var(--brand-ink);padding:14px 18px 10px;border-radius:0 0 18px 18px}
+  header.top h1{margin:0;font-size:1.15rem;font-weight:700;letter-spacing:.2px}
+  header.top .patient{opacity:.9;font-size:.9rem;margin-top:2px}
+  .roles{display:flex;gap:8px;margin-top:12px}
+  .roles button{flex:1;padding:10px;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;background:rgba(255,255,255,.16);color:#fff}
+  .roles button.active{background:#fff;color:var(--brand)}
+
+  main{padding:16px 14px 90px;flex:1}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px}
+  .card h2{margin:0 0 10px;font-size:1.02rem}
+  .hint{color:var(--muted);font-size:.85rem}
+
+  /* Medicação */
+  .dose{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+  .dose:first-of-type{border-top:none}
+  .dose .when{font-weight:700;min-width:56px;font-size:1.05rem}
+  .dose .what{flex:1}
+  .dose .what small{display:block;color:var(--muted)}
+  .dose button{padding:12px 16px;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;background:var(--brand);color:#fff;min-width:110px}
+  .dose.done button{background:var(--info-bg);color:var(--ok);cursor:default}
+  .dose.late .when{color:var(--late)}
+  .dose.late{background:var(--late-bg);margin:0 -16px;padding-left:16px;padding-right:16px;border-radius:8px}
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px}
+  .badge.late{background:var(--late);color:#fff}
+
+  /* Botões de registro rápido */
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .quick button{padding:12px 4px;border:1px solid var(--line);background:#fff;border-radius:12px;font-size:.82rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .quick button span.e{font-size:1.5rem}
+  .quick button:active{background:var(--info-bg)}
+
+  textarea,input[type=text],input[type=number],input[type=date],select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;background:#fff}
+  .row2{display:flex;gap:10px}
+  .row2>*{flex:1}
+  .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;cursor:pointer;background:var(--brand);color:#fff;margin-top:10px}
+  .btn.secondary{background:#fff;color:var(--brand);border:2px solid var(--brand)}
+  .btn.danger{background:var(--late)}
+  .btn.small{padding:10px;font-size:.92rem;margin-top:8px}
+
+  /* Alertas */
+  .alertbar{background:var(--late);color:#fff;border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-weight:600;font-size:.95rem}
+  .warnbar{background:var(--warn);color:#fff;border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-weight:600;font-size:.95rem}
+  .okbar{background:var(--info-bg);color:var(--ok);border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-weight:600;font-size:.95rem}
+
+  /* Timeline família */
+  .day h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 4px 8px}
+  .ev{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;align-items:flex-start}
+  .ev .t{color:var(--muted);font-size:.85rem;min-width:44px;padding-top:2px}
+  .ev .e{font-size:1.3rem}
+  .ev .d small{display:block;color:var(--muted);font-size:.8rem}
+  .ev.inter{border-color:var(--late);background:var(--late-bg)}
+
+  /* Escala / listas */
+  .lrow{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:.95rem;align-items:baseline}
+  .lrow:first-of-type{border-top:none}
+  .lrow small{color:var(--muted);display:block;font-size:.8rem}
+  .lrow .amt{font-weight:700;white-space:nowrap}
+  .pill{display:inline-block;background:var(--info-bg);color:var(--ok);border-radius:99px;padding:2px 10px;font-size:.75rem;font-weight:700}
+  .pill.now{background:var(--brand);color:#fff}
+
+  /* Overlays */
+  .overlay{position:fixed;inset:0;background:rgba(30,26,20,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+  .sheet{background:#fff;border-radius:18px 18px 0 0;padding:20px 18px 26px;width:100%;max-width:520px;max-height:88vh;overflow:auto}
+  .sheet h2{margin:0 0 8px}
+  .sheet label{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:.92rem}
+  .sheet input[type=checkbox]{width:22px;height:22px;flex:none;margin-top:1px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .chips button{padding:10px 14px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:.95rem;cursor:pointer}
+  .chips button.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+  footer.legal{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--line);padding:8px 14px;font-size:.72rem;color:var(--muted);text-align:center}
+  footer.legal .in{max-width:520px;margin:0 auto}
+
+  /* Relatório (impressão) */
+  #report{display:none}
+  @media print{
+    body>.app, footer.legal{display:none!important}
+    #report{display:block;font-size:12pt;color:#000;padding:0 8mm}
+    #report h1{font-size:16pt} #report h2{font-size:13pt;margin-top:16pt}
+    #report table{width:100%;border-collapse:collapse;font-size:10.5pt}
+    #report th,#report td{border:1px solid #999;padding:4pt 6pt;text-align:left}
+    #report .disc{border:1px solid #000;padding:6pt;margin-top:14pt;font-size:9.5pt}
+  }
+  .report-screen #report{display:block;background:#fff;max-width:520px;margin:0 auto;padding:20px 18px 120px}
+  .report-screen .app main, .report-screen .app .roles{display:none}
+  #report table{width:100%;border-collapse:collapse;font-size:.85rem;margin:6px 0}
+  #report th,#report td{border:1px solid #ccc;padding:5px 7px;text-align:left}
+  #report .disc{border:1px solid var(--line);background:var(--info-bg);padding:10px;border-radius:10px;margin-top:14px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>📒 Caderno de Plantão <span class="hint" style="color:#fff;opacity:.7">(protótipo)</span></h1>
+    <div class="patient">Cuidando de: <strong>D. Maria, 82</strong></div>
+    <div class="roles">
+      <button id="tab-cuidador" onclick="setRole('cuidador')">Sou cuidador(a)</button>
+      <button id="tab-familia" onclick="setRole('familia')">Sou da família</button>
+    </div>
+  </header>
+  <main id="main"></main>
+</div>
+
+<div id="report"></div>
+
+<footer class="legal"><div class="in">
+  Registro informativo de cuidados. Não substitui orientação médica, diagnóstico ou tratamento.
+  Em emergência, ligue <strong>192 (SAMU)</strong>. · Seus dados são sensíveis (LGPD art. 11) e nunca são vendidos.
+  <br><strong>Demonstração</strong> — todos os dados são fictícios ·
+  <a href="#" onclick="localStorage.removeItem(KEY);location.reload();return false" style="color:var(--brand)">↺ Reiniciar demonstração</a>
+</div></footer>
+
+<div id="overlay-root"></div>
+
+<script>
+/* ================= Estado ================= */
+const KEY='cadernoPlantao_proto_v2';
+const MEDS=[
+  {id:'losartana', nome:'Losartana 50mg', obs:'1 comprimido', horarios:['08:00','20:00']},
+  {id:'metformina',nome:'Metformina 850mg', obs:'1 comprimido, após refeição', horarios:['08:00','12:00','20:00']},
+  {id:'sinvastatina',nome:'Sinvastatina 20mg', obs:'1 comprimido', horarios:['22:00']},
+];
+const QUICK=[
+  {t:'refeicao', e:'🍽️', label:'Refeição', opts:['Comeu tudo','Comeu metade','Comeu pouco','Recusou']},
+  {t:'liquidos', e:'💧', label:'Líquidos', opts:['Bebeu bem','Bebeu pouco','Recusou']},
+  {t:'banho',    e:'🛁', label:'Banho',    opts:['Feito, sem ajuda','Feito, com ajuda','Recusou']},
+  {t:'sono',     e:'😴', label:'Sono',     opts:['Dormiu bem','Agitado','Acordou várias vezes']},
+  {t:'evacuacao',e:'🚻', label:'Evacuação',opts:['Normal','Alterada','Não evacuou']},
+  {t:'humor',    e:'🙂', label:'Humor',    opts:['Bem-disposta','Apática','Confusa','Irritada']},
+];
+const ESCALA=[
+  {turno:'Diurno',  ini:'07:00', fim:'19:00', resp:'Ana'},
+  {turno:'Noturno', ini:'19:00', fim:'07:00', resp:'Carla'},
+];
+const DOC_CATS=['Receita','Exame','Laudo','Contato médico','Outro'];
+const ICON={med:'💊',intercorrencia:'⚠️',turno_inicio:'🟢',turno_fim:'🔴',ciente:'✅',
+  refeicao:'🍽️',liquidos:'💧',banho:'🛁',sono:'😴',evacuacao:'🚻',humor:'🙂',
+  pressao:'🩺',glicemia:'🩸'};
+
+let S=load();
+function load(){
+  try{const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.events) return s;}catch(e){}
+  return seed();
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(S));}
+
+function seed(){
+  const now=new Date(), ev=[];
+  const d=(daysAgo,h,m)=>{const x=new Date(now);x.setDate(x.getDate()-daysAgo);x.setHours(h,m,0,0);return x.getTime();};
+  ev.push({ts:d(1,7,0), type:'turno_inicio', actor:'Ana', text:'Início do plantão diurno'});
+  ev.push({ts:d(1,8,5), type:'med', actor:'Ana', text:'Losartana 50mg — dose das 08:00 confirmada'});
+  ev.push({ts:d(1,8,6), type:'med', actor:'Ana', text:'Metformina 850mg — dose das 08:00 confirmada'});
+  ev.push({ts:d(1,9,0), type:'refeicao', actor:'Ana', text:'Refeição: comeu tudo (café da manhã)'});
+  ev.push({ts:d(1,10,15),type:'pressao', actor:'Ana', text:'Pressão arterial: 13x8', vit:{sys:13,dia:8}});
+  ev.push({ts:d(1,12,10),type:'med', actor:'Ana', text:'Metformina 850mg — dose das 12:00 confirmada'});
+  ev.push({ts:d(1,15,30),type:'intercorrencia', actor:'Ana', text:'Tontura leve ao levantar do sofá. Sentou, melhorou em ~5 min.'});
+  ev.push({ts:d(1,16,10),type:'pressao', actor:'Ana', text:'Pressão arterial: 15x9', vit:{sys:15,dia:9}});
+  ev.push({ts:d(1,17,0), type:'glicemia', actor:'Ana', text:'Glicemia: 112 mg/dL', vit:{mg:112}});
+  ev.push({ts:d(1,19,0), type:'turno_fim', actor:'Ana', text:'Fim do plantão. Resumo: dia tranquilo, atenção à tontura das 15:30.'});
+  ev.push({ts:d(1,19,5), type:'turno_inicio', actor:'Carla', text:'Início do plantão noturno'});
+  ev.push({ts:d(1,20,4), type:'med', actor:'Carla', text:'Losartana 50mg — dose das 20:00 confirmada'});
+  ev.push({ts:d(1,20,5), type:'med', actor:'Carla', text:'Metformina 850mg — dose das 20:00 confirmada'});
+  ev.push({ts:d(1,22,2), type:'med', actor:'Carla', text:'Sinvastatina 20mg — dose das 22:00 confirmada'});
+  ev.push({ts:d(1,23,0), type:'sono', actor:'Carla', text:'Sono: dormiu bem'});
+  ev.push({ts:d(0,7,0), type:'turno_fim', actor:'Carla', text:'Fim do plantão. Resumo: noite boa, dormiu direto. Deixei a Losartana das 08:00 separada.'});
+  const docs=[
+    {ts:d(3,10,0), cat:'Receita', nome:'Receita — Losartana + Metformina (Dr. Paulo, cardio)', by:'Família'},
+    {ts:d(12,15,0),cat:'Exame',   nome:'Hemograma completo — Lab São Lucas', by:'Família'},
+    {ts:d(30,9,0), cat:'Contato médico', nome:'Dr. Paulo (cardiologista) — (11) 9xxxx-xxxx', by:'Família'},
+  ];
+  const expenses=[
+    {ts:d(2,11,0), desc:'Farmácia — Losartana e Metformina (30 dias)', valor:87.50, by:'Rita (filha)'},
+    {ts:d(5,14,0), desc:'Fraldas geriátricas (pacote c/ 40)', valor:112.90, by:'Marcos (filho)'},
+  ];
+  return {consent:false, role:null, shift:null, events:ev, docs, expenses};
+}
+
+/* ================= Utilidades ================= */
+function sameDay(a,b){const x=new Date(a),y=new Date(b);return x.toDateString()===y.toDateString();}
+function fmtT(ts){return new Date(ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function fmtD(ts){return new Date(ts).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});}
+function fmtDT(ts){return new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}
+function money(v){return 'R$ '+v.toFixed(2).replace('.',',');}
+function minOfDay(hhmm){const[h,m]=hhmm.split(':').map(Number);return h*60+m;}
+
+function todayDoses(){
+  const now=new Date(), out=[];
+  for(const m of MEDS) for(const h of m.horarios){
+    const [hh,mm]=h.split(':').map(Number);
+    const t=new Date(now); t.setHours(hh,mm,0,0);
+    const taken=S.events.find(e=>e.type==='med' && sameDay(e.ts,now.getTime()) && e.text.startsWith(m.nome) && e.text.includes('das '+h));
+    let st='pend';
+    if(taken) st='done';
+    else if(now-t > 60*60*1000) st='late';
+    else if(now < t) st='future';
+    out.push({med:m,h,st,taken});
+  }
+  return out.sort((a,b)=>a.h.localeCompare(b.h));
+}
+
+/* Turno vigente da escala (lida com turno que cruza a meia-noite) */
+function turnoAtual(){
+  const now=new Date(), cur=now.getHours()*60+now.getMinutes();
+  for(const t of ESCALA){
+    const a=minOfDay(t.ini), b=minOfDay(t.fim);
+    if(a<b ? (cur>=a&&cur<b) : (cur>=a||cur<b)) return t;
+  }
+  return null;
+}
+/* Minutos desde o início do turno vigente */
+function minutosDesdeInicioTurno(t){
+  const now=new Date(), cur=now.getHours()*60+now.getMinutes(), a=minOfDay(t.ini);
+  return cur>=a ? cur-a : cur+(24*60-a);
+}
+
+/* ================= Alertas da família ================= */
+function alertasFamilia(){
+  const out=[];
+  const late=todayDoses().filter(d=>d.st==='late');
+  if(late.length) out.push({sev:'late', text:`⚠️ ${late.length===1?'1 dose sem confirmação':late.length+' doses sem confirmação'} há mais de 1h: ${late.map(d=>`${d.med.nome} (${d.h})`).join(', ')}.`});
+  const t=turnoAtual();
+  if(t && !S.shift && minutosDesdeInicioTurno(t)>30)
+    out.push({sev:'late', text:`⏰ Plantão ${t.turno.toLowerCase()} (${t.resp}, início ${t.ini}) sem "ciente" até agora — cuidador possivelmente atrasado.`});
+  if(S.shift){
+    const lastEv=[...S.events].sort((a,b)=>b.ts-a.ts)[0];
+    if(lastEv && Date.now()-lastEv.ts > 4*3600*1000)
+      out.push({sev:'warn', text:`🕐 Nenhum registro nas últimas 4 horas (último: ${fmtT(lastEv.ts)}).`});
+  }
+  return out;
+}
+
+/* ================= Resumo diário (template, sem IA) ================= */
+function resumoHoje(){
+  const now=Date.now();
+  const evs=S.events.filter(e=>sameDay(e.ts,now));
+  if(!evs.length) return 'Ainda não há registros hoje.';
+  const doses=todayDoses(), given=doses.filter(d=>d.st==='done').length;
+  const duePassed=doses.filter(d=>d.st!=='future').length;
+  const parts=[`💊 ${given} de ${duePassed||doses.length} doses do dia confirmadas`];
+  const last=t=>{const e=[...evs].reverse().find(e=>e.type===t);return e?e.text.toLowerCase():null;};
+  for(const [t,label] of [['refeicao','🍽️'],['liquidos','💧'],['sono','😴'],['humor','🙂']]){
+    const l=last(t); if(l) parts.push(label+' '+l);
+  }
+  const vit=[...evs].reverse().find(e=>e.type==='pressao'||e.type==='glicemia');
+  if(vit) parts.push(ICON[vit.type]+' última medição: '+vit.text.toLowerCase()+' ('+fmtT(vit.ts)+')');
+  const inters=evs.filter(e=>e.type==='intercorrencia');
+  parts.push(inters.length?`⚠️ ${inters.length} intercorrência${inters.length>1?'s':''} registrada${inters.length>1?'s':''}`:'✅ nenhuma intercorrência');
+  return parts.join(' · ');
+}
+
+/* ================= Render ================= */
+function setRole(r){S.role=r;save();render();}
+function render(){
+  document.body.classList.remove('report-screen');
+  document.getElementById('tab-cuidador').classList.toggle('active',S.role==='cuidador');
+  document.getElementById('tab-familia').classList.toggle('active',S.role==='familia');
+  const m=document.getElementById('main');
+  if(!S.consent){m.innerHTML='';showConsent();return;}
+  if(!S.role){m.innerHTML='<div class="card"><h2>Bem-vindo(a) 👋</h2><p>Escolha acima como você usa o caderno: <strong>cuidador(a)</strong> registra o plantão; <strong>família</strong> acompanha.</p></div>';return;}
+  m.innerHTML = S.role==='cuidador' ? viewCuidador() : viewFamilia();
+}
+
+/* ---------- Escala (cartão compartilhado) ---------- */
+function cardEscala(){
+  const t=turnoAtual();
+  return `<div class="card"><h2>📅 Escala de hoje</h2>
+    ${ESCALA.map(e=>`<div class="lrow"><span>${e.turno} · ${e.ini}–${e.fim}<small>${e.resp}</small></span>
+      <span class="pill ${t&&t.turno===e.turno?'now':''}">${t&&t.turno===e.turno?'agora':'—'}</span></div>`).join('')}
+    <p class="hint">A família recebe alerta se o turno começar sem o "ciente" do cuidador (tolerância de 30 min).</p></div>`;
+}
+
+/* ---------- Visão do cuidador ---------- */
+function viewCuidador(){
+  if(!S.shift) return viewPassagem();
+  const doses=todayDoses();
+  const dosesHtml=doses.map((d,i)=>`
+    <div class="dose ${d.st==='done'?'done':''} ${d.st==='late'?'late':''}">
+      <div class="when">${d.h}</div>
+      <div class="what">${d.med.nome} ${d.st==='late'?'<span class="badge late">atrasada</span>':''}
+        <small>${d.med.obs}${d.taken?` · dada às ${fmtT(d.taken.ts)} por ${d.taken.actor}`:''}</small></div>
+      ${d.st==='done'
+        ? '<button disabled>✓ Dada</button>'
+        : d.st==='future'
+          ? `<button class="secondary" style="background:#fff;color:var(--muted);border:1px solid var(--line)" onclick="giveDose(${i})">Dar agora</button>`
+          : `<button onclick="giveDose(${i})">✓ Dei agora</button>`}
+    </div>`).join('');
+  return `
+    <div class="okbar">🟢 Plantão de <strong>${S.shift.caregiver}</strong> desde ${fmtT(S.shift.startTs)}</div>
+    <div class="card"><h2>💊 Medicação de hoje</h2>${dosesHtml}
+      <p class="hint">Toque em “Dei agora” na hora em que der o medicamento. A família é avisada se uma dose passar de 1h sem confirmação.</p></div>
+    <div class="card"><h2>Registro rápido</h2>
+      <div class="quick">
+        ${QUICK.map((q,i)=>`<button onclick="quickSheet(${i})"><span class="e">${q.e}</span>${q.label}</button>`).join('')}
+        <button onclick="vitalSheet('pressao')"><span class="e">🩺</span>Pressão</button>
+        <button onclick="vitalSheet('glicemia')"><span class="e">🩸</span>Glicemia</button>
+      </div></div>
+    ${cardEscala()}
+    <div class="card"><h2>⚠️ Intercorrência</h2>
+      <textarea id="inter-text" rows="2" placeholder="Ex.: queda, febre, recusa de medicação, confusão…"></textarea>
+      <button class="btn danger" onclick="addInter()">Registrar intercorrência</button>
+      <p class="hint">Intercorrências aparecem em destaque para a família imediatamente. Em emergência, ligue 192 primeiro.</p></div>
+    <div class="card"><h2>Encerrar plantão</h2>
+      <textarea id="fim-text" rows="2" placeholder="Resumo para quem assume: como foi o dia, o que observar…"></textarea>
+      <button class="btn secondary" onclick="endShift()">🔴 Encerrar e passar o plantão</button></div>`;
+}
+
+function viewPassagem(){
+  const lastEnd=[...S.events].reverse().find(e=>e.type==='turno_fim');
+  const lastInter=[...S.events].reverse().find(e=>e.type==='intercorrencia');
+  return `
+    <div class="card"><h2>🔄 Passagem de turno</h2>
+      ${lastEnd?`<p><strong>${lastEnd.actor}</strong> encerrou o último plantão (${fmtT(lastEnd.ts)}):</p>
+      <p style="background:var(--info-bg);padding:10px;border-radius:10px">“${lastEnd.text.replace('Fim do plantão. ','')}”</p>`:'<p>Nenhum plantão anterior registrado.</p>'}
+      ${lastInter?`<p>⚠️ Última intercorrência (${fmtD(lastInter.ts)}, ${fmtT(lastInter.ts)}): <em>${lastInter.text}</em></p>`:''}
+      <p><strong>Quem está assumindo?</strong></p>
+      <div class="chips" id="who">
+        ${['Ana (diurna)','Carla (noturna)','Familiar'].map(n=>`<button onclick="selWho(this,'${n.split(' ')[0]}')">${n}</button>`).join('')}
+      </div>
+      <button class="btn" onclick="startShift()">✅ Ciente — iniciar meu plantão</button>
+      <p class="hint">O “ciente” fica registrado: a família sabe que a passagem de turno aconteceu.</p></div>
+    ${cardEscala()}`;
+}
+
+let whoSel=null;
+function selWho(btn,name){whoSel=name;document.querySelectorAll('#who button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+function startShift(){
+  if(!whoSel){alert('Selecione quem está assumindo o plantão.');return;}
+  const ts=Date.now();
+  S.shift={caregiver:whoSel,startTs:ts};
+  S.events.push({ts,type:'ciente',actor:whoSel,text:'Ciente da passagem de turno'});
+  S.events.push({ts:ts+1,type:'turno_inicio',actor:whoSel,text:'Início do plantão'});
+  save();render();
+}
+function endShift(){
+  const txt=document.getElementById('fim-text').value.trim();
+  S.events.push({ts:Date.now(),type:'turno_fim',actor:S.shift.caregiver,text:'Fim do plantão. Resumo: '+(txt||'(sem observações)')});
+  S.shift=null;whoSel=null;save();render();
+}
+function giveDose(i){
+  const d=todayDoses()[i];
+  S.events.push({ts:Date.now(),type:'med',actor:S.shift.caregiver,text:`${d.med.nome} — dose das ${d.h} confirmada`});
+  save();render();
+}
+function addInter(){
+  const txt=document.getElementById('inter-text').value.trim();
+  if(!txt){alert('Descreva a intercorrência.');return;}
+  S.events.push({ts:Date.now(),type:'intercorrencia',actor:S.shift.caregiver,text:txt});
+  save();render();
+}
+function quickSheet(i){
+  const q=QUICK[i];
+  overlay(`<h2>${q.e} ${q.label}</h2>
+    <div class="chips">${q.opts.map(o=>`<button onclick="quickSave('${q.t}','${q.label}','${o}')">${o}</button>`).join('')}</div>
+    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>`);
+}
+function quickSave(t,label,opt){
+  S.events.push({ts:Date.now(),type:t,actor:S.shift.caregiver,text:`${label}: ${opt.toLowerCase()}`});
+  save();closeOverlay();render();
+}
+
+/* ---------- Sinais vitais (registro sem interpretação) ---------- */
+function vitalSheet(kind){
+  if(kind==='pressao') overlay(`<h2>🩺 Pressão arterial</h2>
+    <div class="row2">
+      <div><label style="margin:0 0 4px">Máxima (sistólica)</label><input type="number" id="v-sys" inputmode="numeric" placeholder="ex.: 13"></div>
+      <div><label style="margin:0 0 4px">Mínima (diastólica)</label><input type="number" id="v-dia" inputmode="numeric" placeholder="ex.: 8"></div>
+    </div>
+    <button class="btn" onclick="vitalSave('pressao')">Registrar</button>
+    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>
+    <p class="hint">O valor é apenas registrado — a avaliação é do médico. Se notar algo fora do habitual, registre uma intercorrência.</p>`);
+  else overlay(`<h2>🩸 Glicemia</h2>
+    <label style="margin:0 0 4px">Valor (mg/dL)</label><input type="number" id="v-mg" inputmode="numeric" placeholder="ex.: 110">
+    <button class="btn" onclick="vitalSave('glicemia')">Registrar</button>
+    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>
+    <p class="hint">O valor é apenas registrado — a avaliação é do médico. Se notar algo fora do habitual, registre uma intercorrência.</p>`);
+}
+function vitalSave(kind){
+  if(kind==='pressao'){
+    const sys=parseFloat(document.getElementById('v-sys').value), dia=parseFloat(document.getElementById('v-dia').value);
+    if(!sys||!dia){alert('Preencha os dois valores.');return;}
+    S.events.push({ts:Date.now(),type:'pressao',actor:S.shift.caregiver,text:`Pressão arterial: ${sys}x${dia}`,vit:{sys,dia}});
+  }else{
+    const mg=parseFloat(document.getElementById('v-mg').value);
+    if(!mg){alert('Preencha o valor.');return;}
+    S.events.push({ts:Date.now(),type:'glicemia',actor:S.shift.caregiver,text:`Glicemia: ${mg} mg/dL`,vit:{mg}});
+  }
+  save();closeOverlay();render();
+}
+
+/* ---------- Visão da família ---------- */
+function viewFamilia(){
+  const alerts=alertasFamilia();
+  const bars=alerts.length
+    ? alerts.map(a=>`<div class="${a.sev==='late'?'alertbar':'warnbar'}">${a.text}</div>`).join('')
+    : `<div class="okbar">✅ Tudo em dia. ${S.shift?'Plantão ativo: '+S.shift.caregiver+' desde '+fmtT(S.shift.startTs)+'.':'Nenhum plantão ativo no momento.'}</div>`;
+  const days={};
+  [...S.events].sort((a,b)=>b.ts-a.ts).forEach(e=>{
+    const k=new Date(e.ts).toDateString();
+    (days[k]=days[k]||[]).push(e);
+  });
+  const tl=Object.entries(days).map(([k,evs])=>`
+    <div class="day"><h3>${fmtD(evs[0].ts)}</h3>
+    ${evs.map(e=>`<div class="ev ${e.type==='intercorrencia'?'inter':''}">
+      <div class="t">${fmtT(e.ts)}</div><div class="e">${ICON[e.type]||'📝'}</div>
+      <div class="d">${e.text}<small>por ${e.actor}</small></div></div>`).join('')}</div>`).join('');
+  const totalMes=S.expenses.filter(x=>new Date(x.ts).getMonth()===new Date().getMonth()).reduce((a,x)=>a+x.valor,0);
+  return `${bars}
+    <div class="card"><h2>📋 Resumo de hoje</h2><p style="font-size:.92rem">${resumoHoje()}</p>
+      <p class="hint">Resumo automático gerado dos registros do dia — sem interpretação clínica.</p></div>
+    <div class="card"><h2>📄 Relatório para o médico</h2>
+      <p class="hint">Aderência à medicação, medicamentos em uso, sinais vitais registrados e intercorrências dos últimos 7 dias.</p>
+      <button class="btn" onclick="showReport()">Gerar relatório</button></div>
+    ${cardEscala()}
+    <div class="card"><h2>🗂️ Documentos</h2>
+      ${S.docs.length?[...S.docs].sort((a,b)=>b.ts-a.ts).map(d=>`<div class="lrow"><span>${d.nome}<small>${d.cat} · ${fmtDT(d.ts)} · por ${d.by}</small></span></div>`).join(''):'<p class="hint">Nenhum documento.</p>'}
+      <button class="btn small secondary" onclick="docSheet()">+ Adicionar documento</button>
+      <p class="hint">Receitas, exames, laudos e contatos num lugar só — nada de foto perdida no WhatsApp. (No produto final: upload do arquivo.)</p></div>
+    <div class="card"><h2>💰 Despesas compartilhadas</h2>
+      ${S.expenses.length?[...S.expenses].sort((a,b)=>b.ts-a.ts).map(x=>`<div class="lrow"><span>${x.desc}<small>${fmtDT(x.ts)} · pago por ${x.by}</small></span><span class="amt">${money(x.valor)}</span></div>`).join(''):'<p class="hint">Nenhuma despesa.</p>'}
+      <div class="lrow"><span><strong>Total do mês</strong></span><span class="amt">${money(totalMes)}</span></div>
+      <button class="btn small secondary" onclick="expenseSheet()">+ Registrar despesa</button>
+      <p class="hint">Todo lançamento tem autor e data — transparência entre os irmãos, sem discussão.</p></div>
+    ${tl}`;
+}
+
+/* ---------- Documentos ---------- */
+function docSheet(){
+  overlay(`<h2>🗂️ Novo documento</h2>
+    <label style="margin:0 0 4px">Descrição</label>
+    <input type="text" id="doc-nome" placeholder="Ex.: Receita — Dr. Paulo (cardio)">
+    <label style="margin:10px 0 4px">Categoria</label>
+    <select id="doc-cat">${DOC_CATS.map(c=>`<option>${c}</option>`).join('')}</select>
+    <button class="btn" onclick="addDoc()">Salvar</button>
+    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>`);
+}
+function addDoc(){
+  const nome=document.getElementById('doc-nome').value.trim();
+  if(!nome){alert('Descreva o documento.');return;}
+  S.docs.push({ts:Date.now(),cat:document.getElementById('doc-cat').value,nome,by:'Família'});
+  save();closeOverlay();render();
+}
+
+/* ---------- Despesas ---------- */
+function expenseSheet(){
+  overlay(`<h2>💰 Nova despesa</h2>
+    <label style="margin:0 0 4px">Descrição</label>
+    <input type="text" id="exp-desc" placeholder="Ex.: Farmácia — remédios do mês">
+    <div class="row2" style="margin-top:10px">
+      <div><label style="margin:0 0 4px">Valor (R$)</label><input type="number" id="exp-valor" inputmode="decimal" step="0.01" placeholder="0,00"></div>
+      <div><label style="margin:0 0 4px">Pago por</label><input type="text" id="exp-by" placeholder="Ex.: Rita (filha)"></div>
+    </div>
+    <button class="btn" onclick="addExpense()">Salvar</button>
+    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>`);
+}
+function addExpense(){
+  const desc=document.getElementById('exp-desc').value.trim();
+  const valor=parseFloat(document.getElementById('exp-valor').value);
+  const by=document.getElementById('exp-by').value.trim()||'Família';
+  if(!desc||!valor){alert('Preencha descrição e valor.');return;}
+  S.expenses.push({ts:Date.now(),desc,valor,by});
+  save();closeOverlay();render();
+}
+
+/* ---------- Relatório ---------- */
+function showReport(){
+  const now=Date.now(), from=now-7*24*3600*1000;
+  const evs=S.events.filter(e=>e.ts>=from);
+  const given=evs.filter(e=>e.type==='med').length;
+  const daysCovered=new Set(evs.map(e=>new Date(e.ts).toDateString())).size||1;
+  const perDay=MEDS.reduce((a,m)=>a+m.horarios.length,0);
+  const expected=daysCovered*perDay;
+  const pct=Math.min(100,Math.round(given/expected*100));
+  const inters=evs.filter(e=>e.type==='intercorrencia');
+  const vitals=evs.filter(e=>e.type==='pressao'||e.type==='glicemia');
+  document.getElementById('report').innerHTML=`
+    <h1>Relatório de cuidados — D. Maria, 82</h1>
+    <p>Período: últimos 7 dias · Gerado em ${new Date().toLocaleDateString('pt-BR')} pelo Caderno de Plantão (protótipo)</p>
+    <h2>Aderência à medicação</h2>
+    <p><strong>${given} de ~${expected} doses confirmadas (${pct}%)</strong> no período.</p>
+    <h2>Medicamentos em uso</h2>
+    <table><tr><th>Medicamento</th><th>Posologia</th><th>Horários</th></tr>
+      ${MEDS.map(m=>`<tr><td>${m.nome}</td><td>${m.obs}</td><td>${m.horarios.join(', ')}</td></tr>`).join('')}
+    </table>
+    <p><em>Apresente esta lista ao médico ou farmacêutico — a avaliação de interações medicamentosas
+    deve ser feita por um profissional de saúde.</em></p>
+    <h2>Sinais vitais registrados</h2>
+    ${vitals.length?`<table><tr><th>Data/hora</th><th>Medição</th><th>Registrado por</th></tr>
+      ${vitals.map(e=>`<tr><td>${fmtDT(e.ts)}</td><td>${e.text}</td><td>${e.actor}</td></tr>`).join('')}</table>
+      <p><em>Valores registrados pelos cuidadores, sem interpretação. A avaliação das medições é do profissional de saúde.</em></p>`
+      :'<p>Nenhuma medição registrada no período.</p>'}
+    <h2>Intercorrências no período</h2>
+    ${inters.length?`<table><tr><th>Data/hora</th><th>Descrição</th><th>Registrado por</th></tr>
+      ${inters.map(e=>`<tr><td>${fmtDT(e.ts)}</td><td>${e.text}</td><td>${e.actor}</td></tr>`).join('')}</table>`
+      :'<p>Nenhuma intercorrência registrada.</p>'}
+    <div class="disc"><strong>Aviso:</strong> este é um registro informativo de cuidados feito por cuidadores
+    e familiares. Não constitui prontuário médico, diagnóstico ou orientação terapêutica.</div>
+    <button class="btn" style="max-width:300px" onclick="window.print()">🖨️ Imprimir / salvar PDF</button>
+    <button class="btn secondary" style="max-width:300px" onclick="document.body.classList.remove('report-screen')">← Voltar</button>`;
+  document.body.classList.add('report-screen');
+  window.scrollTo(0,0);
+}
+
+/* ---------- Consentimento (LGPD) ---------- */
+function showConsent(){
+  overlay(`<h2>Antes de começar 🔒</h2>
+    <p style="font-size:.92rem">O Caderno de Plantão registra <strong>dados de saúde</strong>, que a LGPD
+    classifica como dados sensíveis. Eles são usados <strong>exclusivamente</strong> para o registro e o
+    acompanhamento do cuidado pela família e pelos cuidadores autorizados.</p>
+    <ul style="font-size:.88rem;color:var(--muted);padding-left:20px">
+      <li>Nunca vendemos nem compartilhamos seus dados com terceiros.</li>
+      <li>Você pode revogar o consentimento e excluir todos os dados a qualquer momento.</li>
+      <li>Dados protegidos com criptografia.</li>
+    </ul>
+    <label><input type="checkbox" id="ck-consent"> Li e <strong>consinto</strong> com o tratamento dos dados de saúde
+    para a finalidade de registro e acompanhamento do cuidado.</label>
+    <button class="btn" onclick="acceptConsent()">Concordar e continuar</button>`,true);
+}
+function acceptConsent(){
+  if(!document.getElementById('ck-consent').checked){alert('É necessário marcar a caixa de consentimento para usar o app.');return;}
+  S.consent=true;save();closeOverlay();render();
+}
+
+/* ---------- Overlay util ---------- */
+function overlay(html,locked){
+  document.getElementById('overlay-root').innerHTML=
+    `<div class="overlay" ${locked?'':'onclick="if(event.target===this)closeOverlay()"'}><div class="sheet">${html}</div></div>`;
+}
+function closeOverlay(){document.getElementById('overlay-root').innerHTML='';}
+
+render();
+</script>
+</body>
+</html>
