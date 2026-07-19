@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Caderno de Plantão — Protótipo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📒</text></svg>">
 <style>
   :root{
     --bg:#f6f4ef; --card:#ffffff; --ink:#26221c; --muted:#7a7263;
@@ -75,6 +76,7 @@
   .lrow .amt{font-weight:700;white-space:nowrap}
   .pill{display:inline-block;background:var(--info-bg);color:var(--ok);border-radius:99px;padding:2px 10px;font-size:.75rem;font-weight:700}
   .pill.now{background:var(--brand);color:#fff}
+  .soon{display:inline-block;background:var(--warn);color:#fff;border-radius:99px;padding:2px 9px;font-size:.65rem;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:6px}
 
   /* Overlays */
   .overlay{position:fixed;inset:0;background:rgba(30,26,20,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50}
@@ -281,7 +283,7 @@ function render(){
 /* ---------- Escala (cartão compartilhado) ---------- */
 function cardEscala(){
   const t=turnoAtual();
-  return `<div class="card"><h2>📅 Escala de hoje</h2>
+  return `<div class="card"><h2>📅 Escala de hoje <span class="soon">em breve</span></h2>
     ${ESCALA.map(e=>`<div class="lrow"><span>${e.turno} · ${e.ini}–${e.fim}<small>${e.resp}</small></span>
       <span class="pill ${t&&t.turno===e.turno?'now':''}">${t&&t.turno===e.turno?'agora':'—'}</span></div>`).join('')}
     <p class="hint">A família recebe alerta se o turno começar sem o "ciente" do cuidador (tolerância de 30 min).</p></div>`;
@@ -429,11 +431,11 @@ function viewFamilia(){
       <p class="hint">Aderência à medicação, medicamentos em uso, sinais vitais registrados e intercorrências dos últimos 7 dias.</p>
       <button class="btn" onclick="showReport()">Gerar relatório</button></div>
     ${cardEscala()}
-    <div class="card"><h2>🗂️ Documentos</h2>
+    <div class="card"><h2>🗂️ Documentos <span class="soon">em breve</span></h2>
       ${S.docs.length?[...S.docs].sort((a,b)=>b.ts-a.ts).map(d=>`<div class="lrow"><span>${d.nome}<small>${d.cat} · ${fmtDT(d.ts)} · por ${d.by}</small></span></div>`).join(''):'<p class="hint">Nenhum documento.</p>'}
       <button class="btn small secondary" onclick="docSheet()">+ Adicionar documento</button>
       <p class="hint">Receitas, exames, laudos e contatos num lugar só — nada de foto perdida no WhatsApp. (No produto final: upload do arquivo.)</p></div>
-    <div class="card"><h2>💰 Despesas compartilhadas</h2>
+    <div class="card"><h2>💰 Despesas compartilhadas <span class="soon">em breve</span></h2>
       ${S.expenses.length?[...S.expenses].sort((a,b)=>b.ts-a.ts).map(x=>`<div class="lrow"><span>${x.desc}<small>${fmtDT(x.ts)} · pago por ${x.by}</small></span><span class="amt">${money(x.valor)}</span></div>`).join(''):'<p class="hint">Nenhuma despesa.</p>'}
       <div class="lrow"><span><strong>Total do mês</strong></span><span class="amt">${money(totalMes)}</span></div>
       <button class="btn small secondary" onclick="expenseSheet()">+ Registrar despesa</button>
