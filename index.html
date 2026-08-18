@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Caderno de Plantão — o caderno de plantão que a família lê</title>
+<title>Alentra — o caderno de plantão que a família lê</title>
 <meta name="description" content="Substitua o caderno de papel e o grupo de WhatsApp caótico: cuidadores registram o plantão, a família acompanha em tempo real e o médico recebe um relatório completo.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Caderno de Plantão — o caderno de plantão que a família lê">
+<meta property="og:title" content="Alentra — o caderno de plantão que a família lê">
 <meta property="og:description" content="Cuidadores registram o plantão, a família acompanha em tempo real e o médico recebe o relatório. Lista de espera aberta — R$ 39/mês, 30 dias grátis.">
-<meta property="og:url" content="https://samuel-abreu7.github.io/caderno-plantao-landing/">
-<meta property="og:image" content="https://samuel-abreu7.github.io/caderno-plantao-landing/og-image.png">
+<meta property="og:url" content="https://samuel-abreu7.github.io/alentra-landing/">
+<meta property="og:image" content="https://samuel-abreu7.github.io/alentra-landing/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="pt_BR">
@@ -94,7 +94,7 @@
 <div class="hero"><div class="wrap">
   <p class="eyebrow">Para famílias que dividem o cuidado de um idoso</p>
   <h1>Nunca mais perca uma informação sobre o cuidado de quem você ama</h1>
-  <p>O Caderno de Plantão substitui o caderno de papel e o grupo de WhatsApp caótico:
+  <p>O Alentra substitui o caderno de papel e o grupo de WhatsApp caótico:
   a cuidadora registra o plantão em dois toques, você acompanha tudo em tempo real —
   e o médico recebe um relatório completo na consulta.</p>
   <a class="cta" href="#lista">Entrar na lista de espera</a>
@@ -185,7 +185,7 @@
     <p>Não. Funciona em qualquer celular com navegador, com botões grandes e registro em
     dois toques — mais rápido que escrever no caderno. Integração com WhatsApp está no plano.</p></details>
   <details><summary>Isso substitui prontuário ou orientação médica?</summary>
-    <p>Não. O Caderno de Plantão é um registro informativo de cuidados feito pela família e
+    <p>Não. O Alentra é um registro informativo de cuidados feito pela família e
     pelos cuidadores. Ele organiza a informação para o médico — que é quem avalia. Em
     emergência, ligue 192 (SAMU).</p></details>
   <details><summary>Como ficam os dados da minha família?</summary>
@@ -196,7 +196,7 @@
 </div></section>
 
 <footer><div class="wrap">
-  <p><strong>Caderno de Plantão</strong> — o caderno de plantão que a família lê.</p>
+  <p><strong>Alentra</strong> — o caderno de plantão que a família lê.</p>
   <p>Registro informativo de cuidados. Não substitui orientação médica, diagnóstico ou
   tratamento, e não constitui prontuário médico. Em emergência, ligue 192 (SAMU).</p>
   <p>Contato: contato@cadernodeplantao.com.br (em breve) ·
@@ -214,7 +214,7 @@ function joinList(ev){
   const data={nome:document.getElementById('f-nome').value.trim(),
     contato:document.getElementById('f-zap').value.trim(),
     situacao:document.getElementById('f-sit').value, ts:new Date().toISOString(),
-    _subject:'Lista de espera — Caderno de Plantão'};
+    _subject:'Lista de espera — Alentra'};
   if(!data.nome||!data.contato) return false;
   const k='cadernoPlantao_waitlist';
   const l=JSON.parse(localStorage.getItem(k)||'[]'); l.push(data);

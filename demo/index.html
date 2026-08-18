@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Caderno de Plantão — Protótipo</title>
+<title>Alentra — Protótipo</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📒</text></svg>">
 <script data-goatcounter="https://cadernoplantao.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
@@ -112,7 +112,7 @@
 <body>
 <div class="app">
   <header class="top">
-    <h1>📒 Caderno de Plantão <span class="hint" style="color:#fff;opacity:.7">(protótipo)</span></h1>
+    <h1>📒 Alentra <span class="hint" style="color:#fff;opacity:.7">(protótipo)</span></h1>
     <div class="patient">Cuidando de: <strong>D. Maria, 82</strong></div>
     <div class="roles">
       <button id="tab-cuidador" onclick="setRole('cuidador')">Sou cuidador(a)</button>
@@ -495,7 +495,7 @@ function showReport(){
   const vitals=evs.filter(e=>e.type==='pressao'||e.type==='glicemia');
   document.getElementById('report').innerHTML=`
     <h1>Relatório de cuidados — D. Maria, 82</h1>
-    <p>Período: últimos 7 dias · Gerado em ${new Date().toLocaleDateString('pt-BR')} pelo Caderno de Plantão (protótipo)</p>
+    <p>Período: últimos 7 dias · Gerado em ${new Date().toLocaleDateString('pt-BR')} pelo Alentra (protótipo)</p>
     <h2>Aderência à medicação</h2>
     <p><strong>${given} de ~${expected} doses confirmadas (${pct}%)</strong> no período.</p>
     <h2>Medicamentos em uso</h2>
@@ -524,7 +524,7 @@ function showReport(){
 /* ---------- Consentimento (LGPD) ---------- */
 function showConsent(){
   overlay(`<h2>Antes de começar 🔒</h2>
-    <p style="font-size:.92rem">O Caderno de Plantão registra <strong>dados de saúde</strong>, que a LGPD
+    <p style="font-size:.92rem">O Alentra registra <strong>dados de saúde</strong>, que a LGPD
     classifica como dados sensíveis. Eles são usados <strong>exclusivamente</strong> para o registro e o
     acompanhamento do cuidado pela família e pelos cuidadores autorizados.</p>
     <ul style="font-size:.88rem;color:var(--muted);padding-left:20px">
