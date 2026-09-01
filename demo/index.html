@@ -497,6 +497,38 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     border-radius:999px;background:var(--estado-atencao-fundo);color:var(--estado-atencao);
     margin-left:8px;vertical-align:middle}
   h2{font-size:var(--texto-lg);font-weight:var(--peso-display);margin:0 0 4px}
+  .lamina{position:fixed;inset:0;background:rgba(24,28,34,.55);display:flex;
+    align-items:flex-end;justify-content:center;z-index:40;padding:0}
+  .lamina[hidden]{display:none}
+  .folha-modal{background:var(--papel);width:100%;max-width:560px;max-height:92vh;
+    overflow-y:auto;border-radius:var(--raio-md) var(--raio-md) 0 0;padding:18px 18px 24px}
+  @media (min-width:600px){ .lamina{align-items:center}
+    .folha-modal{border-radius:var(--raio-md);max-height:88vh} }
+  .modal-topo{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .modal-topo h3{margin:0;flex:1;font-size:var(--texto-lg);font-weight:var(--peso-display)}
+  .fechar{width:40px;height:40px;border-radius:999px;background:var(--cartao);
+    border:1px solid var(--linha);font-size:var(--texto-lg);line-height:1;flex:none}
+  .escolhas{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px}
+  .escolha{min-height:52px;background:var(--cartao);border:1.5px solid var(--linha);
+    border-radius:var(--raio-md);font-size:var(--texto-sm);font-weight:var(--peso-forte);
+    padding:0 10px}
+  .escolha[aria-pressed="true"]{border-color:var(--acao);background:var(--estado-plantao-fundo);
+    color:var(--estado-plantao)}
+  .duplo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .detalhe{margin-top:12px}
+  .detalhe[hidden]{display:none}
+  .doc{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--cartao);
+    border:1px solid var(--linha);border-radius:var(--raio-md);margin-bottom:8px}
+  .doc .ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;
+    justify-content:center;background:var(--estado-plantao-fundo);flex:none;font-size:18px}
+  .relatorio{background:var(--cartao);padding:22px;border-radius:var(--raio-md);
+    border:1px solid var(--linha)}
+  .relatorio h4{margin:22px 0 8px;font-size:var(--texto-base);font-weight:var(--peso-display)}
+  .relatorio h4:first-of-type{margin-top:14px}
+  .marca-dagua{font-size:var(--texto-xs);color:var(--tinta-fraca);border:1px dashed var(--linha-forte);
+    border-radius:var(--raio-sm);padding:7px 11px;margin-bottom:16px}
+  .barra-ader{height:9px;border-radius:99px;background:var(--linha);overflow:hidden;margin:6px 0 4px}
+  .barra-ader i{display:block;height:100%;background:var(--estado-sucesso)}
   .sub{color:var(--tinta-suave);font-size:var(--texto-sm);margin:0 0 14px}
 </style>
 
@@ -597,15 +629,36 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
        style="margin-top:28px;cursor:pointer">
     <h2 style="margin:0 0 4px">Documentos <span class="soon">em breve</span></h2>
     <p class="sub" style="margin:0">Receitas, exames e laudos num lugar só.</p>
-    <p class="sub demo-obrigado oculto" style="margin:8px 0 0;color:var(--estado-plantao)">
-      Anotado. Saber quem toca aqui é o que decide o que construímos depois.</p>
-  </div>
-  <div class="cartao demo-breve" data-tela-breve="despesas" role="button" tabindex="0"
-       style="margin-top:12px;cursor:pointer">
-    <h2 style="margin:0 0 4px">Despesas compartilhadas <span class="soon">em breve</span></h2>
-    <p class="sub" style="margin:0">Quem pagou o quê, com total do mês.</p>
-    <p class="sub demo-obrigado oculto" style="margin:8px 0 0;color:var(--estado-plantao)">
-      Anotado. Saber quem toca aqui é o que decide o que construímos depois.</p>
+    <div class="detalhe" hidden>
+      <div class="doc"><span class="ico">💊</span>
+        <div style="flex:1"><b>Receita — Losartana e Metformina</b>
+          <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">
+            Dra. Helena Braga · CRM-PE 00000 · emitida 12/08</div></div>
+        <span class="selo selo-atencao">vence em 22 dias</span></div>
+      <div class="doc"><span class="ico">🧪</span>
+        <div style="flex:1"><b>Hemograma completo</b>
+          <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">
+            enviado por Paulo (filho) · 03/09</div></div>
+        <span class="selo selo-ok">arquivado</span></div>
+      <div class="doc"><span class="ico">📄</span>
+        <div style="flex:1"><b>Laudo de densitometria</b>
+          <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">
+            enviado por Lúcia (filha) · 28/08</div></div>
+        <span class="selo selo-ok">arquivado</span></div>
+      <div class="doc"><span class="ico">🪪</span>
+        <div style="flex:1"><b>Carteirinha do convênio</b>
+          <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">
+            enviado pela agência · 02/07</div></div>
+        <span class="selo selo-ok">arquivado</span></div>
+      <div class="aviso aviso-atencao" style="margin-top:12px">
+        <span><b>A receita vence em 22 dias.</b> O aviso sai para a família e para a
+        agência com antecedência — receita vencida para o remédio, e ninguém percebe
+        até faltar.</span></div>
+      <p class="sub" style="margin:12px 0 0">Quem enviou e quando fica registrado em cada
+      documento. A cuidadora vê a receita; não vê exame nem laudo.</p>
+    </div>
+    <p class="sub demo-obrigado oculto" style="margin:10px 0 0;color:var(--estado-plantao)">
+      Anotado — saber quem toca aqui é o que decide o que construímos depois.</p>
   </div>
 </div>
 
@@ -642,14 +695,15 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
       <section style="display:flex;flex-direction:column;gap:10px">
         <h2 class="rotulo-secao" style="margin:0">Registrar</h2>
         <div class="atalhos">
-          <button class="atalho">🍽️<span>Refeição</span></button>
-          <button class="atalho">🚻<span>Banheiro</span></button>
-          <button class="atalho">😴<span>Sono</span></button>
-          <button class="atalho">🚿<span>Banho</span></button>
-          <button class="atalho">🩺<span>Pressão</span></button>
-          <button class="atalho">💧<span>Líquidos</span></button>
+          <button class="atalho" data-reg="refeicao">🍽️<span>Refeição</span></button>
+          <button class="atalho" data-reg="banheiro">🚻<span>Banheiro</span></button>
+          <button class="atalho" data-reg="sono">😴<span>Sono</span></button>
+          <button class="atalho" data-reg="banho">🚿<span>Banho</span></button>
+          <button class="atalho" data-reg="pressao">🩺<span>Pressão</span></button>
+          <button class="atalho" data-reg="liquidos">💧<span>Líquidos</span></button>
         </div>
-        <button class="acao-secundaria" style="min-height:52px;width:100%;border-color:var(--estado-erro);color:var(--estado-erro)">Intercorrência</button>
+        <button class="acao-secundaria" data-reg="intercorrencia"
+                style="min-height:52px;width:100%;border-color:var(--estado-erro);color:var(--estado-erro)">Intercorrência</button>
       </section>
 
       <section style="display:flex;flex-direction:column;gap:8px">
@@ -717,7 +771,43 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
         por falha de conexão. Ela <b>foi dada às 12:03</b> e o registro chegou depois.</span>
       </div>
 
-      <button class="acao-secundaria" style="width:100%;min-height:52px">📄 Relatório para o médico</button>
+      <button class="acao-secundaria" id="btn-relatorio" style="width:100%;min-height:52px">
+        📄 Relatório para o médico</button>
+
+      <div class="cartao demo-breve" data-tela-breve="despesas" role="button" tabindex="0"
+           style="cursor:pointer">
+        <h2 style="margin:0 0 4px;font-size:var(--texto-base)">
+          Despesas compartilhadas <span class="soon">em breve</span></h2>
+        <p class="sub" style="margin:0">Quem pagou o quê, com total do mês.</p>
+        <div class="detalhe" hidden>
+          <div class="cartao" style="display:flex;align-items:baseline;gap:12px;margin:12px 0 10px">
+            <div style="flex:1"><div class="rotulo-secao">Setembro</div>
+              <div class="num" style="font-size:var(--texto-xl);font-weight:var(--peso-display);line-height:1.1">R$ 3.180,00</div></div>
+            <div style="text-align:right;font-size:var(--texto-sm);color:var(--tinta-suave)">
+              2 pessoas<br><b class="num">R$ 1.590,00</b> cada</div>
+          </div>
+          <div class="doc"><span class="ico">👩‍⚕️</span>
+            <div style="flex:1"><b>Cuidadora — setembro</b>
+              <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">pago por Paulo · 05/09</div></div>
+            <b class="num">R$ 2.400,00</b></div>
+          <div class="doc"><span class="ico">💊</span>
+            <div style="flex:1"><b>Farmácia — Losartana e Metformina</b>
+              <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">pago por Lúcia · 08/09</div></div>
+            <b class="num">R$ 312,00</b></div>
+          <div class="doc"><span class="ico">🧷</span>
+            <div style="flex:1"><b>Fraldas e higiene</b>
+              <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">pago por Lúcia · 11/09</div></div>
+            <b class="num">R$ 468,00</b></div>
+          <div class="aviso aviso-info" style="margin-top:12px">
+            <span><b>Lúcia pagou R$ 780,00 e Paulo R$ 2.400,00.</b> Para fechar o mês em partes
+            iguais, Paulo recebe <b>R$ 810,00</b> de Lúcia. O sistema mostra a conta; quem acerta
+            são vocês.</span></div>
+          <p class="sub" style="margin:10px 0 0">Sem cobrança, sem pagamento dentro do app —
+          só o registro que evita a conversa constrangedora entre irmãos.</p>
+        </div>
+        <p class="sub demo-obrigado oculto" style="margin:10px 0 0;color:var(--estado-plantao)">
+          Anotado — saber quem toca aqui é o que decide o que construímos depois.</p>
+      </div>
     </main>
 
     <footer><div class="assinatura"><span>powered by</span><b>Alentra</b></div></footer>
@@ -727,6 +817,104 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     <span><b>O alerta nunca traz dado de saúde.</b> A notificação diz que há uma novidade;
     o conteúdo só aparece aqui dentro, depois de entrar. É exigência da LGPD, não escolha
     de design.</span>
+  </div>
+</div>
+
+<!-- ============ lâmina: registro rápido ============ -->
+<div class="lamina" id="lamina" hidden>
+  <div class="folha-modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal-topo">
+      <h3 id="modal-titulo">Registrar</h3>
+      <button class="fechar" id="modal-fechar" aria-label="Fechar">×</button>
+    </div>
+    <div id="modal-corpo"></div>
+    <button class="acao-principal" id="modal-registrar" style="margin-top:16px">Registrar</button>
+    <p class="sub" style="margin:10px 0 0;text-align:center">
+      Dois toques, sem digitar. É o critério de aceite do produto.</p>
+  </div>
+</div>
+
+<!-- ============ lâmina: relatório para o médico ============ -->
+<div class="lamina" id="lamina-rel" hidden>
+  <div class="folha-modal" role="dialog" aria-modal="true" aria-labelledby="rel-titulo" style="max-width:640px">
+    <div class="modal-topo">
+      <h3 id="rel-titulo">Relatório para o médico</h3>
+      <button class="fechar" id="rel-fechar" aria-label="Fechar">×</button>
+    </div>
+
+    <div class="relatorio">
+      <div class="marca-dagua">Gerado em 10/09/2026 para consulta · Alentra ·
+        documento informativo, não é prontuário médico</div>
+
+      <div style="font-size:var(--texto-lg);font-weight:var(--peso-display);line-height:1.2">D. Maria, 82</div>
+      <div style="font-size:var(--texto-sm);color:var(--tinta-suave)">
+        Período de 11/08 a 10/09/2026 · 31 dias · cuidado por Ana e Carla, da Lar Aconchego</div>
+
+      <h4>Aderência à medicação</h4>
+      <div style="font-size:var(--texto-xl);font-weight:var(--peso-display);line-height:1.1" class="num">94%</div>
+      <div class="barra-ader"><i style="width:94%"></i></div>
+      <div style="font-size:var(--texto-sm);color:var(--tinta-suave)">
+        117 de 124 doses confirmadas. <b>7 não confirmadas</b>, todas em 22 e 23/08 —
+        os dois dias em que a família relatou internação breve.</div>
+
+      <h4>Medicamentos em uso</h4>
+      <div class="rolagem"><table>
+        <thead><tr><th>Medicamento</th><th>Dose</th><th>Horários</th><th>Aderência</th></tr></thead>
+        <tbody>
+          <tr><td>Losartana</td><td>50mg</td><td class="num">08:00</td><td class="num">97%</td></tr>
+          <tr><td>Metformina</td><td>850mg</td><td class="num">12:00 · 20:00</td><td class="num">92%</td></tr>
+          <tr><td>Sinvastatina</td><td>20mg</td><td class="num">20:00</td><td class="num">94%</td></tr>
+        </tbody>
+      </table></div>
+
+      <h4>Sinais vitais registrados</h4>
+      <div class="rolagem"><table>
+        <thead><tr><th>Data</th><th>Pressão</th><th>Glicemia</th><th>Registrado por</th></tr></thead>
+        <tbody>
+          <tr><td class="num">10/09</td><td class="num">13x8</td><td>—</td><td>Ana</td></tr>
+          <tr><td class="num">08/09</td><td class="num">14x9</td><td class="num">112 mg/dL</td><td>Carla</td></tr>
+          <tr><td class="num">05/09</td><td class="num">12x8</td><td>—</td><td>Ana</td></tr>
+          <tr><td class="num">01/09</td><td class="num">13x9</td><td class="num">128 mg/dL</td><td>Ana</td></tr>
+        </tbody>
+      </table></div>
+      <div class="aviso aviso-info" style="margin-top:12px">
+        <span><b>Os valores aparecem como foram medidos, sem classificação.</b> O Alentra
+        não diz se uma pressão está alta nem sugere conduta — quem interpreta é você.
+        É decisão de projeto, não limitação.</span>
+      </div>
+
+      <h4>Intercorrências no período</h4>
+      <div class="doc"><span class="ico">⚠️</span>
+        <div style="flex:1"><b>Queda no banheiro, sem ferimento aparente</b>
+          <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">
+            22/08, 06:40 · registrado por Carla · família avisada em 3 min</div></div></div>
+      <div class="doc"><span class="ico">⚠️</span>
+        <div style="flex:1"><b>Recusou o jantar e queixou-se de enjoo</b>
+          <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">
+            29/08, 19:15 · registrado por Ana</div></div></div>
+
+      <h4>Rotina do período</h4>
+      <div style="font-size:var(--texto-sm);color:var(--tinta-suave);line-height:1.6">
+        Refeições registradas: <b class="num">88</b> · recusas: <b class="num">4</b><br>
+        Média de líquidos por dia: <b class="num">1.150 ml</b><br>
+        Noites com sono registrado como interrompido: <b class="num">6 de 31</b>
+      </div>
+
+      <div class="aviso" style="margin-top:18px;background:var(--papel);border:1px solid var(--linha);color:var(--tinta-suave)">
+        <span>Registro informativo de cuidados. Não substitui orientação médica, diagnóstico
+        ou tratamento, e não constitui prontuário médico. Em emergência, ligue 192 (SAMU).</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+      <button class="acao-secundaria" style="flex:1;min-width:150px">🖨️ Imprimir</button>
+      <button class="acao-secundaria demo-breve" data-tela-breve="entrega-protegida"
+              style="flex:1;min-width:150px">
+        🔒 Enviar ao médico <span class="soon">em breve</span></button>
+    </div>
+    <p class="sub" style="margin:10px 0 0">
+      Hoje: gerar, imprimir e mostrar na tela. A <b>entrega protegida</b> — QR na consulta e
+      link com código que expira — está desenhada e ainda não construída.</p>
   </div>
 </div>
 
@@ -758,6 +946,8 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   function marcarInteresse(el){
     if (el.dataset.jaContado) return;
     el.dataset.jaContado = "1";
+    var det = el.querySelector(".detalhe");
+    if (det) det.hidden = false;
     var ok = el.querySelector(".demo-obrigado");
     if (ok) ok.classList.remove("oculto");
     if (window.goatcounter && window.goatcounter.count) {
@@ -776,6 +966,155 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     });
   }
 
+
+  /* ---------- registro rápido: cada atalho abre o que aquele registro pede ----------
+     O produto é de 2 toques e uma mão: escolha em botão grande, nada de digitar.
+     ⚠️ Pressão guarda o VALOR, sem classificar — o app nunca diz "elevada" nem
+     sugere conduta (seção 2 do prompt-mestre, restrição permanente). */
+  var pendentes = 2;
+
+  var RECEITAS = {
+    refeicao: { titulo: "Refeição", icone: "🍽️", campos: [
+      { rotulo: "Qual", ops: ["Café", "Almoço", "Lanche", "Jantar"] },
+      { rotulo: "Quanto comeu", ops: ["Tudo", "Metade", "Pouco", "Recusou"] }] },
+    banheiro: { titulo: "Banheiro", icone: "🚻", campos: [
+      { rotulo: "O que houve", ops: ["Urina", "Evacuação", "Os dois", "Tentou, sem sucesso"] },
+      { rotulo: "Precisou de ajuda", ops: ["Sozinha", "Com apoio", "Total"] }] },
+    sono: { titulo: "Sono", icone: "😴", campos: [
+      { rotulo: "Como foi", ops: ["Dormiu bem", "Acordou 1 vez", "Acordou várias vezes", "Não dormiu"] },
+      { rotulo: "Período", ops: ["Noite", "Cochilo da tarde"] }] },
+    banho: { titulo: "Banho", icone: "🚿", campos: [
+      { rotulo: "Como foi", ops: ["Completo", "No leito", "Parcial", "Recusou"] },
+      { rotulo: "Precisou de ajuda", ops: ["Sozinha", "Com apoio", "Total"] }] },
+    liquidos: { titulo: "Líquidos", icone: "💧", campos: [
+      { rotulo: "Quanto", ops: ["1 copo (200 ml)", "2 copos (400 ml)", "Meio copo", "Recusou"] },
+      { rotulo: "O quê", ops: ["Água", "Suco", "Chá", "Outro"] }] },
+    pressao: { titulo: "Pressão arterial", icone: "🩺", numerico: true },
+    intercorrencia: { titulo: "Intercorrência", icone: "⚠️", texto: true }
+  };
+
+  var lamina = document.getElementById("lamina");
+  var lamRel = document.getElementById("lamina-rel");
+  var corpoModal = document.getElementById("modal-corpo");
+  var tituloModal = document.getElementById("modal-titulo");
+  var atual = null;
+
+  function abrirRegistro(chave) {
+    var r = RECEITAS[chave];
+    if (!r) return;
+    atual = { chave: chave, titulo: r.titulo, escolhas: {} };
+    tituloModal.textContent = r.icone + "  " + r.titulo;
+    var html = "";
+
+    if (r.numerico) {
+      html = '<p class="sub">O valor é guardado como foi medido. O Alentra <b>não classifica</b> ' +
+        'e não sugere conduta — quem interpreta é o médico, pelo relatório.</p>' +
+        '<div class="duplo">' +
+        '<div><label for="sis">Sistólica</label>' +
+        '<input id="sis" inputmode="numeric" placeholder="13" class="num"></div>' +
+        '<div><label for="dia">Diastólica</label>' +
+        '<input id="dia" inputmode="numeric" placeholder="8" class="num"></div></div>';
+    } else if (r.texto) {
+      html = '<p class="sub">Conte com suas palavras. Isto avisa a família e o gestor na hora.</p>' +
+        '<label for="txt">O que aconteceu</label>' +
+        '<textarea id="txt" rows="4" placeholder="Ex.: escorregou no banheiro, sem ferimento aparente" ' +
+        'style="font:inherit;width:100%;padding:12px;border:1.5px solid var(--linha-forte);' +
+        'border-radius:var(--raio-sm);background:var(--cartao);color:var(--tinta)"></textarea>' +
+        '<div class="aviso aviso-atencao" style="margin-top:12px"><span>' +
+        '<b>A família recebe só o aviso</b> de que há uma intercorrência — o texto fica no app. ' +
+        'Dado de saúde não vai no corpo da notificação.</span></div>';
+    } else {
+      for (var i = 0; i < r.campos.length; i++) {
+        var c = r.campos[i];
+        html += '<div style="margin-bottom:14px"><div class="rotulo-secao" style="margin-bottom:7px">' +
+          c.rotulo + '</div><div class="escolhas" data-campo="' + i + '">';
+        for (var j = 0; j < c.ops.length; j++) {
+          html += '<button type="button" class="escolha" aria-pressed="false" data-v="' +
+            c.ops[j] + '">' + c.ops[j] + "</button>";
+        }
+        html += "</div></div>";
+      }
+    }
+    corpoModal.innerHTML = html;
+
+    var grupos = corpoModal.querySelectorAll(".escolhas");
+    for (var g = 0; g < grupos.length; g++) {
+      grupos[g].addEventListener("click", function (ev) {
+        var b = ev.target.closest(".escolha");
+        if (!b) return;
+        var irmaos = ev.currentTarget.querySelectorAll(".escolha");
+        for (var k = 0; k < irmaos.length; k++) irmaos[k].setAttribute("aria-pressed", "false");
+        b.setAttribute("aria-pressed", "true");
+        atual.escolhas[ev.currentTarget.dataset.campo] = b.dataset.v;
+      });
+    }
+    lamRel.hidden = true;   // nunca duas lâminas abertas
+    lamina.hidden = false;
+  }
+
+  function fecharRegistro() { lamina.hidden = true; atual = null; }
+
+  function agora() {
+    var d = new Date();
+    return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+  }
+
+  function somarNaFila() {
+    pendentes++;
+    document.getElementById("fila-texto").innerHTML =
+      '<span class="selo selo-fila">' + pendentes + " registros aguardando internet</span>";
+  }
+
+  function confirmarRegistro() {
+    if (!atual) return;
+    var desc = atual.titulo, extra = [];
+    if (atual.chave === "pressao") {
+      var sis = (document.getElementById("sis") || {}).value || "";
+      var dia = (document.getElementById("dia") || {}).value || "";
+      if (!sis || !dia) return;
+      desc = "Pressão " + sis + "x" + dia;
+    } else if (atual.chave === "intercorrencia") {
+      var t = (document.getElementById("txt") || {}).value || "";
+      if (!t.trim()) return;
+      desc = "Intercorrência — " + t.trim();
+    } else {
+      for (var k in atual.escolhas) if (atual.escolhas[k]) extra.push(atual.escolhas[k]);
+      if (extra.length) desc += " — " + extra.join(", ");
+    }
+
+    var linha = document.createElement("div");
+    linha.className = "cartao";
+    linha.style.cssText = "padding:10px 13px;font-size:var(--texto-sm)";
+    linha.innerHTML = '<b class="num">' + agora() + "</b> — " +
+      desc.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    document.getElementById("feitos").prepend(linha);
+    somarNaFila();
+    fecharRegistro();
+  }
+
+  var atalhos = document.querySelectorAll("[data-reg]");
+  for (var a = 0; a < atalhos.length; a++) {
+    atalhos[a].addEventListener("click", function (ev) {
+      abrirRegistro(ev.currentTarget.dataset.reg);
+    });
+  }
+  document.getElementById("modal-fechar").addEventListener("click", fecharRegistro);
+  document.getElementById("modal-registrar").addEventListener("click", confirmarRegistro);
+  lamina.addEventListener("click", function (ev) { if (ev.target === lamina) fecharRegistro(); });
+
+  /* ---------- relatório para o médico ---------- */
+  var btnRel = document.getElementById("btn-relatorio");
+  if (btnRel) btnRel.addEventListener("click", function () {
+    fecharRegistro();       // nunca duas lâminas abertas
+    lamRel.hidden = false;
+  });
+  document.getElementById("rel-fechar").addEventListener("click", function () { lamRel.hidden = true; });
+  lamRel.addEventListener("click", function (ev) { if (ev.target === lamRel) lamRel.hidden = true; });
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape") { fecharRegistro(); lamRel.hidden = true; }
+  });
+
   // Confirmar a dose: mostra o que o produto faz de verdade — some da lista de
   // pendentes, entra em "feito neste turno", e a fila cresce porque está sem rede.
   var btn = document.getElementById("btn-dose");
@@ -790,8 +1129,7 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     novo.style.cssText = "padding:10px 13px;font-size:var(--texto-sm)";
     novo.innerHTML = '<b class="num">12:07</b> — Metformina 850mg';
     document.getElementById("feitos").prepend(novo);
-    document.getElementById("fila-texto").innerHTML =
-      '<span class="selo selo-fila">3 registros aguardando internet</span>';
+    somarNaFila();
   });
 })();
 </script>
