@@ -3,558 +3,798 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alentra — Protótipo</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%22-30.00%20-29.97%201559.37%201806.22%22%20role=%22img%22%20aria-label=%22Alentra%22%3E%20%3Ctitle%3EAlentra%3C/title%3E%20%3Cpath%20fill=%22%232B7A78%22%20fill-rule=%22evenodd%22%20d=%22M613.22%201233.69c2.87,14.48%2020.88,29.93%2037.3,36.35l137.06%2053.59c35.43,13.85%2040.87,5.97%2051.9,-27.98%2015.3,-47.12%2072.78,-222.02%2071.42,-255.51%20-2.48,-61.02%20-73.49,-128.02%20-165.75,-129.61%20-84.22,-1.45%20-172.86,55.38%20-174.13,130.83%20-0.82,49.17%2033.1,146.3%2042.21,192.32zm128.88%20-377.06c65.11,0%20117.89,-52.78%20117.89,-117.88%200,-65.11%20-52.78,-117.88%20-117.89,-117.88%20-65.11,0%20-117.88,52.78%20-117.88,117.88%200,65.11%2052.77,117.88%20117.88,117.88zm-375.05%20789.19c224.17,126.22%20654.42,163.98%20805.11,-69.07%2053.75,-83.12%20-10.25,-126.06%20-95.16,-89.8%20-157.55,67.27%20-290.51,105.88%20-460.31,38.98%20-80.58,-31.74%20-113.56,-87.71%20-8.12,-56.13%2050.72,15.2%20138.77,45.79%20185.12,28.29%2027.36,-10.34%2042.31,-16.22%2042.31,-52.27%200,-35.48%20-61.81,-46.48%20-82.73,-54.69%20-91.03,-35.72%20-125.97,-59.02%20-201.96,-106.5%20-39.78,-24.86%20-134.24,-44.11%20-180.33,-34.36%20-25.55,5.4%20-43.55,13.03%20-48.06,-21.42%20-6.02,-45.85%2044.13,-81%2083.43,-85.98%2044.98,-5.7%2074.1,7.44%2074.51,-53.97l2.27%20-334.49c1.13,-166.83%20108.56,-269.29%20264.91,-268.61%20156.36,0.67%20267.86,103.12%20269.16,266.1l4.4%20552.94c0.35,43.97%20-9.67,93.76%2046.8,103.11%2031.66,5.23%2060.28,-0.3%2095.19,11.9%2080.64,28.17%2086.99,111.58%2050.47,177.39%20-8.82,15.89%20-19.44,30.27%20-29.72,45.23%20-7.43,10.82%20-15.71,23.17%20-0.39,30.07%2010.61,4.77%2027.9,1.89%2039.12,-0.26%2059.65,-11.41%20121.34,-58.81%20158.25,-104.09%2090.52,-111.02%20144.19,-318.09%20105.16,-459.89%20-10.97,-39.87%20-176.97,-491.83%20-340.49,-811.49%20-84.58,-165.36%20-220.86,-298.53%20-417.77,-296.77%20-178.47,1.6%20-308.97,146.82%20-382.66,297.29%20-104.38,213.14%20-207.87,459.89%20-304.04,692.25%20-16.26,39.28%20-33.05,78.37%20-37.93,118.2%20-33,269.07%20166.65,427.25%20363.45,538.05z%22/%3E%20%3C/svg%3E">
+<title>Alentra — demonstração</title>
+<meta name="description" content="Demonstração do Alentra: as três telas do produto — gestor da agência, cuidadora e família — com dados fictícios.">
+<meta name="theme-color" content="#2B7A78">
+<!-- GoatCounter sem cookies. O codigo segue `cadernoplantao` de proposito:
+     trocar o nome perde a serie historica. -->
 <script data-goatcounter="https://cadernoplantao.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📒</text></svg>">
 <style>
-@font-face{font-family:"Nunito Sans";src:url(data:font/woff2;base64,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) format("woff2");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:"Nunito Sans";src:url(data:font/woff2;base64,d09GMgABAAAAACJ4AA4AAAAAUpAAACIhAAMBiQAAAAAAAAAAAAAAAAAAAAAAAAAAGk4bsXocgnYGYACEJhEICtk8xjABNgIkA4ZcC4M4AAQgBYNiByAbU0YzozZNz54xIgXni+z/kqAtmdLtYVoVFoklRajcmVuznil3PHtFFnfbL4KIr6HhuNF/jSIS+VEIkDxYnXsedKvtR2jsk1wuz3+/36Nrn/dDgI4cEQuPLsJERniUSCoTFa5qx1ffo9qsqhFmUtUdyKpqC7ZuPzH4kueJWGzdifgAd3fAb/MPm1UZhWARpfAIi0gDJMoAbcAmDBR77apdu4iWZfxOV+V+LOC/9Pd6nuT9sB55DbIdkwykEECXSZ+2C9fUlGnbC1M2hqaaD2J0pj3iFxrbwKUBfs7UH+bJW+pY2rCUUnF5l0YKtpPYnRSERIhORGcswtMAgAK0G+B/guHfq2a2ePrCkLzMo3J1GA3nlpfsXAun6xxiGVKXeuB/Eh/4j9/c4MBd3JpcRS6pBGUqAiRHA+D2QqadyxASubyQg2OuNKqcqpA7N+VVLls3na8t3Ze2aVoesOOU7kUoIq1871Z/n54TlewBGyeEEKLZNaVuarlRlnkeilC29/eO4dqrYETTR2870vgpEWAwsBQoPrQJyhZGKBm1UM5rh3JdFz8hR0IYFMd1XigejGAB/H0HA03B5r9+Y64Wpp1rc9TCtOulrnqYJgBQaQZeu+CohxAgIDZPnKYsxSU473j1sXOlmsdwxijrocIA9sLSxjSng/k/VFAGIZFRUtPS0TMwMini1WXAAosts9ygDTbZaZfdUFLGQB/gTCYWQyWGmkCnQIMBC0nIQBZOwTm41fwJ+PAdrIYfEvyU28d6GGs37AEFGgxYSEIGsnAKzsGt/p8AwRcwx3cwzA8OfsodYD2EsBv2gAINBiwkIQNZOAXn4BZ88rRfEFbzzSU/4Jf221l/4C/8mx586S2mP4r0f2uZTz6TD39FV+mvzKBu+rduOGsck4KZ4m4YtlCz+zVrp4McQHbf66ABLiQGOfVCfQqg2wdidYLcQzETE/lMLgDBnDZELks3pR6WEmPXgRuTjcUtyhkH67/zuIU8FFIBw8poWsOHJX3Z8YaXKGEI9vd/FqzZBWMAk2KqNltKmuSLJ5NCZDWwus+YDhwR0sRBRXhdn9lIomo42KQTtTisIDpuYcY1jjXZkYblDnbxksxC8mUt0JPCEA+eusDzHKESoqNLZZxIEp1pxqi0jvQVGLibARazM8UBTL6Wuj+XJs46ftZsJffzrX37NaGTSOedQJcdsWTV2h1Z7I4Bhwb2AexCcee9xzpyKQH2wCmLoIaFCODCFVdMhDdgTmUIydyG1W6XB452a0HWr/xNPhpHly1rWNX8cnqKRQlrAOALiVrZZ6Iv09qNGRtliJSedwvl5LcLqIG0jE8OcgoLGWfu1BCaqHoHCSziMokPcrMuQhrkhegSMAzzYTXeksuW7kZlk1UX2M1siukjKFy5AUegDrP2e+a/U+SUNypz668irqOICvvQHqYq3Wp2uSRbN4N6eQq2zyFfGSxtjGjy2M0Z8X2jGGIK2inZ3HkCPk3vpjZA4G/5Gcs3z3twHEoprUMkY7qNAt/N1FNlnIZOADqHCmGfLuK9eBWUUrDEyW9zSqGebozANI5kF+CRHD/1RCOdKO5TvdUhH12vGNJJzc3EK3QCFKprgufCCiPP/4BWqs6JuLgSC8a61jqqoLyF/yt+qXdIJZy9x4jQJHeQPO1tl8JA5CSYpyEfshrk50FZ9TUNtV2v9peuepK747G4HsbLPPG86TaK7yxmXxQfniIcmQaXGWInHpCqxcvLsMzChcpRElxFa+JptJt6bkFnw9hns3lUAfQCuzGQmkpr5m7pZCHyUNoQrtUIqjvWwCVrxQEvHZR6kqiF3b1PzmJIUcrASxvnNQAJ23+Ejd6EsW1t5iqQny2iLKkmKC4WKq9mM0ar4kkuUs7WprRvoG9sKveWgmuE3c/qqsauhDP0xHk4Emt7K6YC7QcaARDR3ORm0aStQTVrV44661XKamLBNG4XKFaghagOgOoxCePyhofTdSk6DxFqDt547SsAT6qkbj+QQW/F6B7yRZfxwXVw+sg9WiI+uqY5Ew10hi29N+OST1GjjVJdaGqR6zTWStEsG1aFaIgev5HkgIMK5fbEaSUczmpqGeb2NEGrrdoHDtYKOSNsJlhykJDzMIrnTRcYnk5tggwdb5opRJyLREQXRBdocP2yRaOJUQvGiFoIcSoxz+HS2IeIdNv2VnWBDfc655Am9y3qUkxciuP1X7r4gXYtV6fCMkjZxjNYoBNQoGFyqa+37oVA3aldBbVBs/Mxo7FzarcQZIpriVkOrfXP5wNxcZlxIS4oUefwFn0iwvZjxwT6iWzjmFxoxWEb/5HGp4tTd67tUzlE4CU50leBz4wLrJN39lxYnd/93WwLYcOBhqBg1LF6ibR3mJMVO3NnATN8bXM8gqSv0VnurRo0jQX5kWb10hblygqIxqsQHTX+byGSg6aKrblUkFzVS9rMXFuFiDUQUZ5neO1gC2jSaU7mJBb2rYaCCxNvKsxGEHEL4gL1jM+5YaQlW0FLoDNhWzWjoS1dChnAAsXNK3zLrSKsnU1ykbD14fBvQ5s5yTSl3Y0qXmAO4PGJPmpOKuJ5nVwp2WUVHgcz9CwYzRdWY8JVTbhaYqdd31MS8ArAwNQRsCAOafCtrpzRHoKPtrjO5MHAccgBhNk6V59gqZpxNgEcmAIAmQTFj4A2AluoSGlo5CvkoeLVqUm3Hk4DVnFbY60egwb12WCTflscNpvPFauhoPeCr5pvgjBAJfxXXShUwPoBEkzdogjX51uACaWPcfpDX2BImmHsaxpqBj8txtXveNCJffjpQGlQTo6JugZj8yefapIxpjVcTn/KTBSSrga5I8wAZiwPYALEG9RMRUGANx6D5gDz0YFpDsZ3gyFABqtRGg5W9GmFvWMuDJoAKeKDIJ9hjAOtbqKjgkHDkd1SjRROX0qTjHvN/fjxX7wHtYFQvIUhb3IYuKVwKkhRbHYY4bjCHBoyo43REsA4zY9n6PIARkKswc1JEiWINwHXPgWYBQ9MFGaCQYsPSB91uhYj2ozTAjCBaue3jpXMDwID7bfYHz0Yy90FY/mvW6PFQMzOXBEGkverczCQAtqnaAALpFJcoq6u412/Ul0KEdcbymsBM5NEJKHRB+IQ7Af6qjZGrd2DPB+gxc7E+JU9Anp3gYBSuFgkuRo3+Rm2JpbCLZJKXLs3A4VR0woCChnHH+oHZU2HcFNB2WBiEulFR6RFYvCZGuIQm+uIEa5vuYeXnyxG2Xm1pa+zAkHdrRHYBl8QchIpCcZnvQn6AQPR/x3mYYNNMDOw/q/vB9DbGSkQQP5LPsB0/kABWDqaP/xZCKgpwGIYAYSZODpttttBJ5wOCkWPZnoCMx0TgYnBYDGJGBqGi9kbh/30KcJ0NFybkCkXQH3iKZgwTBQGk+B8D/YC2ldMaz91DWhY4M89AODP1cW/NI/5+RegTAM2u8/UP4Jsf/vJoo4+BeDH/aElDlntmAsuOmzQequcsMAWA9ZYaJGzTjtjGR8UwqS4fqabIVSUaDFiYWARkJBRUNEwIVjYuf2fe63NztvpgXRiEjLZlPKpqJkUKlLMrISVXY1a9Rq4uDVr4bHBFRudc9RSywVyuEKeQBWhr0kmmyJSmHARJhgtEU68ZAlOSsJAlyIVB1EdngyZhLIIiEgp5MiVx0hLR0/OokKpMlXKnVLJqVETh1Y2bYKshldtm62GbLfPfrvssdduV12zEgq2EAXAd0CeAN/AoAEAw7aC7h+gtgNQDVgvcEm2wAM4XFv7FioQy2179LlacNxBfhNG+k3RmYLU7XlTUVYzwfauhQtgLZ58GmmI7wZcZ9c8R5tc1wAsJ85FyAe94Ixdx0vXJvwAhF7CiwfBsKpA0CjhkYxJSoiagAMZDBR9g0mh9ZSiikbw9ID7imFj82gxIOg3QvT1sk2YZfXovk9rg8JwTJCx67SYMG9gn+fekLwBQ1j0PXngBHZHDBPBIEFivDAKNiW9YfWhXqLPsM1TXT12bBhmjHATCgJv+pRP7L5h9sBowASKsWkZjxJVoUw0xX6Prq8WA70hqz2IbpHgM3yKjFAHkjJNZ+IgtJzM7VWcSXKafVlbgqJNzbNNQt6qFvNEzln1UKFcDuVKhc97LFcvylSIoJKvV1bqZ5EWk59rzOXpIOCOv83IMb5RC5FQOsWIfXakyx65wsEmXj9jK7iccHKKuRuf4KPH6DhRCjnBqYzaRJLSR+KYVuS4fRrMosjUVgpuRmXh+7dxPKwdz7NLBchF/nZy3KNJBv56BOCHOGcaCC1/oLo/Wx8/sUBq6v1qTXexBcxauPIO235KJbs6NpglyBP3+XoNZrYewjiQ95RlbTbsqU8kT/O+A3xS7vf0pE+W0kk6cZy1/UdMS7KbTGUGOownBMbhqAQdqNJrs2z5ggrRIvOPwwaMsG5Riui4E6kx3ajYgyhxrdWPIqqrc5qiE1cfMIp/7jmqqxz69GcA+ew0rrgfja7J6m/EP2Cq/jPSbDH96oJhnd5V/lxeooz9/cEE+7602GrlpD3h8Y5UlgZMh+ops0vIF7PZjXreuy7AQGUyscQ+Xt33x7qIohC42NE0pvnEPOCQm3+z7Qc7gAxZlx1O9O30y2ZhnXZFSp2ymt3cstJkCAsHO2+Oa/8YqO69EmAvToPyZ8YNsjsv7NXarH1x1phv9arnB0btWWBy0+3vjdBq3TPUb+al6Zvro0fOqIOyD7jiMyDLZM4FGd5LG7ATf2hto97hZboMFbtQqwim8bBfsq9FcHHNKM8Kexy1+lPMP9lApu6u/KfRrNWjGpcCNS37sw5yjzeTUUT8BeM+AbnnCDT0r+90YZvs1zXDq04YcbqJMPnIXmiXpaxhGBoJLfM6TzJmCCUkJZxBhpPFRRbWSIfcWM4Ueraspww/9W7cnD/8LACE9OWjMbUve0d5lPwrgxgtK2Z82X/iWU8FWIG1sjHOqoxlj4HRvq0AG0v5UmlKKQmfjllhS1T+zYQDh4v5bL8WiQJPsMNAYNykesHHPopcCQI68bTi4EP7/N2twK35jEAJJ2XPsfVJ8LjIXWDLRWoosheh3eJzei5sqhKuzJNuBr3jn8ahhLzvZMRJZuzJ913Wpjmp+mUznLKYr6xsvPuX8vQp3bjt2atBg1RYrPWdL98OHarvLntUVx1fmtXPIosMR3puk4yxCvVvqLZaWTDrDFtCcjirw4GSZB27u6s217S+aq+kw2dArtVR3sahqGRncKFC7Z7QlG9YsAAXPmycblovM1ABIPdq3v3XIMcMGqfVkPzbhQ/eIMO2XzfI1c+fD/NeR7t1kQ4YyJNz/KstYhYl4N1kDdgn0IGFpCt0Kdv/rBvEkNnxcuR5k0GrlbZm2F9DJs3JQ1jGaWX+xQZD6PLEv/8dE6oEHcPie/jCT51ooHRVRr4d/hMlGzhzgX1tOavdY81ebXcrvcvgMn0QJRxUkuklYSceOYyH4MJhV4aDh8pdWpY8eUCFWaYYy82LS7/f6tztdZHNcIrSyUPmjD7aQsob5dUFeX2J1bH6slfC4i18RBwWe9ag9c/FsY4RgzBPdtNjWX0LOT6ilFIsFV2+6imhEJR02YEvvFWVbqy8FNE0Mu6J/bNiUf301rf9XmRr95riK6iUoaoEctok66pDqPg8IFPFwVmzgw44Zt1NKDobwj+yO+0AMog5+3MN6/2WFZ2Ja/xCx5vQun+7hm8LQEfNEmfVU/ht22TUIF6A8nHCaT9qRv0/aVxNTN127A/SU80bmkYwjMWsqt+B7i/avRwwD6onsat6k7D7eACPU5CuUKs3CKupBp2WV0FCZQ7bfL9e8RajaMtzZicJ3A9+/LHhyKoleJ+6Ko14O76qB7tFVLIll34w+XVWMuT5GA1tJXoOR4U9KNDyzZ1VTZdWbO2rrOzb+un9dnv/UViOrh80arY0NGg2DxrrpZ3EOfjKK8VYpKahu6WloacGsV+pK/jK2Z0kyPMFHRo+tnvX8IlDM22db97hXwryfF9WFVwUVYnuFFRBnu9OVd41dhWbAhvR7k0GzeaGRt2Wzcam7B7CNkL5H6WxaY2OHk+7u8sVJxoTMbTFMl4TPDMS8nzdiTWJ3b5uWg2NXqUPQkKsEn9jYNH/3f+dvzz+61Ww/RDWoF5dXbdBLPaTHH5DtOo6UPpq/r39z22bz/X9jYacG3XfQp6vxPP4SYvP0v70GcxBV602abbUN2g2rzJWV68yytW03ltWmarqSmtmtrTa+8pQ7mttweXBzkPDJ3btHj52SJzLDU+3WZ9a34yOozxfisvrtFq9LtfhkLoN826PztvA/tbmow8tObr03aZDuQmkX5QM3hFA1SrOQ9latkeftO8PmZMYwMuof5HrK5SqqtzJ1HHubxa0/TIpONES0TY44GgaGIQstGYBISCxws+VIFZKGQRc0g91M84krRGIS9uZKpmXsDLRoha3iPM41Pj/1tXOKJtWYsrJElo6GPBO/6qmouaVHprQS1avXL6pe6NFb9bsOr+xa9PyFSuByhmeOxI12P3aEyb+86p/f/CJYMuRCbhi73/D9sPvj7yHoHFVfqYVx987eyXu3NiqlReCzwfDW9GEjhVnxpwds2i8VwhUs/Odq2ZM9i3vq4Ff0Ux1MkVMQjq9kXbc9JQzDLwu7BROu0QSoZiAq6kusya7FSFySpiOzhMyZmDNsqjEuG/hMZqrT6Y+Z1FnZC3mZLdSCLrQ0499fDsx90pBIrWqpc+BM47rn6kTM7BakjWOkd3AvKopYiM7GLysmudpG9epUjJFrCmED0gBGtFSZUqPz4vRqkkMviWD2ahUMB0lGWVmtjBfmS9UsNlWBMO+QYBF5zVlZjgViozGpvQ8amH0d/H6lbzQGL4kPydbouVH80NXxRu+LYqB92heSQbToVAyG+m3zGNoyGKs1+dRcXS0KYTf8Ai0vI6bUS0WpVVaOWKSPHzDl2mq7O05GKmTEfR8xYz8bD0GNScDIzUTBBz5RvOCWYOtljSePDOTJ03j8KWlQb2Bjta0ZPCaFLmZTfXzHzxra58jwTy+dw5eFRaB1ZBscZIdLKHQNprO5UHZfLPZjLLW2hxBfsGFnx2ZkjJ9pnnmfIg/J2qOuYfTr7NE0Gb1CGV6KlNQms6sk8uZtbhhApaOxs73nGzxtniSuUKlWCxUcB0oHhIl8H3e2Nma5NR9NwjeeM5WMosn4kwFtsoz4OlTPfQ+BP4bke7/QUwsnxpS8EVuiOqF95cyU5EtGEjDd5ToW7vT7/K9VT8+fPxxzf1v/b6DR2iD2lw0yTumIHesaimqjA3Ch54cQx4ptT7OUqtLYW27QfAmsIUkOkuUMXElxGHg3/kQuXO1ROar6hWLzm3IyHAoFBlNKnI3aFIc8TlfmD3XcUVJGY2kKgGumro/gbdarOgmVc5xNJ+Pep6GLP0XCX082v78ueb8pv+XCJHonLrMdIdCkd5Yl5HDs9B/PG1hpH9tbp1gCORJ+CLXuzqOKa2h3/3RnMLZwXSbFz8ncXm7ZC9RVQqVbFWU1yLKB96R9R6FVEtFeCX2EFgy+Aw1SfehLSRZinvjur0YnZrI+GRrjnwUa8gMnSLyJT7P9aOGfh6fDOpxeneIOtgmDfKMdQTDa3RmTXRarEpWGEGh/RJJ+L58SmdoLY0hLk7IYFiiouJU1/IjE+i/RpHmlk/hjRVkIfImNRxBI1ZMHk5ToI9ISNgQFbrQogjN4tMxN3esFk2PbEjkCXIkP3lvtff3dxRVZvNw36s/5E+evrBbPp0nRWQ2PWDQF4e/NJvNS71Ll5uX36VtpE746vWUwvAaeIk+ehPvJTKWUFKyRJyp3oceOU0NDz4fmTlbN6DzfjUC14dHujsMXoPRa+owtV0YqWvmurjgf/v9hcdL3SvdK5cOP7nz/7LeoZ4hqD1iunbzi5lzdPN1nQmDQFf9z3lv7peDCDbDepVnvueq6ptoyaHAwtJvrPChd/7V+TBrVcqfyVR1Uj5xLCIIH/CyF8omYgdajuex/D4+vxo7N8E/meycPnk2HFwtMmkkEpNKJDKqtIdRI8zEdpJIXuzDG0ImLwAi2tt39sChvhPezt4TBw/ak6UOq4jXMXsWr1Uk5LfOms3vgDr7xiseOb34gbfQsMIO+ZbfXz1Iyk2uai/JlxIsK7xkUVNrpYWX7uYJ125m2CEaLeslDOFLTeL62fYUAY3XZK9k8xE65R7XqpDiLau8RFF9W5mRw9FNGRYW8M2za6F4VqpZ9oP9Qbm9fFbX8/EnxgEdLe4h9ONLC8S2LAmPxRaK0rSIQL/vkJ1xQZonLGMjFUJxhtXBBTG6b+GJ7Uc2XVrIrkuuxFv4GgzJUNjWFi0pzsjIKOYwKwUirt2anlOJCCRcrkCKIAIpPUGVgD5DV1zzuCSzBIjo9nk2M09gUr1BdGxTX0VjU1+FiY3of1fxCrLM82yeTWkCFp0mQNLS+AiNzmdx0xfV1S6SyJgIIkPgLZpdR3ARLHRtHNFY2NYWgxRnZqUXc5AqvjjNZk0X9S84vuPwxsu2Wv6eyPyB+eDoT5ozIOF3sxalYrXANM8bmDff/CCDcyl+36np7ic+XzuO1dwfnGKpLZ2ceCuXHhk4fj+ZilVueNUTFfeWVKaW4i0rOsi8LDOeIU+hJCszH2Up056j7DTqh0YVaXbqJMSkbO5f3Fx5TjwBk71zQkdY7BtimZpHMC/rwAPzCvKBDjTQVRS6MoVCyVelMGhqMj0/lU5TqqgwpMohSut6ggy9wdL6HGK6N82bQ1ole4PTQdK6K+wEVdweab4++b49vxWz1TBi52x9apzYBlY6y7T/vcudvSCXFEdOSsU1LjyTLCauGCbHtQ+0w9OL8rqsP1pas35HD20cxYG/Wl+Hv+bGoeXiXHPir9XW2k5jT7Fb0pVD8BHuM+5F/EVsSmEK9lLyxcWNdZpFRNIw/l5w0D38MIkoMsPYI2YxYb3456Dgn1cQxGZnxOHJl8yPJnYH2xH3E3PDqYan0qX/EzcIv60gVMBfOW9ycmVktfDPnPsf61Ozc27nyHls9R5Ziom7IScLU3G6Pew56xDefHAcTPq5g5enChk3cIu8YlNm2SZNgmyNbC10yNXx8rXyNXO7/GATUGyIjlsyfmPA31HPD3Albkms+K0hQSgXpibhvt1rm2GaWlCUp3U4SsY2VTQySpMmJ1hyxM2Z2WwK9lvC2XGWaUUFOd9Qe+H4JuhHVy9uD3OVGvVTY/XG0nDnovZqbjU+DG98JY3EI4rMycKVxm2oyUPGlZNFikwEL416iTeEF33gQ9Ktq8arV4quiOcWdKX+sKcv/fTOnFfh5QEreePOGkeM5NvTOLD0ocffVw0jBmgsaV0/eEv/vmuBWIwYebm0ZT09ELDmfmiJS3h3Ymq2IGGShEUJK9EIcdGpntGJUhaQ59/92wyn5NMNaoXUSBV13fV86ovF2mJnRUWxQ6vg+P13ajTxSTyhsCs+vlMk6gpve+yAvMQ74/Z47uJ+86McbMT+4b8U+HOo+2JN7cXeyqytLe6hrIrmg0Wl25sMtE69iEt/v3N3DoGYbyg3yJGmEn6mCSPZW4x/kT89g0FPd5iLc/sGJGV1mwtM25oatBvXam2rC9RJ/PdLaB0UjqxSXarnyi25zK+BhG7qtepEORWCJLU1Ljspx15kVFvUUiS9QIKftShpRlmCNXCtqH7d4Gppzo46clx7/ElcxMBrxWYM1skIU7XsOkDaQ6DymDAnUu4tqinyyk9uM83+c9afxm2lTyp2Mip2PoFzK8iS5GQxiZQs0pVksjjpnS1BjSTBXYgfbyQOdw8Xfw9UR9xeN3gHS+wqu7PYKStKwLvO4PobPngBp3W6nLR0JZCudXlcgMcP3GyvvMlKlbKgNoSvu1lflvO1fb4XYHGLg7EMmZjJ5N4MbHA3O5oZFcWIjhLFmyaGPunnAaIsRWqooMkyOD4VLf7c//5jPF05lBuaAoPV2WnZAG+iC/ChocnTkZjQhDGTL8WNMwnX5Afip2OT+BTwE854JV7i+437+tz7dJF7X++G2qH37ftqx7LRVO0vMLx+DVc8ZmrA54ESWS4r/OWv+fnqP8kZFDDg/j1OHT4YOYFlzKujbFM23FhmXm6GE5+GtrI2LXbxR2bNev2+H+A3FwroJ4obePqSvkffq/9XX1YrZGymK7PJ+Mx/huVE5rAM9CV9j9pLQl84skBf0veovRKTFGmWWBOeY/QlfY++94X/z1xZCUsaXdhh9CV9j9or2TEKUwGhOC83ukxGJXwHn+FIendrQj19m76ob9F36tvVDimRi0TKbK5wlNG36YtqC2jer6/WG92ybcsWl20mLdKcCkmUJexhjNW36Yv6FrVDNhBU4qBA36Yvqi2yJaYSAgBQTAKhmWl+28A8BT6hlF4FUWayqcVQy2Q0QdTplE/r5hnw75LKS6WvSW5f+BlFdrl/uWTJPrWe7FcbyGFDincS/5flP4BVd1+8ONDdal/GRM8PLyoAN6FWrgawGgTUv3nPEjfXVxvVkRuzCdIy7O8tjQL1JvnIw4ub2e2JzIXhHEFq38MqeGvPuTrRfIAvLtR9yvKoP6CVDc/1lctHpA/mU5DB2hZGnTt0z/4C6k6OvL3z9OtGbKP7M72Nu27mHj4yhzb/QWLL2O3hNV7T6N77tnQdanyQFUj1HcyGv51xV7vzgae9oevAMGM1iLI8agRa2ZjrvkmQafRxo1a98cyjvS/XafWWcjUtS269JYDdzb2a+wNBLR+clrXr6TYIqIfmE/ku9cmEtPbNNJ+TOZXqDTiU64OejVk0ISwhl7sFCugy9/0eVH9qYvr/IRP9RwC+T9pmhVs+bc6lj+6PjwJTe5FQYhyAgH/XGumz+UJxvxMo41f6a96QUiOgplr3i36QG3ndAYFj/iPvdW5UnTxIefZfQLpA2J7wVPse3o77Vv6luBoz5Coo+4Sal+kmQ5I9zEgNgCw0DPYf6haUqhNYvyEzV3dDb7/JjNq0/7S3vy7TxajV8eXdxiFCsit9ujLi5xsSU2UE0XJiPKkVUEXsleP7BDcx92HqU1sKqJfm/6kCQwzDT9aKqyPEM3ipeBKT3VKaRh4M5GQOfkacBfqpd0OVUKbZeeIn/3SCC4s1Tvj0D1e776CXH6xuuYDaI6AMg/1gcTRmpNTUMubsWAhSIRkIIAAGsEz6JJL9AwiM1cNFUGFxbuGHk0LecbA7l4l9XieF056Yp8G2Z6tSoeEyG1EblzJ2Qzc/TJQ3gKZNFiJTuBXTqM6RM5PFO5VYmRhKyAV0rxZnAoAGdRgWpgIbBMtjD6V0h5D6ZN3k7jikvoLTnTYu7eISRx2jaZfFoFnhEsjhKyiEXsiE8vq6vUGI+fvF6IsU9RaXNuTeAAr4LlewnQKh8Rb2OEA/af6whwbwANiyaIDDWUeomHXNcz/rGZWArG9D4r9hMSNiJ9SgURsHm2pWLhgpaOgQGFpWlTAU3OrZuDSIaY3Sq3PCyOfQwK5SedQgPjcXqwaOPUwmuyqXRk5cVFTVbINZa2UoyqfrUEkU60NOaXSc/A71qIy8mwk+jX9ugQa1KqSioKFBpFFQUhBLIymR8Z1kxvdcvcpc0JZgFEOPmNywKmUa61rZsqB5D2pGR8FGkWo75h/zN762tgcSAA==) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+/* ===== tokens.css do produto, embutido: o demo usa o MESMO sistema ===== */
+/* ============================================================
+   ALENTRA — tokens de design
+   v3 — 24/08/2026. Sobre o BRAND BOOK OK e o pacote "Formatos OK",
+   ambos oficiais e aprovados pelo Fernando.
+   Racional em marca/design-system.md · procedência em marca/README.md
 
-  :root{
-    --bg:#F7F8F9; --card:#ffffff; --ink:#3A3F4A; --muted:#5B6270;
-    --brand:#2B7A78; --brand-ink:#ffffff; --line:#E3E6EA;
-    --ok:#2B7A78; --warn:#9A5B00; --warn-bg:#FDF0D9; --late:#C62828; --late-bg:#FDECEA;
-    --info-bg:#EAF2F1; --radius:14px;
-    font-size:17px;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
-  .app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+   O QUE MUDOU DA v2, E POR QUE IMPORTA
+   O brand book foi reduzido e passou a ser SÓ um brand book. Saíram dele:
+   a paleta neutra, as cores semânticas, a escala tipográfica, o sistema de
+   theming e o design system de UI. Ficaram duas cores e uma família:
 
-  header.top{background:var(--brand);color:var(--brand-ink);padding:14px 18px 10px;border-radius:0 0 18px 18px}
-  header.top h1{margin:0;font-size:1.15rem;font-weight:700;letter-spacing:.2px}
-  header.top .patient{opacity:.9;font-size:.9rem;margin-top:2px}
-  .roles{display:flex;gap:8px;margin-top:12px}
-  .roles button{flex:1;padding:10px;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;background:rgba(255,255,255,.16);color:#fff}
-  .roles button.active{background:#fff;color:var(--brand)}
+       Azul Confiança  #2B7A78   cor mestra do símbolo
+       Cinza Neutro    #3A3F4A   wordmark
+       Nunito Sans
 
-  main{padding:16px 14px 90px;flex:1}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px}
-  .card h2{margin:0 0 10px;font-size:1.02rem}
-  .hint{color:var(--muted);font-size:.883rem}
+   Isso NÃO é perda — é a divisão certa. Marca define marca; interface é
+   decisão de produto e de acessibilidade, e volta a ser nossa. Três
+   conflitos que a v2 carregava simplesmente deixaram de existir:
+     · a paleta semântica que reprovava em AA saiu do documento;
+     · a escala de 14px/12px saiu do documento;
+     · a frase "100% white-label" saiu do documento — resta o co-branded 🔒.
 
-  /* Medicação */
-  .dose{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
-  .dose:first-of-type{border-top:none}
-  .dose .when{font-weight:700;min-width:56px;font-size:1.05rem}
-  .dose .what{flex:1}
-  .dose .what small{display:block;color:var(--muted)}
-  .dose button{padding:12px 16px;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;background:var(--brand);color:#fff;min-width:110px}
-  .dose.done button{background:var(--info-bg);color:var(--ok);cursor:default}
-  .dose.late .when{color:var(--late)}
-  .dose.late{background:var(--late-bg);margin:0 -16px;padding-left:16px;padding-right:16px;border-radius:8px}
-  .badge{display:inline-block;font-size:.883rem;font-weight:700;padding:2px 8px;border-radius:99px}
-  .badge.late{background:var(--late);color:#fff}
+   E um efeito colateral excelente: como o fundo da aplicação passou a ser
+   escolha nossa, ele foi escolhido para que a cor oficial PASSE. Em
+   #F7F8F9 o Azul Confiança dá 4,75:1 — acima dos 4,5 exigidos. Na v2, com
+   o #F0F1F4 que o brand book impunha, dava 4,47 e precisava de um tom
+   derivado. Agora a marca é usada como ela é, sem correção.
 
-  /* Botões de registro rápido */
-  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .quick button{padding:12px 4px;border:1px solid var(--line);background:#fff;border-radius:12px;font-size:.883rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
-  .quick button span.e{font-size:1.5rem}
-  .quick button:active{background:var(--info-bg)}
+   REGRA ESTRUTURAL, mantida: cor de marca não carrega ESTADO.
+   Sob marca co-branded a primária é CONFIGURADA PELA AGÊNCIA. Estado
+   construído sobre ela mudaria de cliente para cliente — "atrasado" não
+   pode depender de quem comprou. Ação, sim; estado, nunca.
+   ============================================================ */
 
-  textarea,input[type=text],input[type=number],input[type=date],select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;background:#fff}
-  .row2{display:flex;gap:10px}
-  .row2>*{flex:1}
-  .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;cursor:pointer;background:var(--brand);color:#fff;margin-top:10px}
-  .btn.secondary{background:#fff;color:var(--brand);border:2px solid var(--brand)}
-  .btn.danger{background:var(--late)}
-  .btn.small{padding:10px;font-size:.92rem;margin-top:8px}
+:root {
+  /* ---- Camada de MARCA — as duas cores oficiais, sem ajuste ---- */
+  --marca-primaria: #2B7A78;   /* Azul Confiança — símbolo, CTA, navegação ativa */
+  --marca-tinta:    #3A3F4A;   /* Cinza Neutro — wordmark, e a tinta da interface */
 
-  /* Alertas */
-  .alertbar{background:var(--late);color:#fff;border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-weight:600;font-size:.95rem}
-  .warnbar{background:var(--warn);color:#fff;border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-weight:600;font-size:.95rem}
-  .okbar{background:var(--info-bg);color:var(--ok);border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-weight:600;font-size:.95rem}
+  /* Tons de interação da primária. Mesma matiz, só escurecida. */
+  --marca-primaria-hover: #236462;   /* 6,8:1 com texto branco */
+  --marca-primaria-ativa: #1F5A58;   /* 7,9:1 com texto branco */
 
-  /* Timeline família */
-  .day h3{font-size:.883rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 4px 8px}
-  .ev{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;align-items:flex-start}
-  .ev .t{color:var(--muted);font-size:.883rem;min-width:44px;padding-top:2px}
-  .ev .e{font-size:1.3rem}
-  .ev .d small{display:block;color:var(--muted);font-size:.883rem}
-  .ev.inter{border-color:var(--late);background:var(--late-bg)}
+  /* ⚠️ O Coral Acolhimento (#E8704E) e o Azul Profundo (#1E2B3A) SAÍRAM do
+     brand book nesta versão. Não reintroduzir por memória: a paleta de
+     marca são duas cores. Se um dia voltar um acento, ele volta pelo
+     documento, não por um CSS. */
 
-  /* Escala / listas */
-  .lrow{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:.95rem;align-items:baseline}
-  .lrow:first-of-type{border-top:none}
-  .lrow small{color:var(--muted);display:block;font-size:.883rem}
-  .lrow .amt{font-weight:700;white-space:nowrap}
-  .pill{display:inline-block;background:var(--info-bg);color:var(--ok);border-radius:99px;padding:2px 10px;font-size:.883rem;font-weight:700}
-  .pill.now{background:var(--brand);color:#fff}
-  .soon{display:inline-block;background:var(--warn);color:#fff;border-radius:99px;padding:2px 9px;font-size:.883rem;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:6px}
+  /* ---- Tinta e superfície — decisão nossa, o brand book não prescreve ---- */
+  --tinta:       #3A3F4A;   /* 10,6:1 no cartão · 9,9:1 no papel — é a cor do wordmark */
+  --tinta-suave: #5B6270;   /*  6,1:1 · 5,8:1 — texto secundário, legenda          */
+  --tinta-fraca: #8A90A0;   /*  3,2:1 · 3,0:1 — SÓ ícone inativo, nunca conteúdo   */
+  --papel:       #F7F8F9;   /* fundo da aplicação — escolhido para o teal passar   */
+  --cartao:      #FFFFFF;   /* superfície elevada                                   */
+  --branco:      #FFFFFF;
+  --linha:       #E3E6EA;   /* divisória decorativa (WCAG não exige contraste)      */
+  --linha-forte: #7C8497;   /*  3,5:1 no papel — BORDA DE CAMPO e componente ativo  */
 
-  /* Overlays */
-  .overlay{position:fixed;inset:0;background:rgba(30,26,20,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50}
-  .sheet{background:#fff;border-radius:18px 18px 0 0;padding:20px 18px 26px;width:100%;max-width:520px;max-height:88vh;overflow:auto}
-  .sheet h2{margin:0 0 8px}
-  .sheet label{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:.92rem}
-  .sheet input[type=checkbox]{width:22px;height:22px;flex:none;margin-top:1px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-  .chips button{padding:10px 14px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:.95rem;cursor:pointer}
-  .chips button.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+  /* ---- Ação — a cor da marca, sem derivação ---- */
+  --acao:       var(--marca-primaria);   /* 5,05:1 com texto branco; 4,75:1 contra o papel */
+  --acao-hover: var(--marca-primaria-hover);
+  --acao-ativa: var(--marca-primaria-ativa);
+  --acao-texto: #FFFFFF;
 
-  footer.legal{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--line);padding:8px 14px;font-size:.883rem;color:var(--muted);text-align:center}
-  footer.legal .in{max-width:520px;margin:0 auto}
+  /* ---- Estado — independentes da marca, todos em AA nas duas superfícies ---- */
+  --estado-plantao:       #1F4E79;  /* 8,7:1 — em plantão, informativo            */
+  --estado-plantao-fundo: #E7EEF6;  /* 7,4:1 com o texto acima                    */
 
-  /* Relatório (impressão) */
-  #report{display:none}
-  @media print{
-    body>.app, footer.legal{display:none!important}
-    #report{display:block;font-size:12pt;color:#000;padding:0 8mm}
-    #report h1{font-size:16pt} #report h2{font-size:13pt;margin-top:16pt}
-    #report table{width:100%;border-collapse:collapse;font-size:10.5pt}
-    #report th,#report td{border:1px solid #999;padding:4pt 6pt;text-align:left}
-    #report .disc{border:1px solid #000;padding:6pt;margin-top:14pt;font-size:9.5pt}
-  }
-  .report-screen #report{display:block;background:#fff;max-width:520px;margin:0 auto;padding:20px 18px 120px}
-  .report-screen .app main, .report-screen .app .roles{display:none}
-  #report table{width:100%;border-collapse:collapse;font-size:.883rem;margin:6px 0}
-  #report th,#report td{border:1px solid #ccc;padding:5px 7px;text-align:left}
-  #report .disc{border:1px solid var(--line);background:var(--info-bg);padding:10px;border-radius:10px;margin-top:14px;font-size:.883rem}
+  --estado-atencao:       #9A5B00;  /* 5,4:1 — dose atrasada, turno sem registro  */
+  --estado-atencao-fundo: #FDF0D9;  /* 4,8:1                                      */
 
-  /* Identidade — aplicada em 24/08/2026 a partir de marca/tokens.css v3 */
-  .logo-app{height:1.15em; width:auto; vertical-align:-.18em; margin-right:.25em;}
-  :focus-visible{outline:3px solid #3A3F4A; outline-offset:2px;
-    box-shadow:0 0 0 2px #fff; border-radius:8px;}
+  --estado-erro:          #C62828;  /* 5,6:1 — erro, intercorrência               */
+  --estado-erro-fundo:    #FDECEA;  /* 4,9:1                                      */
+
+  --estado-sucesso:       #2E7D32;  /* 5,1:1 — confirmado, check-in dado          */
+  --estado-sucesso-fundo: #E8F5E9;  /* 4,6:1                                      */
+
+  /* ⚠️ "Em plantão" é azul-marinho, não teal, porque o teal é a marca — e a
+     marca é configurável pela agência. Estado não pode mudar de cliente. */
+
+  /* ---- Foco — anel de dois tons, visível sobre QUALQUER fundo ----
+     A tinta sozinha some sobre o botão teal (2,1:1). O halo branco resolve:
+     branco sobre teal é 5,05:1. Por isso os dois, sempre juntos. */
+  --foco:      #3A3F4A;
+  --foco-halo: #FFFFFF;
+
+  /* ---- Tipografia — Nunito Sans, auto-hospedada ----------------------
+     Subset latino (pt-BR + es-ES), pesos 400/600/700/800, `font-display:
+     swap`, pilha de sistema como fallback declarado: o texto aparece na
+     hora, na fonte do aparelho, e troca quando a webfont chega.
+     MEDIDO em 24/08/2026: 8,7 KB por peso, 34,7 KB os quatro (94% menor
+     que os TTF). Só 400+700 daria 17,3 KB. Cabe no orçamento da cuidadora
+     em Android com rede ruim, que era a objeção correta desde a v1.
+     ⚠️ Nunca apontar para o Google Fonts: requisição a terceiro numa
+     página que trata dado de saúde. Arquivos em marca/fontes/. */
+  --fonte: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+           "Helvetica Neue", Arial, sans-serif;
+
+  /* Escala do projeto. O brand book não prescreve mais tamanho — a régua
+     é a acessibilidade, e ela tem peso dobrado aqui porque parte dos
+     familiares que leem o produto é idosa.
+     Base 17px; nada significativo abaixo de 15px. */
+  --texto-xs:   0.78rem;  /* 13px — só metadado, nunca conteúdo */
+  --texto-sm:   0.88rem;  /* 15px — apoio, legenda              */
+  --texto-base: 1rem;     /* 17px — corpo                       */
+  --texto-lg:   1.15rem;  /* 20px — destaque, rótulo de ação    */
+  --texto-xl:   1.4rem;   /* 24px — título de cartão            */
+  --texto-2xl:  1.75rem;  /* 30px — título de seção             */
+  --texto-3xl:  2.2rem;   /* 37px — hero                        */
+
+  --altura-corpo:  1.5;
+  --altura-titulo: 1.2;
+  --peso-normal:   400;
+  --peso-medio:    600;
+  --peso-forte:    700;
+  --peso-display:  800;
+
+  /* ---- Espaçamento — base 4px ---- */
+  --esp-1: 4px;  --esp-2: 8px;  --esp-3: 12px; --esp-4: 16px;
+  --esp-5: 24px; --esp-6: 32px; --esp-7: 48px; --esp-8: 64px;
+
+  /* ---- Raio — ecoa a forma orgânica do símbolo ---- */
+  --raio-sm:   8px;    /* campo, chip    */
+  --raio-md:   12px;   /* cartão, botão  */
+  --raio-lg:   18px;   /* modal, folha   */
+  --raio-full: 999px;  /* pílula, avatar */
+
+  /* ---- Sombra — tingida com a tinta da marca, nunca cinza puro ---- */
+  --sombra-sm: 0 1px 2px rgba(58,63,74,.06), 0 1px 3px rgba(58,63,74,.08);
+  --sombra-md: 0 2px 4px rgba(58,63,74,.06), 0 6px 16px rgba(58,63,74,.08);
+  --sombra-lg: 0 4px 8px rgba(58,63,74,.06), 0 12px 32px rgba(58,63,74,.10);
+
+  /* ---- Toque e campos ---- */
+  --toque-min:    44px;  /* mínimo absoluto (WCAG)                         */
+  --campo-altura: 48px;  /* campo de formulário                            */
+  --toque-acao:   52px;  /* ação primária no app: registro em movimento    */
+
+  /* ---- Iconografia — BRAND BOOK §7.1, que permaneceu ---- */
+  --icone-traco: 1.5px;
+  --icone-tamanho: 24px;
+}
+
+/* ============================================================
+   MARCA CO-BRANDED 🔒 — a agência configura, o sistema protege
+
+   A agência configura logo, cor e nome; a assinatura "powered by Alentra"
+   é discreta e NÃO REMOVÍVEL em toda superfície que a família toca.
+   Ativo pronto: marca/alentra-wordmark-powered-by.svg.
+
+   REGRA: aceitamos a MATIZ do cliente, nunca o contraste dele.
+   O tom aplicado é derivado até garantir >=4,5:1 com o texto do botão e
+   >=3:1 do botão contra o fundo. Se a cor escolhida não alcançar, ela é
+   escurecida — a agência continua reconhecendo a marca dela, e a cuidadora
+   continua conseguindo ler. Derivação no SERVIDOR, na gravação da
+   configuração, nunca em CSS: assim é testável, e o relatório em PDF usa o
+   mesmo valor que a tela.
+
+   (Na v2 esta regra existia para corrigir o §8 do brand book, que prometia
+   proteger a UX e não protegia. O §8 saiu do documento; a regra fica,
+   porque o problema era real e continua sendo.)
+   ============================================================ */
+[data-marca="cliente"] {
+  --acao:       var(--marca-cliente-acao, var(--marca-primaria));
+  --acao-hover: var(--marca-cliente-acao-hover, var(--marca-primaria-hover));
+  --acao-ativa: var(--marca-cliente-acao-ativa, var(--marca-primaria-ativa));
+  /* Tinta, papel, estado e tipografia NÃO são configuráveis. */
+}
+
+/* ============================================================
+   MODO ESCURO — estrutura pronta, valores em PROD.
+   Os tokens já estão em pares fundo/tinta para que a troca seja só de
+   valores, sem refatorar componente. NÃO preencher antes da triagem.
+   ============================================================ */
+
+/* ---- Webfont: auto-hospedada, subset latino ---- */
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fontes/nunito-sans-400.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fontes/nunito-sans-600.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fontes/nunito-sans-700.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fontes/nunito-sans-800.woff2") format("woff2");
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+
+/* ---- Base ---- */
+
+/* ⚠️ A RAIZ PRECISA SER 17px, senão a escala inteira mente. Corrigido em 24/08/2026.
+   Os tokens de texto são declarados em `rem`, e `rem` resolve contra a RAIZ — não
+   contra o `body`. Sem esta regra, `--texto-base` valia 16px (não os 17 documentados)
+   e, pior, `--texto-sm` caía para 14,08px, **abaixo do piso de 15px** que a régua de
+   acessibilidade do projeto fixa. A escala inteira rendia 6% menor que o prometido.
+   106,25% = 17/16, em percentual e não em px de propósito: assim continua respeitando
+   o tamanho de fonte que a pessoa configurou no navegador. Fixar `font-size:17px`
+   quebraria justamente quem aumenta a fonte do sistema — o familiar idoso. */
+:root { font-size: 106.25%; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--fonte);
+  font-size: var(--texto-base);
+  line-height: var(--altura-corpo);
+}
+
+h1, h2, h3 { line-height: var(--altura-titulo); font-weight: var(--peso-forte); text-wrap: balance; }
+.display   { font-size: var(--texto-3xl); font-weight: var(--peso-display); line-height: var(--altura-titulo); }
+
+a { color: var(--marca-primaria); text-underline-offset: .18em; }
+
+/* ---- Foco: sempre visível, nunca removido ---- */
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--foco-halo);
+  border-radius: var(--raio-sm);
+}
+
+/* ---- Botões ---- */
+.btn {
+  min-height: var(--toque-acao);
+  padding: var(--esp-3) var(--esp-5);
+  border: none;
+  border-radius: var(--raio-md);
+  font: inherit;
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-forte);
+  cursor: pointer;
+  background: var(--acao);
+  color: var(--acao-texto);
+  transition: background .15s ease;
+}
+.btn:hover  { background: var(--acao-hover); }
+.btn:active { background: var(--acao-ativa); }
+
+.btn--secundario {
+  background: transparent;
+  color: var(--tinta);
+  border: 2px solid var(--linha-forte);
+}
+
+/* Desabilitado nunca é só cor: some o ponteiro e o rótulo diz o motivo */
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ---- Campos ---- */
+.campo {
+  min-height: var(--campo-altura);
+  padding: 0 var(--esp-3);
+  border: 1px solid var(--linha-forte);
+  border-radius: var(--raio-sm);
+  background: var(--branco);
+  color: var(--tinta);
+  font: inherit;
+  font-size: var(--texto-base);
+}
+
+/* ---- Chips de estado — formato pílula ----
+   REGRA: nenhuma informação apenas por cor. Todo chip carrega ícone +
+   texto; a cor só reforça. Vale para daltônicos e para tela sob sol. */
+.chip {
+  display: inline-flex; align-items: center; gap: var(--esp-2);
+  padding: var(--esp-1) var(--esp-3);
+  border-radius: var(--raio-full);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+.chip--plantao { background: var(--estado-plantao-fundo); color: var(--estado-plantao); }
+.chip--atencao { background: var(--estado-atencao-fundo); color: var(--estado-atencao); }
+.chip--erro    { background: var(--estado-erro-fundo);    color: var(--estado-erro); }
+.chip--sucesso { background: var(--estado-sucesso-fundo); color: var(--estado-sucesso); }
+
+/* ---- Cartão ---- */
+.cartao {
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio-md);
+  padding: var(--esp-4);
+  box-shadow: var(--sombra-sm);
+}
+
+/* ---- Ícones — outline 1,5px, terminais redondos (BRAND BOOK §7.1) ---- */
+.icone {
+  width: var(--icone-tamanho); height: var(--icone-tamanho);
+  fill: none; stroke: currentColor;
+  stroke-width: var(--icone-traco);
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ---- Assinatura co-branded 🔒 — discreta e não removível ----
+   Não existe classe, plano ou configuração que a esconda. Se um dia
+   existir, é decisão nova do Fernando, não configuração. */
+.assinatura-alentra { display: inline-block; height: 1.15em; vertical-align: middle; opacity: .85; }
+
+/* ---- Movimento reduzido ---- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ===== estilo.css do produto, embutido ===== */
+/* ============================================================
+   ALENTRA — camada de componentes
+   Depende de tokens.css, que é o dono das cores e da escala.
+   Nada de cor literal aqui: se aparecer um #hex neste arquivo,
+   é sinal de que o token que falta precisa ser criado lá.
+   ============================================================ */
+
+* { box-sizing: border-box }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: var(--texto-base);
+  line-height: var(--altura-corpo);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Alvos: 44px é o piso, 56px a ação principal, 84px o atalho de registro.
+   Não é preferência — a cuidadora usa uma mão, em movimento. */
+button, .botao {
+  font: inherit; cursor: pointer; border: none;
+  background: none; color: inherit;
+  min-height: 44px; border-radius: var(--raio-md);
+}
+button:disabled { opacity: .55; cursor: not-allowed }
+
+/* Foco de duas cores: funciona sobre claro e sobre a cor da agência. */
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--foco-halo);
+}
+
+.acao-principal {
+  min-height: 56px; width: 100%;
+  background: var(--acao); color: var(--acao-texto);
+  font-size: var(--texto-lg); font-weight: var(--peso-display);
+  letter-spacing: -.01em;
+}
+.acao-principal:hover { background: var(--acao-hover) }
+.acao-principal:active { background: var(--acao-ativa) }
+
+.acao-secundaria {
+  min-height: 44px; padding: 0 14px;
+  border: 1.5px solid var(--linha-forte); background: var(--cartao);
+  color: var(--tinta-suave); font-weight: var(--peso-forte);
+  font-size: var(--texto-sm);
+}
+
+.cartao {
+  background: var(--cartao); border: 1px solid var(--linha);
+  border-radius: var(--raio-md); padding: 16px;
+}
+
+.cabecalho-marca {
+  background: var(--marca-cliente, var(--marca-primaria));
+  color: var(--branco);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.cabecalho-marca .nome { font-weight: var(--peso-display); font-size: var(--texto-base) }
+
+/* "powered by Alentra" — o sistema é co-branded 🔒, não marca branca.
+   Este rodapé não é configurável, e é por isso que ele mora no CSS e não
+   num campo do banco. */
+.assinatura {
+  display: flex; align-items: center; gap: 6px;
+  font-size: var(--texto-xs); color: var(--tinta-fraca);
+  padding: 10px 16px;
+}
+.assinatura b { color: var(--tinta-suave); font-weight: var(--peso-display); letter-spacing: -.01em }
+
+.selo {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: var(--texto-xs); font-weight: var(--peso-forte);
+}
+.selo-atencao { background: var(--estado-atencao-fundo); color: var(--estado-atencao) }
+.selo-erro    { background: var(--estado-erro-fundo);    color: var(--estado-erro) }
+.selo-ok      { background: var(--estado-sucesso-fundo); color: var(--estado-sucesso) }
+.selo-fila    { background: var(--estado-plantao-fundo); color: var(--estado-plantao) }
+
+/* ⚠️ Estado NUNCA depende só de cor: todo selo carrega rótulo em texto.
+   A regra vale duas vezes aqui — a cor primária é escolhida pela agência,
+   e cor de marca não pode carregar significado de estado. */
+
+.aviso {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 13px 15px; border-radius: var(--raio-md);
+  font-size: var(--texto-sm); line-height: 1.45;
+}
+.aviso-info    { background: var(--estado-plantao-fundo); color: var(--estado-plantao);
+                 border: 1px solid var(--estado-plantao) }
+.aviso-atencao { background: var(--estado-atencao-fundo); color: var(--estado-atencao);
+                 border: 1px solid var(--estado-atencao) }
+.aviso-erro    { background: var(--estado-erro-fundo); color: var(--estado-erro);
+                 border: 1px solid var(--estado-erro) }
+.aviso-ok      { background: var(--estado-sucesso-fundo); color: var(--estado-sucesso);
+                 border: 1px solid var(--estado-sucesso) }
+
+label { display: block; font-size: var(--texto-sm); font-weight: var(--peso-forte); margin-bottom: 6px }
+input, select {
+  font: inherit; width: 100%; min-height: 48px; padding: 0 12px;
+  border: 1.5px solid var(--linha-forte); border-radius: var(--raio-sm);
+  background: var(--cartao); color: var(--tinta);
+}
+
+.rotulo-secao {
+  font-size: var(--texto-xs); font-weight: var(--peso-forte);
+  color: var(--tinta-suave); text-transform: uppercase; letter-spacing: .08em;
+}
+
+.ic { width: 20px; height: 20px; fill: none; stroke: currentColor;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none }
+
+.oculto { display: none !important }
+
+/* Tabela do painel — rola dentro de si, o corpo da página nunca rola de lado */
+.rolagem { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: var(--texto-sm) }
+th { text-align: left; padding: 10px 12px; background: var(--papel);
+     border-bottom: 1px solid var(--linha); font-size: var(--texto-xs);
+     text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave) }
+td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
+
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important } }
+
+/* A demo escolhe uma cor de agência para mostrar o co-branded funcionando. */
+:root{ --marca-cliente:#2E6DA8 }
 </style>
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <h1><svg class="logo-app" xmlns="http://www.w3.org/2000/svg" viewBox="-30.00 -29.97 1559.37 1806.22" role="img" aria-label="Alentra"> <title>Alentra</title> <path fill="currentColor" fill-rule="evenodd" d="M613.22 1233.69c2.87,14.48 20.88,29.93 37.3,36.35l137.06 53.59c35.43,13.85 40.87,5.97 51.9,-27.98 15.3,-47.12 72.78,-222.02 71.42,-255.51 -2.48,-61.02 -73.49,-128.02 -165.75,-129.61 -84.22,-1.45 -172.86,55.38 -174.13,130.83 -0.82,49.17 33.1,146.3 42.21,192.32zm128.88 -377.06c65.11,0 117.89,-52.78 117.89,-117.88 0,-65.11 -52.78,-117.88 -117.89,-117.88 -65.11,0 -117.88,52.78 -117.88,117.88 0,65.11 52.77,117.88 117.88,117.88zm-375.05 789.19c224.17,126.22 654.42,163.98 805.11,-69.07 53.75,-83.12 -10.25,-126.06 -95.16,-89.8 -157.55,67.27 -290.51,105.88 -460.31,38.98 -80.58,-31.74 -113.56,-87.71 -8.12,-56.13 50.72,15.2 138.77,45.79 185.12,28.29 27.36,-10.34 42.31,-16.22 42.31,-52.27 0,-35.48 -61.81,-46.48 -82.73,-54.69 -91.03,-35.72 -125.97,-59.02 -201.96,-106.5 -39.78,-24.86 -134.24,-44.11 -180.33,-34.36 -25.55,5.4 -43.55,13.03 -48.06,-21.42 -6.02,-45.85 44.13,-81 83.43,-85.98 44.98,-5.7 74.1,7.44 74.51,-53.97l2.27 -334.49c1.13,-166.83 108.56,-269.29 264.91,-268.61 156.36,0.67 267.86,103.12 269.16,266.1l4.4 552.94c0.35,43.97 -9.67,93.76 46.8,103.11 31.66,5.23 60.28,-0.3 95.19,11.9 80.64,28.17 86.99,111.58 50.47,177.39 -8.82,15.89 -19.44,30.27 -29.72,45.23 -7.43,10.82 -15.71,23.17 -0.39,30.07 10.61,4.77 27.9,1.89 39.12,-0.26 59.65,-11.41 121.34,-58.81 158.25,-104.09 90.52,-111.02 144.19,-318.09 105.16,-459.89 -10.97,-39.87 -176.97,-491.83 -340.49,-811.49 -84.58,-165.36 -220.86,-298.53 -417.77,-296.77 -178.47,1.6 -308.97,146.82 -382.66,297.29 -104.38,213.14 -207.87,459.89 -304.04,692.25 -16.26,39.28 -33.05,78.37 -37.93,118.2 -33,269.07 166.65,427.25 363.45,538.05z"/> </svg> Alentra <span class="hint" style="color:#fff;opacity:.7">(protótipo)</span></h1>
-    <div class="patient">Cuidando de: <strong>D. Maria, 82</strong></div>
-    <div class="roles">
-      <button id="tab-cuidador" onclick="setRole('cuidador')">Sou cuidador(a)</button>
-      <button id="tab-familia" onclick="setRole('familia')">Sou da família</button>
-    </div>
-  </header>
-  <main id="main"></main>
+<style>
+  /* Moldura da demonstração — só existe aqui, não no produto. */
+  .demo-barra{position:sticky;top:0;z-index:20;background:var(--cartao);
+    border-bottom:1px solid var(--linha);padding:10px 16px;display:flex;
+    align-items:center;gap:12px;flex-wrap:wrap}
+  .demo-barra .marca{display:flex;align-items:center;gap:9px;font-weight:var(--peso-display)}
+  .demo-barra .quad{width:28px;height:28px;border-radius:8px;background:var(--marca-cliente);flex:none}
+  .demo-abas{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+  .demo-aba{padding:0 14px;min-height:40px;border-radius:999px;font-size:var(--texto-sm);
+    font-weight:var(--peso-forte);color:var(--tinta-suave);border:1.5px solid var(--linha)}
+  .demo-aba[aria-selected="true"]{background:var(--marca-cliente);color:var(--branco);
+    border-color:var(--marca-cliente)}
+  .demo-selo{font-size:var(--texto-xs);font-weight:var(--peso-forte);letter-spacing:.1em;
+    text-transform:uppercase;color:var(--tinta-fraca)}
+  .demo-nota{max-width:900px;margin:0 auto;padding:14px 16px 0}
+  .palco{max-width:900px;margin:0 auto;padding:16px}
+  .aparelho{max-width:560px;margin:0 auto;border:1px solid var(--linha);
+    border-radius:var(--raio-md);overflow:hidden;background:var(--papel)}
+  .cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .cartao-numero{padding:14px 16px;border-radius:var(--raio-md);background:var(--cartao);
+    border:1px solid var(--linha);display:flex;flex-direction:column;gap:2px}
+  .cartao-numero .valor{font-size:var(--texto-xl);font-weight:var(--peso-display);
+    line-height:1.1;font-variant-numeric:tabular-nums}
+  .num{font-variant-numeric:tabular-nums}
+  .atalhos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .atalho{min-height:84px;background:var(--cartao);border:1px solid var(--linha);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    font-size:var(--texto-sm);font-weight:var(--peso-forte);border-radius:var(--raio-md)}
+  .dose{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--cartao);
+    border:1px solid var(--linha);border-radius:var(--raio-md);margin-bottom:10px}
+  .dose .h{font-size:var(--texto-lg);font-weight:var(--peso-display);min-width:58px}
+  .linha-tempo{display:flex;flex-direction:column;gap:10px}
+  .evento{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:12px 14px;
+    background:var(--cartao);border:1px solid var(--linha);border-radius:var(--raio-md)}
+  .evento .hora{font-size:var(--texto-sm);font-weight:var(--peso-forte);color:var(--tinta-suave)}
+  .evento .quem{font-size:var(--texto-xs);color:var(--tinta-fraca);margin-top:3px}
+  .soon{font-size:var(--texto-xs);font-weight:var(--peso-forte);padding:2px 9px;
+    border-radius:999px;background:var(--estado-atencao-fundo);color:var(--estado-atencao);
+    margin-left:8px;vertical-align:middle}
+  h2{font-size:var(--texto-lg);font-weight:var(--peso-display);margin:0 0 4px}
+  .sub{color:var(--tinta-suave);font-size:var(--texto-sm);margin:0 0 14px}
+</style>
+
+<div class="demo-barra">
+  <span class="marca"><span class="quad"></span>Lar Aconchego</span>
+  <span class="demo-selo">demonstração</span>
+  <div class="demo-abas" role="tablist">
+    <button class="demo-aba" role="tab" aria-selected="true" data-tela="gestor">Gestor da agência</button>
+    <button class="demo-aba" role="tab" aria-selected="false" data-tela="cuidadora">Cuidadora</button>
+    <button class="demo-aba" role="tab" aria-selected="false" data-tela="familia">Família</button>
+  </div>
 </div>
 
-<div id="report"></div>
+<div class="demo-nota">
+  <div class="aviso aviso-info">
+    <span><b>Demonstração com dados fictícios.</b> As telas, as cores e as regras são as do
+    produto; os nomes não são de ninguém. A marca no topo é a da agência —
+    <b>o Alentra assina embaixo</b>, e é assim no produto inteiro.</span>
+  </div>
+</div>
 
-<footer class="legal"><div class="in">
-  Registro informativo de cuidados. Não substitui orientação médica, diagnóstico ou tratamento.
-  Em emergência, ligue <strong>192 (SAMU)</strong>. · Seus dados são sensíveis (LGPD art. 11) e nunca são vendidos.
-  <br><strong>Demonstração</strong> — todos os dados são fictícios ·
-  <a href="#" onclick="localStorage.removeItem(KEY);location.reload();return false" style="color:var(--brand)">↺ Reiniciar demonstração</a>
-</div></footer>
+<!-- ==================== GESTOR ==================== -->
+<div class="palco" data-tela="gestor">
+  <h2>Operação de hoje</h2>
+  <p class="sub">O que está atrasado e o que ficou sem registro — antes de a família perguntar.</p>
 
-<div id="overlay-root"></div>
+  <div class="cartoes" style="margin-bottom:18px">
+    <div class="cartao-numero"><span class="valor num">14</span><span class="rotulo-secao">doses previstas</span></div>
+    <div class="cartao-numero"><span class="valor num">11</span><span class="rotulo-secao">confirmadas</span></div>
+    <div class="cartao-numero"><span class="valor num" style="color:var(--estado-atencao)">1</span><span class="rotulo-secao">atrasada</span></div>
+    <div class="cartao-numero"><span class="valor num" style="color:var(--estado-plantao)">2</span><span class="rotulo-secao">retidas no aparelho</span></div>
+  </div>
+
+  <div class="cartao rolagem" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Paciente</th><th>Medicação</th><th>Prevista</th><th>Situação</th></tr></thead>
+      <tbody>
+        <tr><td>D. Maria</td><td>Losartana 50mg</td><td class="num">08:00</td>
+            <td><span class="selo selo-ok">confirmada 08:04 · Ana</span></td></tr>
+        <tr><td>D. Maria</td><td>Metformina 850mg</td><td class="num">12:00</td>
+            <td><span class="selo selo-fila">retida no aparelho · Ana</span></td></tr>
+        <tr><td>Sr. Aldo</td><td>Enalapril 10mg</td><td class="num">14:00</td>
+            <td><span class="selo selo-atencao">não confirmada</span></td></tr>
+        <tr><td>Sr. Aldo</td><td>Sinvastatina 20mg</td><td class="num">20:00</td>
+            <td><span class="selo" style="background:var(--papel);color:var(--tinta-suave)">prevista</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="aviso aviso-info" style="margin-top:14px">
+    <span><b>Retido não é falta de cuidado.</b> Enquanto houver registro preso no aparelho da
+    cuidadora, o alerta de dose não confirmada fica suspenso e a família não recebe aviso
+    indevido. Nada da fila é descartado.</span>
+  </div>
+
+  <h2 style="margin-top:28px">Escala de turnos</h2>
+  <p class="sub">Quem está com quem, e quem não chegou. A varredura avisa você — não a família.</p>
+  <div class="cartao rolagem" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Turno</th><th>Cuidadora</th><th>Paciente</th><th>Situação</th></tr></thead>
+      <tbody>
+        <tr><td class="num">07:00–15:00</td><td>Ana</td><td>D. Maria</td>
+            <td><span class="selo selo-ok">em andamento</span></td></tr>
+        <tr><td class="num">13:00–21:00</td><td>Carla</td><td>Sr. Aldo</td>
+            <td><span class="selo selo-atencao">sem check-in há 40 min</span></td></tr>
+        <tr><td class="num">15:00–23:00</td><td>Ana</td><td>D. Maria</td>
+            <td><span class="selo" style="background:var(--papel);color:var(--tinta-suave)">agendado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 style="margin-top:28px">Família e representação</h2>
+  <p class="sub">Quem da família acessa o quê — e por qual finalidade do termo assinado.</p>
+  <div class="aviso aviso-info" style="margin-bottom:14px">
+    <span><b>Contratar não é autorizar.</b> Quem paga não vira dono do dado, e ser filho não
+    abre o prontuário. O que abre é o termo de representação assinado.</span>
+  </div>
+  <div class="cartao rolagem" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Familiar</th><th>Idoso</th><th>Finalidades autorizadas</th><th>Termo</th></tr></thead>
+      <tbody>
+        <tr><td>Paulo (filho)</td><td>D. Maria</td>
+            <td>saúde · escala · emergência</td>
+            <td><span class="selo selo-ok">arquivado</span></td></tr>
+        <tr><td>Lúcia (filha)</td><td>Sr. Aldo</td>
+            <td>escala · emergência</td>
+            <td><span class="selo selo-ok">arquivado</span></td></tr>
+        <tr><td>Rita (sobrinha)</td><td>Sr. Aldo</td>
+            <td style="color:var(--tinta-fraca)">—</td>
+            <td><span class="selo selo-atencao">termo por coletar</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sub" style="margin-top:10px">Vínculo sem termo arquivado <b>não concede nada</b>:
+  a linha existe, não enxerga o prontuário e não recebe alerta.</p>
+
+  <div class="cartao demo-breve" data-tela-breve="documentos" role="button" tabindex="0"
+       style="margin-top:28px;cursor:pointer">
+    <h2 style="margin:0 0 4px">Documentos <span class="soon">em breve</span></h2>
+    <p class="sub" style="margin:0">Receitas, exames e laudos num lugar só.</p>
+    <p class="sub demo-obrigado oculto" style="margin:8px 0 0;color:var(--estado-plantao)">
+      Anotado. Saber quem toca aqui é o que decide o que construímos depois.</p>
+  </div>
+  <div class="cartao demo-breve" data-tela-breve="despesas" role="button" tabindex="0"
+       style="margin-top:12px;cursor:pointer">
+    <h2 style="margin:0 0 4px">Despesas compartilhadas <span class="soon">em breve</span></h2>
+    <p class="sub" style="margin:0">Quem pagou o quê, com total do mês.</p>
+    <p class="sub demo-obrigado oculto" style="margin:8px 0 0;color:var(--estado-plantao)">
+      Anotado. Saber quem toca aqui é o que decide o que construímos depois.</p>
+  </div>
+</div>
+
+<!-- ==================== CUIDADORA ==================== -->
+<div class="palco oculto" data-tela="cuidadora">
+  <div class="aparelho">
+    <header class="cabecalho-marca" style="flex-direction:column;align-items:stretch;gap:10px">
+      <span class="nome">Lar Aconchego</span>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-size:var(--texto-lg);font-weight:var(--peso-forte);line-height:1.2">D. Maria, 82</div>
+          <div style="font-size:var(--texto-sm);opacity:.92">Turno 07:00–15:00 · Ana</div>
+        </div>
+        <div class="num" style="font-size:var(--texto-sm);font-weight:var(--peso-forte)">12:07</div>
+      </div>
+    </header>
+
+    <main style="padding:16px;display:flex;flex-direction:column;gap:16px">
+      <div>
+        <div class="dose">
+          <span class="h num">08:00</span>
+          <div style="flex:1"><b>Losartana 50mg</b>
+            <div style="font-size:var(--texto-xs);color:var(--tinta-fraca)">confirmada 08:04</div></div>
+          <span class="selo selo-ok">feita</span>
+        </div>
+        <div class="dose" style="border-color:var(--estado-atencao)">
+          <span class="h num">12:00</span>
+          <div style="flex:1"><b>Metformina 850mg</b>
+            <div style="font-size:var(--texto-xs);color:var(--estado-atencao)">agora</div></div>
+          <button class="acao-principal" id="btn-dose" style="width:auto;padding:0 20px;min-height:48px">Dei agora</button>
+        </div>
+      </div>
+
+      <section style="display:flex;flex-direction:column;gap:10px">
+        <h2 class="rotulo-secao" style="margin:0">Registrar</h2>
+        <div class="atalhos">
+          <button class="atalho">🍽️<span>Refeição</span></button>
+          <button class="atalho">🚻<span>Banheiro</span></button>
+          <button class="atalho">😴<span>Sono</span></button>
+          <button class="atalho">🚿<span>Banho</span></button>
+          <button class="atalho">🩺<span>Pressão</span></button>
+          <button class="atalho">💧<span>Líquidos</span></button>
+        </div>
+        <button class="acao-secundaria" style="min-height:52px;width:100%;border-color:var(--estado-erro);color:var(--estado-erro)">Intercorrência</button>
+      </section>
+
+      <section style="display:flex;flex-direction:column;gap:8px">
+        <h2 class="rotulo-secao" style="margin:0">Feito neste turno</h2>
+        <div id="feitos" style="display:flex;flex-direction:column;gap:6px">
+          <div class="cartao" style="padding:10px 13px;font-size:var(--texto-sm)"><b class="num">08:04</b> — Losartana 50mg</div>
+          <div class="cartao" style="padding:10px 13px;font-size:var(--texto-sm)"><b class="num">09:20</b> — Refeição</div>
+          <div class="cartao" style="padding:10px 13px;font-size:var(--texto-sm)"><b class="num">10:45</b> — Pressão 13x8</div>
+        </div>
+      </section>
+    </main>
+
+    <footer style="border-top:1px solid var(--linha);background:var(--cartao)">
+      <button id="btn-fila" style="width:100%;min-height:52px;padding:0 16px;display:flex;align-items:center;gap:10px;text-align:left">
+        <span id="fila-texto" style="flex:1;font-size:var(--texto-sm);font-weight:var(--peso-forte)">
+          <span class="selo selo-fila">2 registros aguardando internet</span>
+        </span>
+        <span style="color:var(--tinta-suave)">›</span>
+      </button>
+      <div class="assinatura"><span>powered by</span><b>Alentra</b></div>
+    </footer>
+  </div>
+
+  <div class="aviso aviso-info" style="max-width:560px;margin:14px auto 0">
+    <span><b>A fila fica sempre à vista.</b> Sem internet, o registro é guardado no celular
+    com a hora certa e sobe depois <b>com aquela hora</b> — nunca com a hora do envio.
+    Nada é descartado, nunca.</span>
+  </div>
+</div>
+
+<!-- ==================== FAMÍLIA ==================== -->
+<div class="palco oculto" data-tela="familia">
+  <div class="aparelho">
+    <header class="cabecalho-marca" style="flex-direction:column;align-items:flex-start;gap:6px">
+      <span class="nome">Lar Aconchego</span>
+      <div style="font-size:var(--texto-lg);font-weight:var(--peso-display);line-height:1.2">D. Maria, 82</div>
+      <div style="font-size:var(--texto-sm);opacity:.92">quinta-feira, 10 de setembro</div>
+    </header>
+
+    <main style="padding:16px;display:flex;flex-direction:column;gap:16px">
+      <div class="cartao" style="display:flex;align-items:center;gap:14px">
+        <div style="flex:1">
+          <div class="rotulo-secao">Medicação de hoje</div>
+          <div style="font-size:var(--texto-xl);font-weight:var(--peso-display);line-height:1.1" class="num">3 de 4</div>
+        </div>
+        <span class="selo selo-ok">tudo em dia</span>
+      </div>
+
+      <section>
+        <h2 class="rotulo-secao" style="margin:0 0 10px">O dia de hoje</h2>
+        <div class="linha-tempo">
+          <div class="evento"><span class="hora num">10:45</span>
+            <div>Pressão 13x8<div class="quem">registrado por Ana</div></div></div>
+          <div class="evento"><span class="hora num">09:20</span>
+            <div>Almoço — comeu bem<div class="quem">registrado por Ana</div></div></div>
+          <div class="evento"><span class="hora num">08:04</span>
+            <div>Losartana 50mg<div class="quem">registrado por Ana</div></div></div>
+          <div class="evento"><span class="hora num">07:00</span>
+            <div>Ana assumiu o turno<div class="quem">passagem de plantão com “ciente”</div></div></div>
+        </div>
+      </section>
+
+      <div class="aviso aviso-atencao">
+        <span><b>Correção de um aviso anterior.</b> A dose das 12:00 aparecia como atrasada
+        por falha de conexão. Ela <b>foi dada às 12:03</b> e o registro chegou depois.</span>
+      </div>
+
+      <button class="acao-secundaria" style="width:100%;min-height:52px">📄 Relatório para o médico</button>
+    </main>
+
+    <footer><div class="assinatura"><span>powered by</span><b>Alentra</b></div></footer>
+  </div>
+
+  <div class="aviso aviso-info" style="max-width:560px;margin:14px auto 0">
+    <span><b>O alerta nunca traz dado de saúde.</b> A notificação diz que há uma novidade;
+    o conteúdo só aparece aqui dentro, depois de entrar. É exigência da LGPD, não escolha
+    de design.</span>
+  </div>
+</div>
+
+<footer style="max-width:900px;margin:32px auto 0;padding:20px 16px 40px;border-top:1px solid var(--linha);
+               font-size:var(--texto-sm);color:var(--tinta-suave)">
+  <p style="margin:0 0 8px"><b>Alentra</b> — o caderno de plantão que a família lê.
+  Demonstração com dados fictícios, atualizada em 30/08/2026 a partir das telas do produto.</p>
+  <p style="margin:0">Registro informativo de cuidados. Não substitui orientação médica,
+  diagnóstico ou tratamento. Em emergência, ligue 192 (SAMU).</p>
+</footer>
 
 <script>
-/* ================= Estado ================= */
-const KEY='cadernoPlantao_proto_v2';
-const MEDS=[
-  {id:'losartana', nome:'Losartana 50mg', obs:'1 comprimido', horarios:['08:00','20:00']},
-  {id:'metformina',nome:'Metformina 850mg', obs:'1 comprimido, após refeição', horarios:['08:00','12:00','20:00']},
-  {id:'sinvastatina',nome:'Sinvastatina 20mg', obs:'1 comprimido', horarios:['22:00']},
-];
-const QUICK=[
-  {t:'refeicao', e:'🍽️', label:'Refeição', opts:['Comeu tudo','Comeu metade','Comeu pouco','Recusou']},
-  {t:'liquidos', e:'💧', label:'Líquidos', opts:['Bebeu bem','Bebeu pouco','Recusou']},
-  {t:'banho',    e:'🛁', label:'Banho',    opts:['Feito, sem ajuda','Feito, com ajuda','Recusou']},
-  {t:'sono',     e:'😴', label:'Sono',     opts:['Dormiu bem','Agitado','Acordou várias vezes']},
-  {t:'evacuacao',e:'🚻', label:'Evacuação',opts:['Normal','Alterada','Não evacuou']},
-  {t:'humor',    e:'🙂', label:'Humor',    opts:['Bem-disposta','Apática','Confusa','Irritada']},
-];
-const ESCALA=[
-  {turno:'Diurno',  ini:'07:00', fim:'19:00', resp:'Ana'},
-  {turno:'Noturno', ini:'19:00', fim:'07:00', resp:'Carla'},
-];
-const DOC_CATS=['Receita','Exame','Laudo','Contato médico','Outro'];
-const ICON={med:'💊',intercorrencia:'⚠️',turno_inicio:'🟢',turno_fim:'🔴',ciente:'✅',
-  refeicao:'🍽️',liquidos:'💧',banho:'🛁',sono:'😴',evacuacao:'🚻',humor:'🙂',
-  pressao:'🩺',glicemia:'🩸'};
-
-let S=load();
-function load(){
-  try{const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.events) return s;}catch(e){}
-  return seed();
-}
-function save(){localStorage.setItem(KEY,JSON.stringify(S));}
-
-function seed(){
-  const now=new Date(), ev=[];
-  const d=(daysAgo,h,m)=>{const x=new Date(now);x.setDate(x.getDate()-daysAgo);x.setHours(h,m,0,0);return x.getTime();};
-  ev.push({ts:d(1,7,0), type:'turno_inicio', actor:'Ana', text:'Início do plantão diurno'});
-  ev.push({ts:d(1,8,5), type:'med', actor:'Ana', text:'Losartana 50mg — dose das 08:00 confirmada'});
-  ev.push({ts:d(1,8,6), type:'med', actor:'Ana', text:'Metformina 850mg — dose das 08:00 confirmada'});
-  ev.push({ts:d(1,9,0), type:'refeicao', actor:'Ana', text:'Refeição: comeu tudo (café da manhã)'});
-  ev.push({ts:d(1,10,15),type:'pressao', actor:'Ana', text:'Pressão arterial: 13x8', vit:{sys:13,dia:8}});
-  ev.push({ts:d(1,12,10),type:'med', actor:'Ana', text:'Metformina 850mg — dose das 12:00 confirmada'});
-  ev.push({ts:d(1,15,30),type:'intercorrencia', actor:'Ana', text:'Tontura leve ao levantar do sofá. Sentou, melhorou em ~5 min.'});
-  ev.push({ts:d(1,16,10),type:'pressao', actor:'Ana', text:'Pressão arterial: 15x9', vit:{sys:15,dia:9}});
-  ev.push({ts:d(1,17,0), type:'glicemia', actor:'Ana', text:'Glicemia: 112 mg/dL', vit:{mg:112}});
-  ev.push({ts:d(1,19,0), type:'turno_fim', actor:'Ana', text:'Fim do plantão. Resumo: dia tranquilo, atenção à tontura das 15:30.'});
-  ev.push({ts:d(1,19,5), type:'turno_inicio', actor:'Carla', text:'Início do plantão noturno'});
-  ev.push({ts:d(1,20,4), type:'med', actor:'Carla', text:'Losartana 50mg — dose das 20:00 confirmada'});
-  ev.push({ts:d(1,20,5), type:'med', actor:'Carla', text:'Metformina 850mg — dose das 20:00 confirmada'});
-  ev.push({ts:d(1,22,2), type:'med', actor:'Carla', text:'Sinvastatina 20mg — dose das 22:00 confirmada'});
-  ev.push({ts:d(1,23,0), type:'sono', actor:'Carla', text:'Sono: dormiu bem'});
-  ev.push({ts:d(0,7,0), type:'turno_fim', actor:'Carla', text:'Fim do plantão. Resumo: noite boa, dormiu direto. Deixei a Losartana das 08:00 separada.'});
-  const docs=[
-    {ts:d(3,10,0), cat:'Receita', nome:'Receita — Losartana + Metformina (Dr. Paulo, cardio)', by:'Família'},
-    {ts:d(12,15,0),cat:'Exame',   nome:'Hemograma completo — Lab São Lucas', by:'Família'},
-    {ts:d(30,9,0), cat:'Contato médico', nome:'Dr. Paulo (cardiologista) — (11) 9xxxx-xxxx', by:'Família'},
-  ];
-  const expenses=[
-    {ts:d(2,11,0), desc:'Farmácia — Losartana e Metformina (30 dias)', valor:87.50, by:'Rita (filha)'},
-    {ts:d(5,14,0), desc:'Fraldas geriátricas (pacote c/ 40)', valor:112.90, by:'Marcos (filho)'},
-  ];
-  return {consent:false, role:null, shift:null, events:ev, docs, expenses};
-}
-
-/* ================= Utilidades ================= */
-function sameDay(a,b){const x=new Date(a),y=new Date(b);return x.toDateString()===y.toDateString();}
-function fmtT(ts){return new Date(ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
-function fmtD(ts){return new Date(ts).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});}
-function fmtDT(ts){return new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}
-function money(v){return 'R$ '+v.toFixed(2).replace('.',',');}
-function minOfDay(hhmm){const[h,m]=hhmm.split(':').map(Number);return h*60+m;}
-
-function todayDoses(){
-  const now=new Date(), out=[];
-  for(const m of MEDS) for(const h of m.horarios){
-    const [hh,mm]=h.split(':').map(Number);
-    const t=new Date(now); t.setHours(hh,mm,0,0);
-    const taken=S.events.find(e=>e.type==='med' && sameDay(e.ts,now.getTime()) && e.text.startsWith(m.nome) && e.text.includes('das '+h));
-    let st='pend';
-    if(taken) st='done';
-    else if(now-t > 60*60*1000) st='late';
-    else if(now < t) st='future';
-    out.push({med:m,h,st,taken});
+(function(){
+  "use strict";
+  var abas = document.querySelectorAll(".demo-aba");
+  var palcos = document.querySelectorAll(".palco");
+  for (var i = 0; i < abas.length; i++) {
+    abas[i].addEventListener("click", function (ev) {
+      var alvo = ev.currentTarget.dataset.tela;
+      for (var j = 0; j < abas.length; j++)
+        abas[j].setAttribute("aria-selected", abas[j].dataset.tela === alvo ? "true" : "false");
+      for (var k = 0; k < palcos.length; k++)
+        palcos[k].classList.toggle("oculto", palcos[k].dataset.tela !== alvo);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    });
   }
-  return out.sort((a,b)=>a.h.localeCompare(b.h));
-}
 
-/* Turno vigente da escala (lida com turno que cruza a meia-noite) */
-function turnoAtual(){
-  const now=new Date(), cur=now.getHours()*60+now.getMinutes();
-  for(const t of ESCALA){
-    const a=minOfDay(t.ini), b=minOfDay(t.fim);
-    if(a<b ? (cur>=a&&cur<b) : (cur>=a||cur<b)) return t;
+  // Telas DEMO disparam `demo_clicada` ao toque — o dado que gradua DEMO -> codigo.
+  function marcarInteresse(el){
+    if (el.dataset.jaContado) return;
+    el.dataset.jaContado = "1";
+    var ok = el.querySelector(".demo-obrigado");
+    if (ok) ok.classList.remove("oculto");
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({
+        path: "demo_clicada/" + el.dataset.telaBreve,
+        title: "Demo clicada: " + el.dataset.telaBreve,
+        event: true
+      });
+    }
   }
-  return null;
-}
-/* Minutos desde o início do turno vigente */
-function minutosDesdeInicioTurno(t){
-  const now=new Date(), cur=now.getHours()*60+now.getMinutes(), a=minOfDay(t.ini);
-  return cur>=a ? cur-a : cur+(24*60-a);
-}
-
-/* ================= Alertas da família ================= */
-function alertasFamilia(){
-  const out=[];
-  const late=todayDoses().filter(d=>d.st==='late');
-  if(late.length) out.push({sev:'late', text:`⚠️ ${late.length===1?'1 dose sem confirmação':late.length+' doses sem confirmação'} há mais de 1h: ${late.map(d=>`${d.med.nome} (${d.h})`).join(', ')}.`});
-  const t=turnoAtual();
-  if(t && !S.shift && minutosDesdeInicioTurno(t)>30)
-    out.push({sev:'late', text:`⏰ Plantão ${t.turno.toLowerCase()} (${t.resp}, início ${t.ini}) sem "ciente" até agora — cuidador possivelmente atrasado.`});
-  if(S.shift){
-    const lastEv=[...S.events].sort((a,b)=>b.ts-a.ts)[0];
-    if(lastEv && Date.now()-lastEv.ts > 4*3600*1000)
-      out.push({sev:'warn', text:`🕐 Nenhum registro nas últimas 4 horas (último: ${fmtT(lastEv.ts)}).`});
+  var breves = document.querySelectorAll(".demo-breve");
+  for (var b = 0; b < breves.length; b++) {
+    breves[b].addEventListener("click", function (ev) { marcarInteresse(ev.currentTarget); });
+    breves[b].addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); marcarInteresse(ev.currentTarget); }
+    });
   }
-  return out;
-}
 
-/* ================= Resumo diário (template, sem IA) ================= */
-function resumoHoje(){
-  const now=Date.now();
-  const evs=S.events.filter(e=>sameDay(e.ts,now));
-  if(!evs.length) return 'Ainda não há registros hoje.';
-  const doses=todayDoses(), given=doses.filter(d=>d.st==='done').length;
-  const duePassed=doses.filter(d=>d.st!=='future').length;
-  const parts=[`💊 ${given} de ${duePassed||doses.length} doses do dia confirmadas`];
-  const last=t=>{const e=[...evs].reverse().find(e=>e.type===t);return e?e.text.toLowerCase():null;};
-  for(const [t,label] of [['refeicao','🍽️'],['liquidos','💧'],['sono','😴'],['humor','🙂']]){
-    const l=last(t); if(l) parts.push(label+' '+l);
-  }
-  const vit=[...evs].reverse().find(e=>e.type==='pressao'||e.type==='glicemia');
-  if(vit) parts.push(ICON[vit.type]+' última medição: '+vit.text.toLowerCase()+' ('+fmtT(vit.ts)+')');
-  const inters=evs.filter(e=>e.type==='intercorrencia');
-  parts.push(inters.length?`⚠️ ${inters.length} intercorrência${inters.length>1?'s':''} registrada${inters.length>1?'s':''}`:'✅ nenhuma intercorrência');
-  return parts.join(' · ');
-}
-
-/* ================= Render ================= */
-function setRole(r){S.role=r;save();render();}
-function render(){
-  document.body.classList.remove('report-screen');
-  document.getElementById('tab-cuidador').classList.toggle('active',S.role==='cuidador');
-  document.getElementById('tab-familia').classList.toggle('active',S.role==='familia');
-  const m=document.getElementById('main');
-  if(!S.consent){m.innerHTML='';showConsent();return;}
-  if(!S.role){m.innerHTML='<div class="card"><h2>Bem-vindo(a) 👋</h2><p>Escolha acima como você usa o caderno: <strong>cuidador(a)</strong> registra o plantão; <strong>família</strong> acompanha.</p></div>';return;}
-  m.innerHTML = S.role==='cuidador' ? viewCuidador() : viewFamilia();
-}
-
-/* ---------- Escala (cartão compartilhado) ---------- */
-function cardEscala(){
-  const t=turnoAtual();
-  return `<div class="card"><h2>📅 Escala de hoje <span class="soon">em breve</span></h2>
-    ${ESCALA.map(e=>`<div class="lrow"><span>${e.turno} · ${e.ini}–${e.fim}<small>${e.resp}</small></span>
-      <span class="pill ${t&&t.turno===e.turno?'now':''}">${t&&t.turno===e.turno?'agora':'—'}</span></div>`).join('')}
-    <p class="hint">A família recebe alerta se o turno começar sem o "ciente" do cuidador (tolerância de 30 min).</p></div>`;
-}
-
-/* ---------- Visão do cuidador ---------- */
-function viewCuidador(){
-  if(!S.shift) return viewPassagem();
-  const doses=todayDoses();
-  const dosesHtml=doses.map((d,i)=>`
-    <div class="dose ${d.st==='done'?'done':''} ${d.st==='late'?'late':''}">
-      <div class="when">${d.h}</div>
-      <div class="what">${d.med.nome} ${d.st==='late'?'<span class="badge late">atrasada</span>':''}
-        <small>${d.med.obs}${d.taken?` · dada às ${fmtT(d.taken.ts)} por ${d.taken.actor}`:''}</small></div>
-      ${d.st==='done'
-        ? '<button disabled>✓ Dada</button>'
-        : d.st==='future'
-          ? `<button class="secondary" style="background:#fff;color:var(--muted);border:1px solid var(--line)" onclick="giveDose(${i})">Dar agora</button>`
-          : `<button onclick="giveDose(${i})">✓ Dei agora</button>`}
-    </div>`).join('');
-  return `
-    <div class="okbar">🟢 Plantão de <strong>${S.shift.caregiver}</strong> desde ${fmtT(S.shift.startTs)}</div>
-    <div class="card"><h2>💊 Medicação de hoje</h2>${dosesHtml}
-      <p class="hint">Toque em “Dei agora” na hora em que der o medicamento. A família é avisada se uma dose passar de 1h sem confirmação.</p></div>
-    <div class="card"><h2>Registro rápido</h2>
-      <div class="quick">
-        ${QUICK.map((q,i)=>`<button onclick="quickSheet(${i})"><span class="e">${q.e}</span>${q.label}</button>`).join('')}
-        <button onclick="vitalSheet('pressao')"><span class="e">🩺</span>Pressão</button>
-        <button onclick="vitalSheet('glicemia')"><span class="e">🩸</span>Glicemia</button>
-      </div></div>
-    ${cardEscala()}
-    <div class="card"><h2>⚠️ Intercorrência</h2>
-      <textarea id="inter-text" rows="2" placeholder="Ex.: queda, febre, recusa de medicação, confusão…"></textarea>
-      <button class="btn danger" onclick="addInter()">Registrar intercorrência</button>
-      <p class="hint">Intercorrências aparecem em destaque para a família imediatamente. Em emergência, ligue 192 primeiro.</p></div>
-    <div class="card"><h2>Encerrar plantão</h2>
-      <textarea id="fim-text" rows="2" placeholder="Resumo para quem assume: como foi o dia, o que observar…"></textarea>
-      <button class="btn secondary" onclick="endShift()">🔴 Encerrar e passar o plantão</button></div>`;
-}
-
-function viewPassagem(){
-  const lastEnd=[...S.events].reverse().find(e=>e.type==='turno_fim');
-  const lastInter=[...S.events].reverse().find(e=>e.type==='intercorrencia');
-  return `
-    <div class="card"><h2>🔄 Passagem de turno</h2>
-      ${lastEnd?`<p><strong>${lastEnd.actor}</strong> encerrou o último plantão (${fmtT(lastEnd.ts)}):</p>
-      <p style="background:var(--info-bg);padding:10px;border-radius:10px">“${lastEnd.text.replace('Fim do plantão. ','')}”</p>`:'<p>Nenhum plantão anterior registrado.</p>'}
-      ${lastInter?`<p>⚠️ Última intercorrência (${fmtD(lastInter.ts)}, ${fmtT(lastInter.ts)}): <em>${lastInter.text}</em></p>`:''}
-      <p><strong>Quem está assumindo?</strong></p>
-      <div class="chips" id="who">
-        ${['Ana (diurna)','Carla (noturna)','Familiar'].map(n=>`<button onclick="selWho(this,'${n.split(' ')[0]}')">${n}</button>`).join('')}
-      </div>
-      <button class="btn" onclick="startShift()">✅ Ciente — iniciar meu plantão</button>
-      <p class="hint">O “ciente” fica registrado: a família sabe que a passagem de turno aconteceu.</p></div>
-    ${cardEscala()}`;
-}
-
-let whoSel=null;
-function selWho(btn,name){whoSel=name;document.querySelectorAll('#who button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
-function startShift(){
-  if(!whoSel){alert('Selecione quem está assumindo o plantão.');return;}
-  const ts=Date.now();
-  S.shift={caregiver:whoSel,startTs:ts};
-  S.events.push({ts,type:'ciente',actor:whoSel,text:'Ciente da passagem de turno'});
-  S.events.push({ts:ts+1,type:'turno_inicio',actor:whoSel,text:'Início do plantão'});
-  save();render();
-}
-function endShift(){
-  const txt=document.getElementById('fim-text').value.trim();
-  S.events.push({ts:Date.now(),type:'turno_fim',actor:S.shift.caregiver,text:'Fim do plantão. Resumo: '+(txt||'(sem observações)')});
-  S.shift=null;whoSel=null;save();render();
-}
-function giveDose(i){
-  const d=todayDoses()[i];
-  S.events.push({ts:Date.now(),type:'med',actor:S.shift.caregiver,text:`${d.med.nome} — dose das ${d.h} confirmada`});
-  save();render();
-}
-function addInter(){
-  const txt=document.getElementById('inter-text').value.trim();
-  if(!txt){alert('Descreva a intercorrência.');return;}
-  S.events.push({ts:Date.now(),type:'intercorrencia',actor:S.shift.caregiver,text:txt});
-  save();render();
-}
-function quickSheet(i){
-  const q=QUICK[i];
-  overlay(`<h2>${q.e} ${q.label}</h2>
-    <div class="chips">${q.opts.map(o=>`<button onclick="quickSave('${q.t}','${q.label}','${o}')">${o}</button>`).join('')}</div>
-    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>`);
-}
-function quickSave(t,label,opt){
-  S.events.push({ts:Date.now(),type:t,actor:S.shift.caregiver,text:`${label}: ${opt.toLowerCase()}`});
-  save();closeOverlay();render();
-}
-
-/* ---------- Sinais vitais (registro sem interpretação) ---------- */
-function vitalSheet(kind){
-  if(kind==='pressao') overlay(`<h2>🩺 Pressão arterial</h2>
-    <div class="row2">
-      <div><label style="margin:0 0 4px">Máxima (sistólica)</label><input type="number" id="v-sys" inputmode="numeric" placeholder="ex.: 13"></div>
-      <div><label style="margin:0 0 4px">Mínima (diastólica)</label><input type="number" id="v-dia" inputmode="numeric" placeholder="ex.: 8"></div>
-    </div>
-    <button class="btn" onclick="vitalSave('pressao')">Registrar</button>
-    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>
-    <p class="hint">O valor é apenas registrado — a avaliação é do médico. Se notar algo fora do habitual, registre uma intercorrência.</p>`);
-  else overlay(`<h2>🩸 Glicemia</h2>
-    <label style="margin:0 0 4px">Valor (mg/dL)</label><input type="number" id="v-mg" inputmode="numeric" placeholder="ex.: 110">
-    <button class="btn" onclick="vitalSave('glicemia')">Registrar</button>
-    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>
-    <p class="hint">O valor é apenas registrado — a avaliação é do médico. Se notar algo fora do habitual, registre uma intercorrência.</p>`);
-}
-function vitalSave(kind){
-  if(kind==='pressao'){
-    const sys=parseFloat(document.getElementById('v-sys').value), dia=parseFloat(document.getElementById('v-dia').value);
-    if(!sys||!dia){alert('Preencha os dois valores.');return;}
-    S.events.push({ts:Date.now(),type:'pressao',actor:S.shift.caregiver,text:`Pressão arterial: ${sys}x${dia}`,vit:{sys,dia}});
-  }else{
-    const mg=parseFloat(document.getElementById('v-mg').value);
-    if(!mg){alert('Preencha o valor.');return;}
-    S.events.push({ts:Date.now(),type:'glicemia',actor:S.shift.caregiver,text:`Glicemia: ${mg} mg/dL`,vit:{mg}});
-  }
-  save();closeOverlay();render();
-}
-
-/* ---------- Visão da família ---------- */
-function viewFamilia(){
-  const alerts=alertasFamilia();
-  const bars=alerts.length
-    ? alerts.map(a=>`<div class="${a.sev==='late'?'alertbar':'warnbar'}">${a.text}</div>`).join('')
-    : `<div class="okbar">✅ Tudo em dia. ${S.shift?'Plantão ativo: '+S.shift.caregiver+' desde '+fmtT(S.shift.startTs)+'.':'Nenhum plantão ativo no momento.'}</div>`;
-  const days={};
-  [...S.events].sort((a,b)=>b.ts-a.ts).forEach(e=>{
-    const k=new Date(e.ts).toDateString();
-    (days[k]=days[k]||[]).push(e);
+  // Confirmar a dose: mostra o que o produto faz de verdade — some da lista de
+  // pendentes, entra em "feito neste turno", e a fila cresce porque está sem rede.
+  var btn = document.getElementById("btn-dose");
+  if (btn) btn.addEventListener("click", function () {
+    var dose = btn.closest(".dose");
+    dose.style.borderColor = "var(--linha)";
+    dose.querySelector("div").innerHTML =
+      "<b>Metformina 850mg</b><div style='font-size:var(--texto-xs);color:var(--tinta-fraca)'>confirmada 12:07 · aguardando internet</div>";
+    btn.outerHTML = '<span class="selo selo-fila">na fila</span>';
+    var novo = document.createElement("div");
+    novo.className = "cartao";
+    novo.style.cssText = "padding:10px 13px;font-size:var(--texto-sm)";
+    novo.innerHTML = '<b class="num">12:07</b> — Metformina 850mg';
+    document.getElementById("feitos").prepend(novo);
+    document.getElementById("fila-texto").innerHTML =
+      '<span class="selo selo-fila">3 registros aguardando internet</span>';
   });
-  const tl=Object.entries(days).map(([k,evs])=>`
-    <div class="day"><h3>${fmtD(evs[0].ts)}</h3>
-    ${evs.map(e=>`<div class="ev ${e.type==='intercorrencia'?'inter':''}">
-      <div class="t">${fmtT(e.ts)}</div><div class="e">${ICON[e.type]||'📝'}</div>
-      <div class="d">${e.text}<small>por ${e.actor}</small></div></div>`).join('')}</div>`).join('');
-  const totalMes=S.expenses.filter(x=>new Date(x.ts).getMonth()===new Date().getMonth()).reduce((a,x)=>a+x.valor,0);
-  return `${bars}
-    <div class="card"><h2>📋 Resumo de hoje</h2><p style="font-size:.92rem">${resumoHoje()}</p>
-      <p class="hint">Resumo automático gerado dos registros do dia — sem interpretação clínica.</p></div>
-    <div class="card"><h2>📄 Relatório para o médico</h2>
-      <p class="hint">Aderência à medicação, medicamentos em uso, sinais vitais registrados e intercorrências dos últimos 7 dias.</p>
-      <button class="btn" onclick="showReport()">Gerar relatório</button></div>
-    ${cardEscala()}
-    <div class="card"><h2>🗂️ Documentos <span class="soon">em breve</span></h2>
-      ${S.docs.length?[...S.docs].sort((a,b)=>b.ts-a.ts).map(d=>`<div class="lrow"><span>${d.nome}<small>${d.cat} · ${fmtDT(d.ts)} · por ${d.by}</small></span></div>`).join(''):'<p class="hint">Nenhum documento.</p>'}
-      <button class="btn small secondary" onclick="docSheet()">+ Adicionar documento</button>
-      <p class="hint">Receitas, exames, laudos e contatos num lugar só — nada de foto perdida no WhatsApp. (No produto final: upload do arquivo.)</p></div>
-    <div class="card"><h2>💰 Despesas compartilhadas <span class="soon">em breve</span></h2>
-      ${S.expenses.length?[...S.expenses].sort((a,b)=>b.ts-a.ts).map(x=>`<div class="lrow"><span>${x.desc}<small>${fmtDT(x.ts)} · pago por ${x.by}</small></span><span class="amt">${money(x.valor)}</span></div>`).join(''):'<p class="hint">Nenhuma despesa.</p>'}
-      <div class="lrow"><span><strong>Total do mês</strong></span><span class="amt">${money(totalMes)}</span></div>
-      <button class="btn small secondary" onclick="expenseSheet()">+ Registrar despesa</button>
-      <p class="hint">Todo lançamento tem autor e data — transparência entre os irmãos, sem discussão.</p></div>
-    ${tl}`;
-}
-
-/* ---------- Documentos ---------- */
-function docSheet(){
-  overlay(`<h2>🗂️ Novo documento</h2>
-    <label style="margin:0 0 4px">Descrição</label>
-    <input type="text" id="doc-nome" placeholder="Ex.: Receita — Dr. Paulo (cardio)">
-    <label style="margin:10px 0 4px">Categoria</label>
-    <select id="doc-cat">${DOC_CATS.map(c=>`<option>${c}</option>`).join('')}</select>
-    <button class="btn" onclick="addDoc()">Salvar</button>
-    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>`);
-}
-function addDoc(){
-  const nome=document.getElementById('doc-nome').value.trim();
-  if(!nome){alert('Descreva o documento.');return;}
-  S.docs.push({ts:Date.now(),cat:document.getElementById('doc-cat').value,nome,by:'Família'});
-  save();closeOverlay();render();
-}
-
-/* ---------- Despesas ---------- */
-function expenseSheet(){
-  overlay(`<h2>💰 Nova despesa</h2>
-    <label style="margin:0 0 4px">Descrição</label>
-    <input type="text" id="exp-desc" placeholder="Ex.: Farmácia — remédios do mês">
-    <div class="row2" style="margin-top:10px">
-      <div><label style="margin:0 0 4px">Valor (R$)</label><input type="number" id="exp-valor" inputmode="decimal" step="0.01" placeholder="0,00"></div>
-      <div><label style="margin:0 0 4px">Pago por</label><input type="text" id="exp-by" placeholder="Ex.: Rita (filha)"></div>
-    </div>
-    <button class="btn" onclick="addExpense()">Salvar</button>
-    <button class="btn secondary" onclick="closeOverlay()">Cancelar</button>`);
-}
-function addExpense(){
-  const desc=document.getElementById('exp-desc').value.trim();
-  const valor=parseFloat(document.getElementById('exp-valor').value);
-  const by=document.getElementById('exp-by').value.trim()||'Família';
-  if(!desc||!valor){alert('Preencha descrição e valor.');return;}
-  S.expenses.push({ts:Date.now(),desc,valor,by});
-  save();closeOverlay();render();
-}
-
-/* ---------- Relatório ---------- */
-function showReport(){
-  const now=Date.now(), from=now-7*24*3600*1000;
-  const evs=S.events.filter(e=>e.ts>=from);
-  const given=evs.filter(e=>e.type==='med').length;
-  const daysCovered=new Set(evs.map(e=>new Date(e.ts).toDateString())).size||1;
-  const perDay=MEDS.reduce((a,m)=>a+m.horarios.length,0);
-  const expected=daysCovered*perDay;
-  const pct=Math.min(100,Math.round(given/expected*100));
-  const inters=evs.filter(e=>e.type==='intercorrencia');
-  const vitals=evs.filter(e=>e.type==='pressao'||e.type==='glicemia');
-  document.getElementById('report').innerHTML=`
-    <h1>Relatório de cuidados — D. Maria, 82</h1>
-    <p>Período: últimos 7 dias · Gerado em ${new Date().toLocaleDateString('pt-BR')} pelo Alentra (protótipo)</p>
-    <h2>Aderência à medicação</h2>
-    <p><strong>${given} de ~${expected} doses confirmadas (${pct}%)</strong> no período.</p>
-    <h2>Medicamentos em uso</h2>
-    <table><tr><th>Medicamento</th><th>Posologia</th><th>Horários</th></tr>
-      ${MEDS.map(m=>`<tr><td>${m.nome}</td><td>${m.obs}</td><td>${m.horarios.join(', ')}</td></tr>`).join('')}
-    </table>
-    <p><em>Apresente esta lista ao médico ou farmacêutico — a avaliação de interações medicamentosas
-    deve ser feita por um profissional de saúde.</em></p>
-    <h2>Sinais vitais registrados</h2>
-    ${vitals.length?`<table><tr><th>Data/hora</th><th>Medição</th><th>Registrado por</th></tr>
-      ${vitals.map(e=>`<tr><td>${fmtDT(e.ts)}</td><td>${e.text}</td><td>${e.actor}</td></tr>`).join('')}</table>
-      <p><em>Valores registrados pelos cuidadores, sem interpretação. A avaliação das medições é do profissional de saúde.</em></p>`
-      :'<p>Nenhuma medição registrada no período.</p>'}
-    <h2>Intercorrências no período</h2>
-    ${inters.length?`<table><tr><th>Data/hora</th><th>Descrição</th><th>Registrado por</th></tr>
-      ${inters.map(e=>`<tr><td>${fmtDT(e.ts)}</td><td>${e.text}</td><td>${e.actor}</td></tr>`).join('')}</table>`
-      :'<p>Nenhuma intercorrência registrada.</p>'}
-    <div class="disc"><strong>Aviso:</strong> este é um registro informativo de cuidados feito por cuidadores
-    e familiares. Não constitui prontuário médico, diagnóstico ou orientação terapêutica.</div>
-    <button class="btn" style="max-width:300px" onclick="window.print()">🖨️ Imprimir / salvar PDF</button>
-    <button class="btn secondary" style="max-width:300px" onclick="document.body.classList.remove('report-screen')">← Voltar</button>`;
-  document.body.classList.add('report-screen');
-  window.scrollTo(0,0);
-}
-
-/* ---------- Consentimento (LGPD) ---------- */
-function showConsent(){
-  overlay(`<h2>Antes de começar 🔒</h2>
-    <p style="font-size:.92rem">O Alentra registra <strong>dados de saúde</strong>, que a LGPD
-    classifica como dados sensíveis. Eles são usados <strong>exclusivamente</strong> para o registro e o
-    acompanhamento do cuidado pela família e pelos cuidadores autorizados.</p>
-    <ul style="font-size:.883rem;color:var(--muted);padding-left:20px">
-      <li>Nunca vendemos nem compartilhamos seus dados com terceiros.</li>
-      <li>Você pode revogar o consentimento e excluir todos os dados a qualquer momento.</li>
-      <li>Dados protegidos com criptografia.</li>
-    </ul>
-    <label><input type="checkbox" id="ck-consent"><span>Li e <strong>consinto</strong> com o tratamento dos dados de saúde para a finalidade de registro e acompanhamento do cuidado.</span></label>
-    <button class="btn" onclick="acceptConsent()">Concordar e continuar</button>`,true);
-}
-function acceptConsent(){
-  if(!document.getElementById('ck-consent').checked){alert('É necessário marcar a caixa de consentimento para usar o app.');return;}
-  S.consent=true;save();closeOverlay();render();
-}
-
-/* ---------- Overlay util ---------- */
-function overlay(html,locked){
-  document.getElementById('overlay-root').innerHTML=
-    `<div class="overlay" ${locked?'':'onclick="if(event.target===this)closeOverlay()"'}><div class="sheet">${html}</div></div>`;
-}
-function closeOverlay(){document.getElementById('overlay-root').innerHTML='';}
-
-render();
+})();
 </script>
+
 </body>
 </html>
