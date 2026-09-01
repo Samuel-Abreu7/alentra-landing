@@ -15,7 +15,7 @@
 /* ============================================================
    ALENTRA — tokens de design
    v3 — 24/08/2026. Sobre o BRAND BOOK OK e o pacote "Formatos OK",
-   ambos oficiais e aprovados pelo Fernando.
+   ambos oficiais e aprovados.
    Racional em marca/design-system.md · procedência em marca/README.md
 
    O QUE MUDOU DA v2, E POR QUE IMPORTA
@@ -314,7 +314,7 @@ a { color: var(--marca-primaria); text-underline-offset: .18em; }
 
 /* ---- Assinatura co-branded 🔒 — discreta e não removível ----
    Não existe classe, plano ou configuração que a esconda. Se um dia
-   existir, é decisão nova do Fernando, não configuração. */
+   existir, é decisão nova de produto, não configuração. */
 .assinatura-alentra { display: inline-block; height: 1.15em; vertical-align: middle; opacity: .85; }
 
 /* ---- Movimento reduzido ---- */
@@ -567,6 +567,24 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     border:1.5px solid var(--linha-forte);background:var(--cartao);color:var(--tinta)}
   .citacao .rodape button[disabled]{opacity:.55;cursor:not-allowed;
     border-style:dashed;border-color:var(--linha)}
+
+  /* ---- Pedido de depoimento por e-mail (01/09/2026) ---- */
+  .email-previa{background:var(--cartao);border:1px solid var(--linha);
+    border-radius:var(--raio-md);padding:16px 18px;font-size:var(--texto-sm);
+    line-height:var(--altura-corpo);white-space:pre-wrap}
+  /* display:block — sem isto o cabeçalho cola no corpo da mensagem, porque a
+     quebra de linha vira espaço dentro de um <span> inline. Achado na tela. */
+  .email-previa .cabeca{display:block;font-size:var(--texto-xs);color:var(--tinta-fraca);
+    border-bottom:1px solid var(--linha);padding-bottom:10px;margin-bottom:12px;
+    white-space:normal}
+  .consentimento{display:flex;gap:11px;align-items:flex-start;background:var(--cartao);
+    border:1.5px solid var(--linha-forte);border-radius:var(--raio-md);padding:13px 15px}
+  .consentimento input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--acao)}
+  .consentimento label{font-size:var(--texto-sm);line-height:var(--altura-corpo)}
+  .rotulo-campo{display:block;font-weight:var(--peso-forte);margin:16px 0 6px}
+  .area{width:100%;padding:11px 13px;border:1px solid var(--linha-forte);
+    border-radius:var(--raio-sm);background:var(--branco);color:var(--tinta);
+    font:inherit;font-size:var(--texto-base);line-height:var(--altura-corpo);resize:vertical}
 </style>
 
 <div class="demo-barra">
@@ -723,6 +741,12 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
       <span class="rotulo-secao">recomendariam a agência</span></div>
     <div class="cartao-numero"><span class="valor num">1</span>
       <span class="rotulo-secao">citação liberada para uso</span></div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+    <button type="button" class="acao-secundaria" id="btn-pedir-depoimento"
+            style="min-height:44px">✉️ Pedir depoimento por e-mail</button>
+    <span class="sub" style="margin:0">Depois da conversa, não no lugar dela.</span>
   </div>
 
   <div class="citacao">
@@ -1076,6 +1100,106 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   </div>
 </div>
 
+<!-- ============ lâmina: pedido de depoimento ============
+     Duas telas num lugar só: o e-mail que a família recebe e a página que o
+     link abre. O pedido sai DEPOIS da conversa — o e-mail não substitui
+     ouvir, ele registra o que já foi dito, com a pessoa escolhendo a frase. -->
+<div class="lamina" id="lamina-dep" hidden>
+  <div class="folha-modal" role="dialog" aria-modal="true" aria-labelledby="dep-titulo" style="max-width:620px">
+    <div class="modal-topo">
+      <h3 id="dep-titulo">Pedir depoimento — o que a família recebe</h3>
+      <button class="fechar" id="dep-fechar" aria-label="Fechar">×</button>
+    </div>
+
+    <!-- ---------- passo 1: o e-mail ---------- -->
+    <div id="dep-email">
+      <div class="email-previa">
+<span class="cabeca"><b>Para:</b> Lúcia (filha do Sr. Aldo) &nbsp;·&nbsp;
+<b>De:</b> Lar Aconchego, pelo Alentra &nbsp;·&nbsp;
+<b>Assunto:</b> Uma frase sua sobre o cuidado do Sr. Aldo</span>Olá, Lúcia.
+
+Conversamos esta semana sobre como está sendo o cuidado do seu pai. Se você
+quiser, registre em uma frase o que me contou — leva um minuto e é opcional.
+
+Abra este endereço para escrever:
+https://app.alentra.com.br/depoimento?t=…
+
+O link vale por 7 dias e só funciona uma vez.
+
+—
+Lar Aconchego · powered by Alentra
+Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
+
+      <div class="aviso aviso-info" style="margin-top:14px">
+        <span><b>O e-mail não carrega nada do cuidado.</b> Nome, um link e um prazo —
+        o mesmo catálogo fechado dos outros e-mails do produto. Nenhuma medicação,
+        nenhum sinal vital, nenhum diagnóstico sai por aqui.</span>
+      </div>
+
+      <button class="acao-principal" id="dep-abrir" style="margin-top:16px">
+        Abrir o link, como a família vê →</button>
+    </div>
+
+    <!-- ---------- passo 2: a página do link ---------- -->
+    <div id="dep-form" hidden>
+      <p class="sub" style="margin:0 0 4px"><b>Lar Aconchego</b> pede, pelo Alentra</p>
+      <div style="font-size:var(--texto-xl);font-weight:var(--peso-display);line-height:1.2;margin-bottom:6px">
+        Como está sendo, na sua palavra</div>
+      <p class="sub">Opcional, um minuto. Quem lê é a equipe da Lar Aconchego.</p>
+
+      <div class="aviso aviso-atencao">
+        <span><b>Não escreva informações de saúde aqui.</b> Nada de medicação, exame ou
+        diagnóstico — isso fica no aplicativo, protegido. Esta página é só para a sua
+        impressão sobre o atendimento.</span>
+      </div>
+
+      <label class="rotulo-campo" for="dep-frase">Você percebeu alguma diferença?</label>
+      <textarea id="dep-frase" class="area" rows="3"
+        placeholder="Escreva com as suas palavras."></textarea>
+
+      <span class="rotulo-campo">Você recomendaria a Lar Aconchego a outra família?</span>
+      <div class="escolhas" style="grid-template-columns:1fr 1fr">
+        <button type="button" class="escolha" aria-pressed="false" data-rec="sim">Sim</button>
+        <button type="button" class="escolha" aria-pressed="false" data-rec="nao">Não</button>
+      </div>
+
+      <label class="rotulo-campo" for="dep-porque">Por quê?</label>
+      <textarea id="dep-porque" class="area" rows="2"
+        placeholder="Uma linha basta."></textarea>
+
+      <span class="rotulo-campo">Uso da sua frase</span>
+      <div class="consentimento">
+        <input type="checkbox" id="dep-ok" aria-describedby="dep-ok-nota">
+        <label for="dep-ok">Autorizo a <b>Lar Aconchego</b> a usar esta frase, com o meu
+          primeiro nome, em material de divulgação.
+          <span id="dep-ok-nota" style="display:block;color:var(--tinta-suave);margin-top:6px">
+            Sem esta marca, a frase serve só para a equipe melhorar o atendimento — e o
+            envio funciona igual. Você pode retirar a autorização quando quiser, escrevendo
+            para contato@alentra.com.br.</span>
+        </label>
+      </div>
+
+      <button class="acao-principal" id="dep-enviar" style="margin-top:18px">Enviar</button>
+
+      <p class="sub" style="margin:12px 0 0;font-size:var(--texto-xs)">
+        Link de uso único, válido por 7 dias · a sua resposta vai para a equipe da agência ·
+        powered by Alentra</p>
+
+      <button class="acao-secundaria" id="dep-voltar" style="margin-top:12px">← ver o e-mail</button>
+    </div>
+
+    <!-- ---------- passo 3: confirmação ---------- -->
+    <div id="dep-fim" hidden>
+      <div class="aviso aviso-ok"><span><b>Enviado. Obrigado.</b></span></div>
+      <p style="font-size:var(--texto-base);line-height:var(--altura-corpo)">
+        A frase entra no painel da agência com a sua data e o seu nome.
+        <span id="dep-fim-uso"></span></p>
+      <button class="acao-principal" id="dep-ver" style="margin-top:8px">
+        Ver como ficou no painel do gestor</button>
+    </div>
+  </div>
+</div>
+
 <footer style="max-width:900px;margin:32px auto 0;padding:20px 16px 40px;border-top:1px solid var(--linha);
                font-size:var(--texto-sm);color:var(--tinta-suave)">
   <p style="margin:0 0 8px"><b>Alentra</b> — o caderno de plantão que a família lê.
@@ -1208,14 +1332,120 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   }
   pintarEquipe("7");
 
+  /* ---------- pedido de depoimento por e-mail ----------
+     ⚠️ O consentimento de uso público é SEPARADO da resposta, e desmarcado por
+     padrão. Recusar não impede o envio — se impedisse, não seria consentimento,
+     seria pedágio. E é ele que decide se a citação nasce copiável no painel. */
+  var lamDep = document.getElementById("lamina-dep");
+  if (lamDep) (function () {
+    var passoEmail = document.getElementById("dep-email");
+    var passoForm  = document.getElementById("dep-form");
+    var passoFim   = document.getElementById("dep-fim");
+    var recomenda  = null;
+
+    var TITULOS = {
+      email: "Pedir depoimento — o e-mail que a família recebe",
+      form:  "A página que o link abre",
+      fim:   "Enviado"
+    };
+    function mostrar(qual) {
+      passoEmail.hidden = qual !== "email";
+      passoForm.hidden  = qual !== "form";
+      passoFim.hidden   = qual !== "fim";
+      document.getElementById("dep-titulo").textContent = TITULOS[qual];
+      lamDep.querySelector(".folha-modal").scrollTop = 0;
+    }
+    function abrir() {
+      fecharRegistro();            // nunca duas lâminas abertas
+      lamRel.hidden = true;
+      recomenda = null;
+      var bs = passoForm.querySelectorAll("[data-rec]");
+      for (var i = 0; i < bs.length; i++) bs[i].setAttribute("aria-pressed", "false");
+      document.getElementById("dep-frase").value = "";
+      document.getElementById("dep-porque").value = "";
+      document.getElementById("dep-ok").checked = false;
+      mostrar("email");
+      lamDep.hidden = false;
+      medirUmaVez("pedido-depoimento");
+    }
+    function fechar() { lamDep.hidden = true; }
+
+    document.getElementById("btn-pedir-depoimento").addEventListener("click", abrir);
+    document.getElementById("dep-fechar").addEventListener("click", fechar);
+    document.getElementById("dep-abrir").addEventListener("click", function () { mostrar("form"); });
+    document.getElementById("dep-voltar").addEventListener("click", function () { mostrar("email"); });
+    lamDep.addEventListener("click", function (ev) { if (ev.target === lamDep) fechar(); });
+
+    var botoesRec = passoForm.querySelectorAll("[data-rec]");
+    for (var b = 0; b < botoesRec.length; b++) {
+      botoesRec[b].addEventListener("click", function (ev) {
+        recomenda = ev.currentTarget.dataset.rec;
+        for (var j = 0; j < botoesRec.length; j++) {
+          botoesRec[j].setAttribute("aria-pressed",
+            botoesRec[j].dataset.rec === recomenda ? "true" : "false");
+        }
+      });
+    }
+
+    var escapar = function (t) {
+      return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+
+    document.getElementById("dep-enviar").addEventListener("click", function () {
+      var frase  = document.getElementById("dep-frase").value.trim();
+      var porque = document.getElementById("dep-porque").value.trim();
+      var autoriza = document.getElementById("dep-ok").checked;
+      if (!frase) { document.getElementById("dep-frase").focus(); return; }
+
+      document.getElementById("dep-fim-uso").textContent = autoriza
+        ? "Como você autorizou o uso, ela já nasce liberada para citação."
+        : "Como você não autorizou o uso público, ela fica só para a equipe.";
+
+      // Fecha o laço da demo: a resposta aparece no painel, com o estado de
+      // autorização mandando no botão de copiar.
+      var cartao = document.createElement("div");
+      cartao.className = "citacao";
+      var selo = autoriza
+        ? '<span class="selo selo-ok">uso público autorizado</span>' +
+          '<button type="button" data-copiar="' + escapar(frase) + ' — Lúcia, filha do Sr. Aldo">Copiar citação</button>'
+        : '<span class="selo selo-atencao">sem autorização de uso</span>' +
+          '<button type="button" disabled>Copiar citação</button>' +
+          '<span style="font-size:var(--texto-xs);color:var(--tinta-fraca)">A família respondeu e não autorizou. A frase serve para a equipe.</span>';
+      var linhaRec = recomenda
+        ? '<div class="medida" style="margin-top:8px"><span class="selo ' +
+          (recomenda === "sim" ? "selo-ok\">recomendaria a agência" : "selo-erro\">não recomendaria") +
+          '</span>' + (porque ? '<span style="font-size:var(--texto-sm);color:var(--tinta-suave)">\u201c' +
+          escapar(porque) + '\u201d</span>' : "") + "</div>"
+        : "";
+      cartao.innerHTML =
+        '<div class="quem">Lúcia, filha do Sr. Aldo · depoimento por link · agora</div>' +
+        "<blockquote>" + escapar(frase) + "</blockquote>" + linhaRec +
+        '<div class="rodape">' + selo + "</div>";
+
+      var ancora = document.getElementById("btn-pedir-depoimento").parentNode;
+      ancora.parentNode.insertBefore(cartao, ancora.nextSibling);
+      ligarCopiadores(cartao);
+      mostrar("fim");
+    });
+
+    document.getElementById("dep-ver").addEventListener("click", function () {
+      fechar();
+      var h = document.querySelector("#btn-pedir-depoimento");
+      if (h) h.scrollIntoView({ block: "center" });
+    });
+  })();
+
   /* ---------- citação da família ----------
      ⚠️ Só copia o que tem autorização de uso público. A frase da família
      é dado pessoal e pode carregar contexto de saúde; usar em material de
      venda sem consentimento específico é tratamento sem base legal. O
      botão desabilitado NÃO é enfeite — é a regra virando interface. */
-  var copiadores = document.querySelectorAll("[data-copiar]");
-  for (var c = 0; c < copiadores.length; c++) {
-    copiadores[c].addEventListener("click", function (ev) {
+  function ligarCopiadores(raiz) {
+    var copiadores = (raiz || document).querySelectorAll("[data-copiar]");
+    for (var c = 0; c < copiadores.length; c++) {
+      if (copiadores[c].dataset.ligado) continue;
+      copiadores[c].dataset.ligado = "1";
+      copiadores[c].addEventListener("click", function (ev) {
       var botao = ev.currentTarget, texto = botao.dataset.copiar;
       function avisar() {
         var antes = botao.textContent;
@@ -1233,9 +1463,11 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
         document.body.removeChild(area);
         avisar();
       }
-      medirUmaVez("citacao");
-    });
+        medirUmaVez("citacao");
+      });
+    }
   }
+  ligarCopiadores();
 
 
   /* ---------- registro rápido: cada atalho abre o que aquele registro pede ----------
