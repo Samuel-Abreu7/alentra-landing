@@ -530,6 +530,43 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   .barra-ader{height:9px;border-radius:99px;background:var(--linha);overflow:hidden;margin:6px 0 4px}
   .barra-ader i{display:block;height:100%;background:var(--estado-sucesso)}
   .sub{color:var(--tinta-suave);font-size:var(--texto-sm);margin:0 0 14px}
+
+  /* ---- Desempenho da operação e vozes da família — 01/09/2026 ----
+     ⚠️ A BARRA É MAGNITUDE, NÃO ESTADO, e por isso usa a cor de AÇÃO.
+     Pintar 62% de verde-sucesso mentiria: verde diz "bom", e 62% não é.
+     A regra estrutural do tokens.css já separa as duas coisas — "cor de
+     marca não carrega estado" —, então magnitude pode vestir a marca e
+     estado nunca pode. Quando o número merece alarme, quem alarma é o
+     SELO ao lado, com palavra escrita: cor sozinha não informa ninguém
+     que enxerga cor diferente de nós. */
+  .periodo{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
+  .periodo button{padding:0 14px;min-height:40px;border-radius:999px;
+    font-size:var(--texto-sm);font-weight:var(--peso-forte);color:var(--tinta-suave);
+    border:1.5px solid var(--linha);background:var(--cartao)}
+  .periodo button[aria-pressed="true"]{background:var(--acao);color:var(--acao-texto);
+    border-color:var(--acao)}
+  .barra{height:8px;border-radius:99px;background:var(--linha);overflow:hidden;
+    margin-top:5px;max-width:190px}
+  .barra i{display:block;height:100%;border-radius:99px;background:var(--acao)}
+  /* As duas colunas de medida tem a MESMA largura minima de proposito: sem
+     isso o selo cabia inline numa coluna e quebrava na outra, e duas linhas
+     iguais pareciam diferentes. Achado olhando a tela, nao lendo o codigo. */
+  .col-medida{min-width:215px}
+  .medida{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .medida b{font-variant-numeric:tabular-nums}
+  .citacao{background:var(--cartao);border:1px solid var(--linha);
+    border-radius:var(--raio-md);padding:14px 16px;margin-bottom:12px}
+  .citacao blockquote{margin:9px 0 4px;padding-left:13px;
+    border-left:3px solid var(--acao);font-size:var(--texto-base);
+    line-height:var(--altura-corpo)}
+  .citacao .quem{font-size:var(--texto-xs);color:var(--tinta-fraca)}
+  .citacao .rodape{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--linha)}
+  .citacao .rodape button{min-height:40px;padding:0 14px;border-radius:var(--raio-sm);
+    font-size:var(--texto-sm);font-weight:var(--peso-forte);
+    border:1.5px solid var(--linha-forte);background:var(--cartao);color:var(--tinta)}
+  .citacao .rodape button[disabled]{opacity:.55;cursor:not-allowed;
+    border-style:dashed;border-color:var(--linha)}
 </style>
 
 <div class="demo-barra">
@@ -624,6 +661,127 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   </div>
   <p class="sub" style="margin-top:10px">Vínculo sem termo arquivado <b>não concede nada</b>:
   a linha existe, não enxerga o prontuário e não recebe alerta.</p>
+
+  <!-- ==================== DESEMPENHO DA EQUIPE ====================
+       O enquadramento não é estética: estes números medem o REGISTRO,
+       nunca a pessoa. Nada aqui é nota, ranking ou desfecho clínico. -->
+  <h2 style="margin-top:28px">Desempenho da operação</h2>
+  <p class="sub">Onde o registro falhou — por turno, não por pessoa.</p>
+
+  <div class="periodo" role="group" aria-label="Período">
+    <button type="button" aria-pressed="true"  data-periodo="7">Últimos 7 dias</button>
+    <button type="button" aria-pressed="false" data-periodo="30">Últimos 30 dias</button>
+  </div>
+
+  <div class="cartoes" style="margin-bottom:18px">
+    <div class="cartao-numero"><span class="valor num" data-kpi="turnos">18</span>
+      <span class="rotulo-secao">turnos no período</span></div>
+    <div class="cartao-numero"><span class="valor num" data-kpi="checkin">89%</span>
+      <span class="rotulo-secao">check-in no horário</span></div>
+    <div class="cartao-numero"><span class="valor num" data-kpi="doses">89%</span>
+      <span class="rotulo-secao">doses no prazo</span></div>
+    <div class="cartao-numero"><span class="valor num" data-kpi="vazios"
+      style="color:var(--estado-atencao)">1</span>
+      <span class="rotulo-secao">turnos sem nenhum registro</span></div>
+  </div>
+
+  <div class="cartao rolagem" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Cuidadora</th><th>Turnos</th><th class="col-medida">Check-in no horário</th>
+        <th class="col-medida">Doses no prazo</th><th>Registros por turno</th></tr></thead>
+      <tbody id="tabela-equipe"></tbody>
+    </table>
+  </div>
+
+  <div class="aviso aviso-info" style="margin-top:14px">
+    <span><b>Este painel não dá nota a ninguém.</b> Não há ranking, não há pontuação e não
+    há desfecho de saúde aqui — o produto nunca interpreta dado clínico. O que ele mostra é
+    onde o <b>registro</b> falhou, para você agir antes de a família perguntar: turno sem
+    check-in, dose sem confirmação, turno que passou em branco.</span>
+  </div>
+
+  <div class="aviso aviso-atencao" style="margin-top:14px">
+    <span><b>Não existe coluna de intercorrências aqui, e a ausência é deliberada.</b>
+    Contar intercorrências ao lado de números de desempenho ensina a cuidadora a
+    <b>não relatar</b> — e a intercorrência não relatada é exatamente a que machuca alguém.
+    Elas aparecem na linha do tempo do paciente, onde servem ao cuidado, e nunca numa
+    tabela onde possam parecer defeito de quem escreveu.</span>
+  </div>
+
+  <p class="sub" style="margin-top:10px">Número baixo quase nunca é desleixo. É rede ruim,
+  aparelho velho, escala apertada ou paciente em crise — e é por isso que a linha abre o
+  turno, não abre um julgamento.</p>
+
+  <!-- ==================== VOZES DA FAMÍLIA ==================== -->
+  <h2 style="margin-top:28px">O que as famílias dizem</h2>
+  <p class="sub">A frase inteira, de quem falou, com data — não uma nota de 0 a 10.</p>
+
+  <div class="cartoes" style="margin-bottom:16px">
+    <div class="cartao-numero"><span class="valor num">3</span>
+      <span class="rotulo-secao">famílias ouvidas no mês</span></div>
+    <div class="cartao-numero"><span class="valor num">2</span>
+      <span class="rotulo-secao">recomendariam a agência</span></div>
+    <div class="cartao-numero"><span class="valor num">1</span>
+      <span class="rotulo-secao">citação liberada para uso</span></div>
+  </div>
+
+  <div class="citacao">
+    <div class="quem">Paulo, filho de D. Maria · conversa de 28/08 · Ana e Bete no cuidado</div>
+    <blockquote>Eu parei de ligar três vezes por dia. Abro de manhã, vejo que ela tomou o
+    remédio e vou trabalhar.</blockquote>
+    <div class="medida" style="margin-top:8px">
+      <span class="selo selo-ok">recomendaria a agência</span>
+      <span style="font-size:var(--texto-sm);color:var(--tinta-suave)">“Porque eu durmo.”</span>
+    </div>
+    <div class="rodape">
+      <span class="selo selo-ok">uso público autorizado</span>
+      <button type="button" data-copiar="Eu parei de ligar três vezes por dia. Abro de manhã, vejo que ela tomou o remédio e vou trabalhar. — Paulo, filho de D. Maria">Copiar citação</button>
+    </div>
+  </div>
+
+  <div class="citacao">
+    <div class="quem">Lúcia, filha do Sr. Aldo · conversa de 26/08 · Carla no cuidado</div>
+    <blockquote>A passagem de turno melhorou. Antes cada uma me contava uma coisa
+    diferente sobre o mesmo dia.</blockquote>
+    <div class="medida" style="margin-top:8px">
+      <span class="selo selo-ok">recomendaria a agência</span>
+      <span style="font-size:var(--texto-sm);color:var(--tinta-suave)">“Mas trava com a
+      internet daqui de casa.”</span>
+    </div>
+    <div class="rodape">
+      <span class="selo selo-atencao">autorização não pedida</span>
+      <button type="button" disabled>Copiar citação</button>
+      <span style="font-size:var(--texto-xs);color:var(--tinta-fraca)">Sem autorização
+      específica, a frase serve para você — não para o site.</span>
+    </div>
+  </div>
+
+  <div class="citacao">
+    <div class="quem">Rita, sobrinha do Sr. Aldo · conversa de 21/08</div>
+    <blockquote>Continuo sem ver nada no aplicativo. Ninguém me falou que eu precisava
+    assinar alguma coisa.</blockquote>
+    <div class="medida" style="margin-top:8px">
+      <span class="selo selo-erro">não recomendaria</span>
+      <span style="font-size:var(--texto-sm);color:var(--tinta-suave)">“Se eu não consigo
+      ver, para mim tanto faz.”</span>
+    </div>
+    <div class="rodape">
+      <span class="selo selo-atencao">termo por coletar</span>
+      <span style="font-size:var(--texto-sm)">A causa está três seções acima: o vínculo da
+      Rita não tem termo arquivado, e vínculo sem termo <b>não concede nada</b>.</span>
+    </div>
+  </div>
+
+  <div class="aviso aviso-atencao">
+    <span><b>A reclamação é o item mais valioso desta tela.</b> Um painel de satisfação que
+    só mostra elogio não é um painel — é um folheto. A frase da Rita tem causa conhecida e
+    conserto de trinta segundos, e ela só apareceu porque alguém perguntou.</span>
+  </div>
+
+  <p class="sub" style="margin-top:10px"><b>Ritmo:</b> a cada quinze dias, pelo menos uma
+  família por agência. Registrar a frase literal, se percebeu diferença e se recomendaria —
+  nessa ordem. Nota de 0 a 10 sem amostra não sustenta venda nenhuma; frase de gente,
+  sustenta.</p>
 
   <div class="cartao demo-breve" data-tela-breve="documentos" role="button" tabindex="0"
        style="margin-top:28px;cursor:pointer">
@@ -921,7 +1079,7 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
 <footer style="max-width:900px;margin:32px auto 0;padding:20px 16px 40px;border-top:1px solid var(--linha);
                font-size:var(--texto-sm);color:var(--tinta-suave)">
   <p style="margin:0 0 8px"><b>Alentra</b> — o caderno de plantão que a família lê.
-  Demonstração com dados fictícios, atualizada em 30/08/2026 a partir das telas do produto.</p>
+  Demonstração com dados fictícios, atualizada em 01/09/2026 a partir das telas do produto.</p>
   <p style="margin:0">Registro informativo de cuidados. Não substitui orientação médica,
   diagnóstico ou tratamento. Em emergência, ligue 192 (SAMU).</p>
 </footer>
@@ -963,6 +1121,119 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     breves[b].addEventListener("click", function (ev) { marcarInteresse(ev.currentTarget); });
     breves[b].addEventListener("keydown", function (ev) {
       if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); marcarInteresse(ev.currentTarget); }
+    });
+  }
+
+  /* Estas duas telas são novas: saber se alguém as usa vale mais aqui do
+     que em qualquer outra. Um evento por chave, uma vez por sessão. */
+  var jaMedido = {};
+  function medirUmaVez(chave) {
+    if (jaMedido[chave]) return;
+    jaMedido[chave] = 1;
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({
+        path: "demo_usada/" + chave, title: "Demo usada: " + chave, event: true
+      });
+    }
+  }
+
+  /* ---------- desempenho da operação ----------
+     ⚠️ O limiar é do PROTÓTIPO. No produto ele é configuração da agência,
+     e é decisão de produto — não endurecer em código. */
+  var LIMIAR = 85;
+
+  var EQUIPE = {
+    "7": [
+      { nome: "Ana Ribeiro", turnos: 6, checkin: 100, doses: 97,  reg: 11, inter: 1 },
+      { nome: "Bete Alves",  turnos: 4, checkin: 100, doses: 100, reg: 9,  inter: 2 },
+      { nome: "Carla Nunes", turnos: 5, checkin: 80,  doses: 88,  reg: 7,  inter: 0 },
+      { nome: "Rose Damião", turnos: 3, checkin: 67,  doses: 62,  reg: 4,  inter: 0 }
+    ],
+    "30": [
+      { nome: "Ana Ribeiro", turnos: 24, checkin: 96, doses: 95, reg: 10, inter: 4 },
+      { nome: "Bete Alves",  turnos: 18, checkin: 98, doses: 99, reg: 9,  inter: 5 },
+      { nome: "Carla Nunes", turnos: 21, checkin: 86, doses: 91, reg: 8,  inter: 2 },
+      { nome: "Rose Damião", turnos: 12, checkin: 74, doses: 71, reg: 5,  inter: 1 }
+    ]
+  };
+  var KPIS = {
+    "7":  { turnos: "18", checkin: "89%", doses: "89%", vazios: "1" },
+    "30": { turnos: "75", checkin: "90%", doses: "91%", vazios: "3" }
+  };
+
+  var corpoEquipe = document.getElementById("tabela-equipe");
+
+  function celulaMedida(valor, titulo) {
+    // Rótulo direto SEMPRE — número em texto, nunca só a barra. E quando o
+    // valor merece atenção, quem avisa é a palavra: cor sozinha não informa
+    // quem enxerga cor diferente de nós.
+    var alerta = valor < LIMIAR
+      ? ' <span class="selo selo-atencao">abaixo de ' + LIMIAR + '%</span>' : "";
+    return '<div class="medida"><b>' + valor + "%</b>" + alerta + "</div>" +
+           '<div class="barra" title="' + titulo + ': ' + valor + '%">' +
+           '<i style="width:' + valor + '%"></i></div>';
+  }
+
+  function pintarEquipe(periodo) {
+    if (!corpoEquipe) return;
+    var linhas = EQUIPE[periodo], html = "";
+    for (var i = 0; i < linhas.length; i++) {
+      var l = linhas[i];
+      html += "<tr><td><b>" + l.nome + "</b></td>" +
+              '<td class="num">' + l.turnos + "</td>" +
+              '<td class="col-medida">' + celulaMedida(l.checkin, "Check-in no horario") + "</td>" +
+              '<td class="col-medida">' + celulaMedida(l.doses, "Doses confirmadas no prazo") + "</td>" +
+              '<td class="num">' + l.reg + "</td></tr>";
+    }
+    corpoEquipe.innerHTML = html;
+
+    var k = KPIS[periodo];
+    for (var chave in k) {
+      var alvo = document.querySelector('[data-kpi="' + chave + '"]');
+      if (alvo) alvo.textContent = k[chave];
+    }
+  }
+
+  var botoesPeriodo = document.querySelectorAll(".periodo button");
+  for (var p = 0; p < botoesPeriodo.length; p++) {
+    botoesPeriodo[p].addEventListener("click", function (ev) {
+      var alvo = ev.currentTarget.dataset.periodo;
+      for (var q = 0; q < botoesPeriodo.length; q++) {
+        botoesPeriodo[q].setAttribute("aria-pressed",
+          botoesPeriodo[q].dataset.periodo === alvo ? "true" : "false");
+      }
+      pintarEquipe(alvo);
+      medirUmaVez("desempenho");
+    });
+  }
+  pintarEquipe("7");
+
+  /* ---------- citação da família ----------
+     ⚠️ Só copia o que tem autorização de uso público. A frase da família
+     é dado pessoal e pode carregar contexto de saúde; usar em material de
+     venda sem consentimento específico é tratamento sem base legal. O
+     botão desabilitado NÃO é enfeite — é a regra virando interface. */
+  var copiadores = document.querySelectorAll("[data-copiar]");
+  for (var c = 0; c < copiadores.length; c++) {
+    copiadores[c].addEventListener("click", function (ev) {
+      var botao = ev.currentTarget, texto = botao.dataset.copiar;
+      function avisar() {
+        var antes = botao.textContent;
+        botao.textContent = "Copiada";
+        setTimeout(function () { botao.textContent = antes; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(avisar, avisar);
+      } else {
+        var area = document.createElement("textarea");
+        area.value = texto;
+        document.body.appendChild(area);
+        area.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(area);
+        avisar();
+      }
+      medirUmaVez("citacao");
     });
   }
 
