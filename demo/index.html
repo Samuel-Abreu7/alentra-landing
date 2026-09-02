@@ -610,6 +610,16 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   <h2>Operação de hoje</h2>
   <p class="sub">O que está atrasado e o que ficou sem registro — antes de a família perguntar.</p>
 
+  <!-- ⚠️ A tabela abre nas PENDÊNCIAS, não em tudo (decisão do Fernando,
+       02/09/2026). Lista que mostra tudo obriga a procurar; o valor desta
+       tela é ser a das exceções. O resto fica a um clique — é a "outra
+       consulta" da mesma decisão. -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+    <button type="button" class="acao-secundaria" id="op-tudo" aria-pressed="false"
+            style="min-height:40px">Ver tudo do período</button>
+    <span class="sub" id="op-resumo" style="margin:0"></span>
+  </div>
+
   <div class="cartoes" style="margin-bottom:18px">
     <div class="cartao-numero"><span class="valor num">14</span><span class="rotulo-secao">doses previstas</span></div>
     <div class="cartao-numero"><span class="valor num">11</span><span class="rotulo-secao">confirmadas</span></div>
@@ -619,17 +629,8 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
 
   <div class="cartao rolagem" style="padding:0;overflow:hidden">
     <table>
-      <thead><tr><th>Paciente</th><th>Medicação</th><th>Prevista</th><th>Situação</th></tr></thead>
-      <tbody>
-        <tr><td>D. Maria</td><td>Losartana 50mg</td><td class="num">08:00</td>
-            <td><span class="selo selo-ok">confirmada 08:04 · Ana</span></td></tr>
-        <tr><td>D. Maria</td><td>Metformina 850mg</td><td class="num">12:00</td>
-            <td><span class="selo selo-fila">retida no aparelho · Ana</span></td></tr>
-        <tr><td>Sr. Aldo</td><td>Enalapril 10mg</td><td class="num">14:00</td>
-            <td><span class="selo selo-atencao">não confirmada</span></td></tr>
-        <tr><td>Sr. Aldo</td><td>Sinvastatina 20mg</td><td class="num">20:00</td>
-            <td><span class="selo" style="background:var(--papel);color:var(--tinta-suave)">prevista</span></td></tr>
-      </tbody>
+      <thead><tr><th>Paciente</th><th>Cuidadora</th><th>Medicação</th><th>Prevista</th><th>Situação</th></tr></thead>
+      <tbody id="op-linhas"></tbody>
     </table>
   </div>
 
@@ -637,6 +638,13 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     <span><b>Retido não é falta de cuidado.</b> Enquanto houver registro preso no aparelho da
     cuidadora, o alerta de dose não confirmada fica suspenso e a família não recebe aviso
     indevido. Nada da fila é descartado.</span>
+  </div>
+
+  <div class="aviso aviso-atencao" style="margin-top:14px">
+    <span><b>A coluna diz quem estava no turno — não quem falhou.</b> Uma dose sem confirmação
+    pode ser rede ruim, aparelho velho, escala apertada ou paciente em crise. O nome está aqui
+    para você saber <b>a quem ligar</b>. E turno sem cuidadora atribuída aparece como
+    <b>vaga aberta</b>: escala incompleta não tem culpado.</span>
   </div>
 
   <h2 style="margin-top:28px">Escala de turnos</h2>
@@ -1260,6 +1268,67 @@ Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
       });
     }
   }
+
+  /* ---------- operação de hoje: a coluna da cuidadora ----------
+     Decisão do Fernando, 02/09/2026. Duas partes: o nome de quem estava no
+     turno, e a tabela abrindo só nas pendências.
+
+     ⚠️ "quemEstava" é quem estava NO TURNO, não quem falhou — e `null` é
+     vaga aberta, que é escala incompleta e não tem culpado. */
+  var DOSES = [
+    { paciente: "D. Maria", quemEstava: "Ana Ribeiro",  med: "Losartana 50mg",
+      hora: "08:00", selo: "selo-ok",      texto: "confirmada 08:04", pendente: false },
+    { paciente: "D. Maria", quemEstava: "Ana Ribeiro",  med: "Metformina 850mg",
+      hora: "12:00", selo: "selo-fila",    texto: "retida no aparelho", pendente: true },
+    { paciente: "Sr. Aldo", quemEstava: "Carla Nunes",  med: "Enalapril 10mg",
+      hora: "14:00", selo: "selo-atencao", texto: "não confirmada", pendente: true },
+    { paciente: "Sr. Aldo", quemEstava: null,           med: "Sinvastatina 20mg",
+      hora: "20:00", selo: "",             texto: "prevista", pendente: false }
+  ];
+
+  var opTudo = false;
+  var opCorpo = document.getElementById("op-linhas");
+
+  function pintarOperacao() {
+    if (!opCorpo) return;
+    var visiveis = opTudo ? DOSES : DOSES.filter(function (d) { return d.pendente });
+    var html = "";
+    for (var i = 0; i < visiveis.length; i++) {
+      var d = visiveis[i];
+      var quem = d.quemEstava
+        ? d.quemEstava
+        : '<span style="color:var(--tinta-fraca)">vaga aberta</span>';
+      var estilo = d.selo
+        ? 'class="selo ' + d.selo + '"'
+        : 'class="selo" style="background:var(--papel);color:var(--tinta-suave)"';
+      html += "<tr><td>" + d.paciente + "</td><td>" + quem + "</td><td>" + d.med +
+              '</td><td class="num">' + d.hora + "</td>" +
+              "<td><span " + estilo + ">" + d.texto + "</span></td></tr>";
+    }
+    opCorpo.innerHTML = html;
+
+    var botao = document.getElementById("op-tudo");
+    var resumo = document.getElementById("op-resumo");
+    if (botao) {
+      botao.setAttribute("aria-pressed", opTudo ? "true" : "false");
+      botao.textContent = opTudo ? "Só o que precisa de você" : "Ver tudo do período";
+    }
+    if (resumo) {
+      resumo.textContent = opTudo
+        ? visiveis.length + " doses previstas nas últimas 12 h"
+        : visiveis.length + " pendência(s) — de " + DOSES.length + " doses previstas";
+    }
+  }
+
+  var opBotao = document.getElementById("op-tudo");
+  if (opBotao) {
+    opBotao.addEventListener("click", function () {
+      opTudo = !opTudo;
+      pintarOperacao();
+      medirUmaVez("operacao-tudo");
+    });
+  }
+  pintarOperacao();
 
   /* ---------- desempenho da operação ----------
      ⚠️ O limiar é do PROTÓTIPO. No produto ele é configuração da agência,
