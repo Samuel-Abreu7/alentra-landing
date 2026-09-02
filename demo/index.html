@@ -607,7 +607,37 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
 
 <!-- ==================== GESTOR ==================== -->
 <div class="palco" data-tela="gestor">
-  <h2>Operação de hoje</h2>
+
+  <!-- ⚠️ A escala vem ANTES da operação do dia — item 2 da avaliação do
+       Fernando, 02/09/2026. Na ordem de trabalho ela é a primeira: ninguém
+       opera bem uma escala incompleta, e vaga aberta é problema de manhã.
+
+       O que impede isso de esconder o alerta é o selo de pendências logo
+       abaixo, que leva direto para a operação. No produto, o mesmo papel é
+       do contador no rótulo da aba, e o painel abre na Operação quando há
+       pendência. -->
+  <h2>Escala de turnos</h2>
+  <p class="sub">Quem está com quem, e quem não chegou. A varredura avisa você — não a família.</p>
+  <div class="cartao rolagem" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Turno</th><th>Cuidadora</th><th>Paciente</th><th>Situação</th></tr></thead>
+      <tbody>
+        <tr><td class="num">07:00–15:00</td><td>Ana</td><td>D. Maria</td>
+            <td><span class="selo selo-ok">em andamento</span></td></tr>
+        <tr><td class="num">13:00–21:00</td><td>Carla</td><td>Sr. Aldo</td>
+            <td><span class="selo selo-atencao">sem check-in há 40 min</span></td></tr>
+        <tr><td class="num">15:00–23:00</td><td>Ana</td><td>D. Maria</td>
+            <td><span class="selo" style="background:var(--papel);color:var(--tinta-suave)">agendado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <p class="sub" style="margin-top:10px">
+    <a href="#op-secao" style="color:var(--marca-primaria);font-weight:var(--peso-forte)">
+      2 pendências na operação de hoje →</a>
+    &nbsp;A escala organiza o dia; a operação mostra o que já saiu do previsto.</p>
+  <h2 id="op-secao" style="margin-top:28px">Operação de hoje</h2>
   <p class="sub">O que está atrasado e o que ficou sem registro — antes de a família perguntar.</p>
 
   <!-- ⚠️ A tabela abre nas PENDÊNCIAS, não em tudo (decisão do Fernando,
@@ -645,22 +675,6 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     pode ser rede ruim, aparelho velho, escala apertada ou paciente em crise. O nome está aqui
     para você saber <b>a quem ligar</b>. E turno sem cuidadora atribuída aparece como
     <b>vaga aberta</b>: escala incompleta não tem culpado.</span>
-  </div>
-
-  <h2 style="margin-top:28px">Escala de turnos</h2>
-  <p class="sub">Quem está com quem, e quem não chegou. A varredura avisa você — não a família.</p>
-  <div class="cartao rolagem" style="padding:0;overflow:hidden">
-    <table>
-      <thead><tr><th>Turno</th><th>Cuidadora</th><th>Paciente</th><th>Situação</th></tr></thead>
-      <tbody>
-        <tr><td class="num">07:00–15:00</td><td>Ana</td><td>D. Maria</td>
-            <td><span class="selo selo-ok">em andamento</span></td></tr>
-        <tr><td class="num">13:00–21:00</td><td>Carla</td><td>Sr. Aldo</td>
-            <td><span class="selo selo-atencao">sem check-in há 40 min</span></td></tr>
-        <tr><td class="num">15:00–23:00</td><td>Ana</td><td>D. Maria</td>
-            <td><span class="selo" style="background:var(--papel);color:var(--tinta-suave)">agendado</span></td></tr>
-      </tbody>
-    </table>
   </div>
 
   <h2 style="margin-top:28px">Família e representação</h2>
