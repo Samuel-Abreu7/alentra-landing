@@ -907,6 +907,153 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   nessa ordem. Nota de 0 a 10 sem amostra não sustenta venda nenhuma; frase de gente,
   sustenta.</p>
 
+  <!-- ============ RELATORIOS GERENCIAIS - fase 3, so maquete ============
+       Item 9 da avaliacao do Fernando, feito no DEMO por decisao dele em
+       03/09/2026.
+
+       ATENCAO: fase 3, e o selo "em breve" nao e enfeite. Folha, faturamento
+       e relatorio para contratante sao fase 3 pela regra de contencao do ERP
+       (§1 do PRD). Isto e maquete para conversa - nada existe no app/.
+
+       POR QUE O PAGAMENTO NAO SAI DAS HORAS DO SISTEMA. O produto ja tem
+       escala, check-in por horario, alerta de atraso e historico de
+       pontualidade. Somar a isso um valor apurado pelas horas registradas
+       juntaria, num lugar so, jornada controlada + habitualidade +
+       remuneracao por hora - o conjunto que uma reclamatoria pede primeiro,
+       e o reu seria a AGENCIA, nossa cliente. Para cuidadora MEI e o retrato
+       da subordinacao que o contrato dela nega.
+
+       Entao a maquete mostra valores LANCADOS pela agencia (diaria ou
+       plantao combinado), com o numero de turnos como referencia, e diz isso
+       na tela. A pergunta ao advogado trabalhista continua aberta no
+       ESTADO.md §II. -->
+  <hr style="border:0;border-top:1px solid var(--linha);margin:32px 0 0">
+  <p class="sub" style="margin:10px 0 0;font-size:var(--texto-xs)">
+    ↯ <b>Daqui para baixo é fase 3</b> — a gestão financeira da
+    agência. Nada disto está construído; é a direção,
+    não a promessa.</p>
+
+  <h2 style="margin-top:14px">Relatórios gerenciais <span class="soon">em breve</span></h2>
+  <p class="sub">O que a agência precisa fechar todo mês. Hoje isso vive em planilha.</p>
+
+  <!-- ⚠️ Classe própria, e NÃO `periodo`: o seletor `.periodo button` do
+       Desempenho capturaria estes três botões e chamaria pintarEquipe(undefined).
+       Aconteceu, e só apareceu ao clicar. -->
+  <div class="rel-abas" role="group" aria-label="Relatório"
+       style="display:flex;gap:8px;margin:14px 0;flex-wrap:wrap">
+    <button type="button" class="acao-secundaria" aria-pressed="true"  data-rel="pagar">A pagar — equipe</button>
+    <button type="button" class="acao-secundaria" aria-pressed="false" data-rel="receber">A receber — clientes</button>
+    <button type="button" class="acao-secundaria" aria-pressed="false" data-rel="ficha">Ficha da equipe</button>
+  </div>
+
+  <div class="rel-bloco" id="rel-pagar">
+    <div class="cartoes" style="margin-bottom:16px">
+      <div class="cartao-numero"><span class="valor num">R$ 18.420</span>
+        <span class="rotulo-secao">a pagar em setembro</span></div>
+      <div class="cartao-numero"><span class="valor num">4</span>
+        <span class="rotulo-secao">cuidadoras no mês</span></div>
+      <div class="cartao-numero"><span class="valor num" style="color:var(--estado-atencao)">1</span>
+        <span class="rotulo-secao">sem dados bancários</span></div>
+    </div>
+
+    <div class="cartao rolagem" style="padding:0;overflow:hidden">
+      <table>
+        <thead><tr><th>Cuidadora</th><th>Vínculo</th><th>Combinado</th>
+          <th>Turnos</th><th>Total</th><th>Situação</th></tr></thead>
+        <tbody>
+          <tr><td><b>Ana Ribeiro</b></td><td>CLT</td><td>salário + adicional</td>
+              <td class="num">24</td><td class="num">R$ 6.180</td>
+              <td><span class="selo selo-ok">conferido</span></td></tr>
+          <tr><td><b>Bete Alves</b></td><td>CLT</td><td>salário</td>
+              <td class="num">18</td><td class="num">R$ 4.240</td>
+              <td><span class="selo selo-ok">conferido</span></td></tr>
+          <tr><td><b>Carla Nunes</b></td><td>MEI</td><td>R$ 230 / plantão</td>
+              <td class="num">21</td><td class="num">R$ 4.830</td>
+              <td><span class="selo selo-atencao">nota fiscal pendente</span></td></tr>
+          <tr><td><b>Rose Damião</b></td><td>diarista</td><td>R$ 260 / diária</td>
+              <td class="num">12</td><td class="num">R$ 3.120</td>
+              <td><span class="selo selo-erro">sem dados bancários</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="aviso aviso-atencao" style="margin-top:14px">
+      <span><b>O Alentra não apura jornada e não calcula folha.</b> O valor vem
+      do que a agência combinou com cada pessoa — diária, plantão ou
+      salário —, e a coluna de turnos é <b>referência de
+      conferência</b>, não folha de ponto. Cálculo de pagamento derivado
+      de horário registrado é documento trabalhista, e quem responde por ele
+      é a agência, não o aplicativo.</span>
+    </div>
+  </div>
+
+  <div class="rel-bloco" id="rel-receber" hidden>
+    <div class="cartoes" style="margin-bottom:16px">
+      <div class="cartao-numero"><span class="valor num">R$ 26.900</span>
+        <span class="rotulo-secao">faturado em setembro</span></div>
+      <div class="cartao-numero"><span class="valor num">R$ 5.400</span>
+        <span class="rotulo-secao">em aberto</span></div>
+      <div class="cartao-numero"><span class="valor num" style="color:var(--estado-atencao)">1</span>
+        <span class="rotulo-secao">vencido há mais de 5 dias</span></div>
+    </div>
+
+    <div class="cartao rolagem" style="padding:0;overflow:hidden">
+      <table>
+        <thead><tr><th>Cliente</th><th>Idoso</th><th>Plano</th>
+          <th>Vencimento</th><th>Valor</th><th>Situação</th></tr></thead>
+        <tbody>
+          <tr><td><b>Paulo Andrade</b></td><td>D. Maria</td><td>12 h · seg a sex</td>
+              <td class="num">05/09</td><td class="num">R$ 8.900</td>
+              <td><span class="selo selo-ok">pago</span></td></tr>
+          <tr><td><b>Lúcia Ferraz</b></td><td>Sr. Aldo</td><td>24 h · todos os dias</td>
+              <td class="num">05/09</td><td class="num">R$ 12.600</td>
+              <td><span class="selo selo-ok">pago</span></td></tr>
+          <tr><td><b>Rita Ferraz</b></td><td>Sr. Aldo</td><td>acompanhamento hospitalar</td>
+              <td class="num">28/08</td><td class="num">R$ 5.400</td>
+              <td><span class="selo selo-erro">vencido há 6 dias</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="aviso aviso-info" style="margin-top:14px">
+      <span><b>Cobrança não entra na tela da família.</b> Quem está
+      em atraso continua vendo o cuidado igual: prontuário não é alavanca
+      de cobrança, e usá-lo como tal seria constranger a família pelo
+      idoso.</span>
+    </div>
+  </div>
+
+  <div class="rel-bloco" id="rel-ficha" hidden>
+    <div class="cartao rolagem" style="padding:0;overflow:hidden">
+      <table>
+        <thead><tr><th>Cuidadora</th><th>Documentação</th><th>Formação</th>
+          <th>Última escala</th><th>Situação</th></tr></thead>
+        <tbody>
+          <tr><td><b>Ana Ribeiro</b></td><td>em dia</td>
+              <td>Técnica de enfermagem</td><td class="num">hoje</td>
+              <td><span class="selo selo-ok">ativa</span></td></tr>
+          <tr><td><b>Bete Alves</b></td><td>em dia</td>
+              <td>Cuidadora — curso 2024</td><td class="num">ontem</td>
+              <td><span class="selo selo-ok">ativa</span></td></tr>
+          <tr><td><b>Carla Nunes</b></td><td>exame admissional vence em 12 dias</td>
+              <td>Cuidadora — curso 2022</td><td class="num">hoje</td>
+              <td><span class="selo selo-atencao">renovar documento</span></td></tr>
+          <tr><td><b>Rose Damião</b></td><td>em dia</td>
+              <td>Cuidadora — curso 2025</td><td class="num">há 16 dias</td>
+              <td><span class="selo selo-atencao">sem escala há duas semanas</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="aviso aviso-atencao" style="margin-top:14px">
+      <span><b>Isto não é uma nota, e não vai virar.</b> Não há
+      estrela, ranking nem pontuação: as colunas são fatos que a
+      agência precisa acompanhar — documento vencendo, formação, quem
+      está sem escala. Um placar por pessoa mudaria o que a cuidadora registra, e o
+      registro é a prova que a agência vende.</span>
+    </div>
+  </div>
+
   <div class="cartao demo-breve" data-tela-breve="documentos" role="button" tabindex="0"
        style="margin-top:28px;cursor:pointer">
     <h2 style="margin:0 0 4px">Documentos <span class="soon">em breve</span></h2>
@@ -1560,6 +1707,24 @@ Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
     });
   }
   pintarEquipe("7");
+
+  /* ---------- relatorios gerenciais (maquete, fase 3) ---------- */
+  var botoesRel = document.querySelectorAll("[data-rel]");
+  for (var b = 0; b < botoesRel.length; b++) {
+    botoesRel[b].addEventListener("click", function (ev) {
+      var alvo = ev.currentTarget.dataset.rel;
+      for (var q = 0; q < botoesRel.length; q++) {
+        botoesRel[q].setAttribute("aria-pressed",
+          botoesRel[q].dataset.rel === alvo ? "true" : "false");
+      }
+      var blocos = ["pagar", "receber", "ficha"];
+      for (var i = 0; i < blocos.length; i++) {
+        var el = document.getElementById("rel-" + blocos[i]);
+        if (el) el.hidden = blocos[i] !== alvo;
+      }
+      medirUmaVez("relatorios");
+    });
+  }
 
   /* ---------- pedido de depoimento por e-mail ----------
      ⚠️ O consentimento de uso público é SEPARADO da resposta, e desmarcado por
