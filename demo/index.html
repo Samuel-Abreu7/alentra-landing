@@ -531,6 +531,11 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   .barra-ader i{display:block;height:100%;background:var(--estado-sucesso)}
   .sub{color:var(--tinta-suave);font-size:var(--texto-sm);margin:0 0 14px}
 
+  .tv-linha{display:flex;gap:10px;align-items:center;padding:8px 0;
+            border-bottom:1px solid var(--linha)}
+  .tv-linha .num{min-width:56px;color:var(--tinta-suave)}
+  .tv-linha span:nth-child(2){flex:1}
+
   /* ---- Desempenho da operação e vozes da família — 01/09/2026 ----
      ⚠️ A BARRA É MAGNITUDE, NÃO ESTADO, e por isso usa a cor de AÇÃO.
      Pintar 62% de verde-sucesso mentiria: verde diz "bom", e 62% não é.
@@ -1039,6 +1044,52 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
 </div>
 
 <!-- ============ lâmina: relatório para o médico ============ -->
+<!-- ============ lâmina: o turno, como o gestor o vê ============
+     Item 3 da avaliação do Fernando (02/09/2026): "o mesmo que a cuidadora
+     vê no celular".
+
+     ⚠️ **Não há um único controle de escrita aqui, e a ausência é a regra.**
+     Quem registra é a cuidadora, no aparelho dela, e é o carimbo do aparelho
+     que vale como hora do fato. Caixa clicável nesta lâmina desfaz isso. -->
+<div class="lamina" id="lamina-turno" hidden>
+  <div class="folha-modal" role="dialog" aria-modal="true" aria-labelledby="tv-titulo" style="max-width:560px">
+    <div class="modal-topo">
+      <h3 id="tv-titulo">D. Maria — turno de hoje</h3>
+      <button class="fechar" id="tv-fechar" aria-label="Fechar">×</button>
+    </div>
+
+    <p class="sub" style="margin:0 0 4px">
+      07:00 – 19:00 · Ana Ribeiro · check-in 07:04</p>
+
+    <h4 class="rotulo-secao" style="margin:18px 0 8px">Doses do turno</h4>
+    <div class="tv-linha"><span class="num">08:00</span><span>Losartana 50mg</span>
+      <span class="selo selo-ok">confirmada 08:04</span></div>
+    <div class="tv-linha"><span class="num">12:00</span><span>Metformina 850mg</span>
+      <span class="selo selo-fila">retida no aparelho</span></div>
+    <div class="tv-linha"><span class="num">18:00</span><span>Sinvastatina 20mg</span>
+      <span class="selo" style="background:var(--papel);color:var(--tinta-suave)">prevista</span></div>
+
+    <h4 class="rotulo-secao" style="margin:18px 0 8px">Feito neste turno</h4>
+    <div class="tv-linha"><span class="num">07:04</span><span>Check-in</span></div>
+    <div class="tv-linha"><span class="num">08:04</span><span>Dose confirmada</span></div>
+    <div class="tv-linha"><span class="num">09:30</span><span>Banho</span></div>
+    <div class="tv-linha"><span class="num">12:15</span><span>Refeição</span></div>
+    <div class="tv-linha"><span class="num">14:00</span><span>Sinal vital</span></div>
+    <div class="tv-linha"><span class="num">15:40</span><span>Sono</span></div>
+
+    <div class="aviso aviso-info" style="margin-top:16px">
+      <span><b>Esta tela é só leitura.</b> Ela mostra o que a cuidadora registrou e o que
+      falta no turno — pelo relógio do aparelho dela, que é o que vale como hora do fato.
+      Nada aqui se marca, se corrige ou se desmarca daqui: quem registra é quem está na casa.</span>
+    </div>
+
+    <p class="sub" style="margin:10px 0 0;font-size:var(--texto-xs)">
+      Sem localização e sem presença ao vivo — o que se vê é o registro.
+      O valor de cada sinal vital fica na linha do tempo do paciente, onde o recorte por
+      finalidade do termo se aplica.</p>
+  </div>
+</div>
+
 <div class="lamina" id="lamina-rel" hidden>
   <div class="folha-modal" role="dialog" aria-modal="true" aria-labelledby="rel-titulo" style="max-width:640px">
     <div class="modal-topo">
@@ -1317,7 +1368,10 @@ Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
         : 'class="selo" style="background:var(--papel);color:var(--tinta-suave)"';
       html += "<tr><td>" + d.paciente + "</td><td>" + quem + "</td><td>" + d.med +
               '</td><td class="num">' + d.hora + "</td>" +
-              "<td><span " + estilo + ">" + d.texto + "</span></td></tr>";
+              "<td><span " + estilo + ">" + d.texto + "</span>" +
+              ' <button type="button" class="acao-secundaria abre-turno"' +
+              ' style="min-height:32px;padding:0 10px;margin-left:8px">ver o turno</button>' +
+              "</td></tr>";
     }
     opCorpo.innerHTML = html;
 
@@ -1333,6 +1387,25 @@ Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
         : visiveis.length + " pendência(s) — de " + DOSES.length + " doses previstas";
     }
   }
+
+  /* ---------- o turno, como o gestor o vê (item 3) ----------
+     ⚠️ Só leitura. A lâmina não tem nenhum controle que escreva, e é assim
+     de propósito: quem registra é a cuidadora, no aparelho dela. */
+  var lamTurno = document.getElementById("lamina-turno");
+  function abrirTurno() {
+    if (!lamTurno) return;
+    lamTurno.hidden = false;
+    medirUmaVez("ver-turno");
+  }
+  function fecharTurno() { if (lamTurno) lamTurno.hidden = true; }
+  document.addEventListener("click", function (ev) {
+    if (ev.target.closest && ev.target.closest(".abre-turno")) abrirTurno();
+  });
+  var tvFechar = document.getElementById("tv-fechar");
+  if (tvFechar) tvFechar.addEventListener("click", fecharTurno);
+  if (lamTurno) lamTurno.addEventListener("click", function (ev) {
+    if (ev.target === lamTurno) fecharTurno();
+  });
 
   var opBotao = document.getElementById("op-tudo");
   if (opBotao) {
