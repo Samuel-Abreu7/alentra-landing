@@ -538,6 +538,13 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   .campo-ausente b{color:var(--estado-erro)}
   .campo-ausente span{text-decoration:line-through;text-decoration-thickness:1px}
 
+  .tv-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+  .tv-grade div{border:1px solid var(--linha);border-radius:var(--raio-sm);
+    padding:8px 10px;display:flex;justify-content:space-between;gap:8px}
+  /* ⚠️ Cinza, nunca vermelho: traço aqui não é pendência. Os atalhos são
+     opções de registro, não tarefas combinadas — só a dose tem horário. */
+  .tv-grade .vazio span, .tv-grade .vazio b{color:var(--tinta-fraca)}
+
   .tv-linha{display:flex;gap:10px;align-items:center;padding:8px 0;
             border-bottom:1px solid var(--linha)}
   .tv-linha .num{min-width:56px;color:var(--tinta-suave)}
@@ -1288,6 +1295,22 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
       <span class="selo selo-fila">retida no aparelho</span></div>
     <div class="tv-linha"><span class="num">18:00</span><span>Sinvastatina 20mg</span>
       <span class="selo" style="background:var(--papel);color:var(--tinta-suave)">prevista</span></div>
+
+    <h4 class="rotulo-secao" style="margin:18px 0 8px">O checklist dela, neste turno</h4>
+    <div class="tv-grade">
+      <div><span>Refeição</span><b class="num">3</b></div>
+      <div><span>Líquidos</span><b class="num">5</b></div>
+      <div><span>Sono</span><b class="num">1</b></div>
+      <div><span>Humor</span><b class="num">2</b></div>
+      <div><span>Banho</span><b class="num">1</b></div>
+      <div class="vazio"><span>Evacuação</span><b class="num">—</b></div>
+      <div><span>Sinal vital</span><b class="num">2</b></div>
+      <div class="vazio"><span>Intercorrência</span><b class="num">—</b></div>
+    </div>
+    <p class="sub" style="margin:8px 0 0;font-size:var(--texto-xs)">
+      São os mesmos botões que ela tem no celular. <b>Não é lista de tarefas
+      obrigatórias:</b> só a dose tem horário previsto — o resto ela registra quando
+      acontece. Traço não é falta; é coisa que não houve neste turno.</p>
 
     <h4 class="rotulo-secao" style="margin:18px 0 8px">Feito neste turno</h4>
     <div class="tv-linha"><span class="num">07:04</span><span>Check-in</span></div>
