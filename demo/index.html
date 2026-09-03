@@ -580,6 +580,46 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   }
   .btn-tema-demo:hover { background: rgba(255,255,255,.34) }
 
+  /* ---- Tema escuro TAMBÉM na tela do Gestor (03/09/2026) ----
+     Pedido do Samuel, depois de ele não achar o botão na tela da
+     cuidadora. Aqui o custo é outro: o gestor tem tabela, cartão, selo,
+     aviso — muito mais tipo de componente que o cartão único da
+     cuidadora. Ele pediu explicitamente para NÃO perseguir acessibilidade
+     perfeita se isso for caro, e para registrar como pendência o que
+     sobrar torto.
+
+     ⚠️ A aposta que barateou isto: quase todo componente da tela já usa
+     variável CSS (--cartao, --tinta, --linha, --estado-*), não cor
+     literal. Redefinindo as variáveis UMA vez, no container do palco,
+     tabela/cartão/selo/aviso re-temizam sozinhos — sem regra por
+     componente. Onde isso não bastar (algum estilo inline com cor fixa
+     que eu não tenha visto), o aviso é: acessibilidade dele NÃO foi
+     perseguida ponto a ponto; ficou por conta da mesma paleta da
+     cuidadora, sem conferência de contraste componente a componente. */
+  .palco[data-tela=gestor][data-tema=escuro] {
+    --tinta: #E8EAEE; --tinta-suave: #AFB6C2; --tinta-fraca: #7B8496;
+    --papel: #14171C; --cartao: #1C2027;
+    --linha: #2A2F38; --linha-forte: #6B7383;
+    --acao: #4FB3B0; --acao-hover: #6BC4C1; --acao-ativa: #8AD3D0;
+    --acao-texto: #0F1216;
+    --estado-plantao: #8FC2F0; --estado-plantao-fundo: #16283A;
+    --estado-atencao: #F0B860; --estado-atencao-fundo: #33260F;
+    --estado-erro: #FF8A80;    --estado-erro-fundo: #3A1A18;
+    --estado-sucesso: #7CD68A; --estado-sucesso-fundo: #152B18;
+    --branco: #1C2027;
+    background: var(--papel); color: var(--tinta);
+  }
+  /* Mesma família visual do botão da cuidadora, mas com rótulo em texto —
+     é exatamente a falta de rótulo que fez o Samuel não achar o outro. */
+  .btn-tema-gestor {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 36px; padding: 0 14px; border-radius: 999px;
+    border: 1.5px solid var(--linha-forte); background: var(--cartao);
+    color: var(--tinta); font: inherit; font-size: var(--texto-sm);
+    font-weight: var(--peso-forte); cursor: pointer;
+  }
+  .btn-tema-gestor:hover { background: var(--papel) }
+
   /* ---- Logo real da Bertoldi (03/09/2026) ----
      ⚠️ O arquivo original vinha com o texto em SVG-font — formato removido
      dos navegadores desde ~2014, o mesmo defeito que o "Powered by
@@ -715,6 +755,11 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
 
 <!-- ==================== GESTOR ==================== -->
 <div class="palco" data-tela="gestor">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+    <button type="button" class="btn-tema-gestor" id="btn-tema-gestor"
+            aria-pressed="false">🌙 Tema escuro</button>
+  </div>
+
 
   <!-- ⚠️ A escala vem ANTES da operação do dia — item 2 da avaliação do
        Fernando, 02/09/2026. Na ordem de trabalho ela é a primeira: ninguém
@@ -1808,6 +1853,23 @@ Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
       btnTemaDemo.setAttribute("aria-label",
         escuro ? "Mudar para tema claro" : "Mudar para tema escuro");
       medirUmaVez("tema-escuro");
+    });
+  }
+
+  /* ---------- tema escuro do gestor ----------
+     Mesmo botão-conceito da cuidadora, aqui sem persistência e sem
+     alternar logo (a tela do gestor não tem cabeçalho de marca colorido;
+     é dashboard, então nada de logo/variante para trocar). */
+  var palcoGestor = document.querySelector('.palco[data-tela="gestor"]');
+  var btnTemaGestor = document.getElementById("btn-tema-gestor");
+  if (palcoGestor && btnTemaGestor) {
+    btnTemaGestor.addEventListener("click", function () {
+      var escuro = palcoGestor.getAttribute("data-tema") !== "escuro";
+      if (escuro) palcoGestor.setAttribute("data-tema", "escuro");
+      else palcoGestor.removeAttribute("data-tema");
+      btnTemaGestor.textContent = escuro ? "☀️ Tema claro" : "🌙 Tema escuro";
+      btnTemaGestor.setAttribute("aria-pressed", escuro ? "true" : "false");
+      medirUmaVez("tema-escuro-gestor");
     });
   }
 
