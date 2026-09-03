@@ -531,6 +531,13 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   .barra-ader i{display:block;height:100%;background:var(--estado-sucesso)}
   .sub{color:var(--tinta-suave);font-size:var(--texto-sm);margin:0 0 14px}
 
+  .campo-demo{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+              padding:8px 0;border-bottom:1px solid var(--linha)}
+  .campo-demo span{min-width:190px;color:var(--tinta-suave);font-size:var(--texto-sm)}
+  .campo-demo i{font-style:normal;font-size:var(--texto-xs);color:var(--tinta-fraca)}
+  .campo-ausente b{color:var(--estado-erro)}
+  .campo-ausente span{text-decoration:line-through;text-decoration-thickness:1px}
+
   .tv-linha{display:flex;gap:10px;align-items:center;padding:8px 0;
             border-bottom:1px solid var(--linha)}
   .tv-linha .num{min-width:56px;color:var(--tinta-suave)}
@@ -680,6 +687,64 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
     pode ser rede ruim, aparelho velho, escala apertada ou paciente em crise. O nome está aqui
     para você saber <b>a quem ligar</b>. E turno sem cuidadora atribuída aparece como
     <b>vaga aberta</b>: escala incompleta não tem culpado.</span>
+  </div>
+
+  <!-- ==================== O QUE O CADASTRO COLETA ====================
+       Item 8 da avaliação do Fernando (02/09/2026): "mostrar quais
+       informações são coletadas e de que forma".
+
+       ⚠️ O valor desta tela numa demonstração não é mostrar campos — é que
+       na fase 1 a **controladora é a agência**. A responsabilidade legal de
+       cada campo é de quem está do outro lado da mesa, e ele quase nunca
+       sabe disso. A tela transforma a nossa maior restrição em argumento. -->
+  <h2 style="margin-top:28px">Cadastro de cliente — o que entra e o que não entra</h2>
+  <p class="sub">Na fase 1, quem decide as finalidades é a agência. Por isso a lista fica
+  à vista de quem cadastra, e não só na política de privacidade.</p>
+
+  <div class="cartao" style="margin-bottom:16px">
+    <div class="rotulo-secao">Passo 1 · O idoso</div>
+    <div class="campo-demo"><span>Nome</span><b>Maria Aparecida S.</b></div>
+    <div class="campo-demo"><span>Fuso da casa</span><b>America/Sao_Paulo</b>
+      <i>para a hora do registro não mentir</i></div>
+    <div class="campo-demo"><span>Medicação, dose e horário</span><b>Losartana 50mg · 08:00</b>
+      <i>é o que a cuidadora confirma</i></div>
+    <div class="campo-demo campo-ausente"><span>Diagnóstico, CID, laudo, exame</span>
+      <b>não coletamos</b></div>
+  </div>
+
+  <div class="cartao" style="margin-bottom:16px">
+    <div class="rotulo-secao">Passo 2 · A cuidadora</div>
+    <div class="campo-demo"><span>Nome e telefone</span><b>Ana Ribeiro</b></div>
+    <div class="campo-demo"><span>Vínculo</span><b>CLT · MEI · diarista</b></div>
+    <div class="campo-demo"><span>Celular dela</span><b>vinculado por convite</b>
+      <i>o PIN nunca é guardado em claro e vale só naquele aparelho</i></div>
+    <div class="campo-demo campo-ausente"><span>Localização, biometria, foto de documento</span>
+      <b>não coletamos</b></div>
+    <p class="sub" style="margin:10px 0 0"><b>Ela também é titular.</b> Nome, vínculo,
+    aparelho e jornada são dados dela, com direitos iguais pelo mesmo canal.</p>
+  </div>
+
+  <div class="cartao" style="margin-bottom:16px">
+    <div class="rotulo-secao">Passo 3 · A família</div>
+    <div class="campo-demo"><span>Nome e e-mail</span><b>Paulo (filho)</b></div>
+    <div class="campo-demo"><span>Termo de representação</span><b>PDF assinado, arquivado</b>
+      <i>diz para que cada pessoa está autorizada</i></div>
+    <div class="campo-demo"><span>Finalidades</span><b>saúde · escala · emergência</b></div>
+    <p class="sub" style="margin:10px 0 0">Vínculo sem termo arquivado <b>não concede
+    nada</b>: nem linha do tempo, nem alerta. Contratar não é autorizar.</p>
+  </div>
+
+  <div class="aviso aviso-atencao">
+    <span><b>O produto registra sinal vital; ele nunca diz se o valor é alto ou
+    preocupante.</b> "Pressão 15x9" fica escrito exatamente assim. Interpretar dado clínico
+    exigiria registro sanitário na ANVISA — e transformaria a agência em algo que ela não
+    quer ser.</span>
+  </div>
+
+  <div class="aviso aviso-info" style="margin-top:12px">
+    <span><b>Zero compartilhamento.</b> Nada do cuidado vai para farmacêutica, plano,
+    seguradora ou anunciante — em nenhuma fase. E nenhum e-mail ou aviso carrega conteúdo de
+    saúde: eles dizem que há novidade, e o conteúdo fica dentro do aplicativo.</span>
   </div>
 
   <h2 style="margin-top:28px">Família e representação</h2>
