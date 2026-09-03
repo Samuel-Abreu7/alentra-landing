@@ -538,6 +538,41 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
   .campo-ausente b{color:var(--estado-erro)}
   .campo-ausente span{text-decoration:line-through;text-decoration-thickness:1px}
 
+  /* ---- Tema escuro da cuidadora (item de PROD antecipado só nesta
+     superfície, decisão do Fernando em 03/09/2026) ----
+
+     ⚠️ Os valores são os MESMOS de `app/web/tokens.css`. Duas cópias da
+     mesma paleta é dívida conhecida: o demo não carrega o tokens.css do
+     produto, e sincronizar as duas é trabalho manual. Ao mexer numa, mexer
+     na outra — o pior defeito possível aqui é a demonstração mostrar uma
+     cor que o produto não tem. */
+  .palco[data-tela="cuidadora"][data-tema="escuro"] .aparelho {
+    --tinta: #E8EAEE; --tinta-suave: #AFB6C2; --tinta-fraca: #7B8496;
+    --papel: #14171C; --cartao: #1C2027;
+    --linha: #2A2F38; --linha-forte: #6B7383;
+    --acao: #4FB3B0; --acao-hover: #6BC4C1; --acao-ativa: #8AD3D0;
+    --acao-texto: #0F1216;
+    --estado-plantao: #8FC2F0; --estado-plantao-fundo: #16283A;
+    --estado-atencao: #F0B860; --estado-atencao-fundo: #33260F;
+    --estado-erro: #FF8A80;    --estado-erro-fundo: #3A1A18;
+    --estado-sucesso: #7CD68A; --estado-sucesso-fundo: #152B18;
+    --branco: #1C2027;
+    background: var(--papel); color: var(--tinta);
+  }
+  /* A cor da agência deixa de pintar o fundo: no escuro ela é faixa de
+     acento, porque o contraste de uma cor escolhida por terceiro não é
+     nosso para garantir. Igual ao produto. */
+  .palco[data-tela="cuidadora"][data-tema="escuro"] .cabecalho-marca {
+    background: var(--cartao); color: var(--tinta);
+    border-left: 5px solid var(--marca-cliente, var(--acao));
+    border-bottom: 1px solid var(--linha);
+  }
+  .btn-tema-demo {
+    min-width: 40px; min-height: 40px; border-radius: 999px;
+    border: 1px solid currentColor; background: transparent; color: inherit;
+    font-size: 17px; line-height: 1; cursor: pointer; opacity: .9;
+  }
+
   .tv-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
   .tv-grade div{border:1px solid var(--linha);border-radius:var(--raio-sm);
     padding:8px 10px;display:flex;justify-content:space-between;gap:8px}
@@ -1108,7 +1143,13 @@ td { padding: 12px; border-bottom: 1px solid var(--linha); vertical-align: top }
           <div style="font-size:var(--texto-lg);font-weight:var(--peso-forte);line-height:1.2">D. Maria, 82</div>
           <div style="font-size:var(--texto-sm);opacity:.92">Turno 07:00–15:00 · Ana</div>
         </div>
-        <div class="num" style="font-size:var(--texto-sm);font-weight:var(--peso-forte)">12:07</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="num" style="font-size:var(--texto-sm);font-weight:var(--peso-forte)">12:07</div>
+          <!-- No produto este botão fica no mesmo lugar, no cabeçalho do
+               turno: longe do caminho do registro, com alvo de 44 px. -->
+          <button type="button" class="btn-tema-demo" id="btn-tema-demo"
+                  aria-pressed="false" aria-label="Mudar para tema escuro">🌙</button>
+        </div>
       </div>
     </header>
 
@@ -1730,6 +1771,26 @@ Dúvidas e direitos sobre seus dados: contato@alentra.com.br</div>
     });
   }
   pintarEquipe("7");
+
+  /* ---------- tema escuro da cuidadora ----------
+     Só esta superfície: é onde o escuro tem ganho de uso, não de gosto —
+     ela trabalha de madrugada, com o idoso dormindo ao lado. No produto a
+     escolha fica salva no aparelho dela; aqui é só demonstração. */
+  var palcoCuidadora = document.querySelector('.palco[data-tela="cuidadora"]');
+  var btnTemaDemo = document.getElementById("btn-tema-demo");
+  if (palcoCuidadora && btnTemaDemo) {
+    btnTemaDemo.addEventListener("click", function () {
+      var escuro = palcoCuidadora.getAttribute("data-tema") !== "escuro";
+      if (escuro) palcoCuidadora.setAttribute("data-tema", "escuro");
+      else palcoCuidadora.removeAttribute("data-tema");
+      btnTemaDemo.textContent = escuro ? "☀️" : "🌙";
+      btnTemaDemo.setAttribute("aria-pressed", escuro ? "true" : "false");
+      /* ⚠️ Rótulo em texto para quem ouve a tela: emoji sozinho não informa. */
+      btnTemaDemo.setAttribute("aria-label",
+        escuro ? "Mudar para tema claro" : "Mudar para tema escuro");
+      medirUmaVez("tema-escuro");
+    });
+  }
 
   /* ---------- relatorios gerenciais (maquete, fase 3) ---------- */
   var botoesRel = document.querySelectorAll("[data-rel]");
